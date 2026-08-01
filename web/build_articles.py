@@ -4,7 +4,8 @@ import glob, json, os, re, html
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 arts = []
-for p in sorted(glob.glob(f"{ROOT}/content/articles/html/*.html")):
+for p in sorted(x for x in glob.glob(f"{ROOT}/content/articles/html/*.html")
+               if not x.endswith(".mobile.html")):
     raw = open(p, encoding="utf-8").read()
     head = re.search(r"<!--(.*?)-->", raw, re.S)
     h = head.group(1) if head else ""
@@ -26,6 +27,7 @@ for p in sorted(glob.glob(f"{ROOT}/content/articles/html/*.html")):
         "rpm": f"{len(txt)}자",
         "len": f"h2 {raw.count('<h2')} · 광고 {raw.count(chr(34)+'ad-slot')}",
         "md": raw,
+        "mob": open(p.replace(".html", ".mobile.html"), encoding="utf-8").read(),
     })
 
 tpl = open(os.path.join(os.path.dirname(__file__), "articles.tpl.html"), encoding="utf-8").read()

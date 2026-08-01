@@ -423,9 +423,12 @@ def build(path, outdir):
     bad = [l for l in check.split("\n") if LEFTOVER.search(l)]
 
     os.makedirs(outdir, exist_ok=True)
-    name = os.path.splitext(os.path.basename(path))[0] + ".html"
-    out = os.path.join(outdir, name)
+    base = os.path.splitext(os.path.basename(path))[0]
+    out = os.path.join(outdir, base + ".html")
     open(out, "w", encoding="utf-8").write(doc)
+    # 모바일 앱(위지윅) 붙여넣기용 변형
+    open(os.path.join(outdir, base + ".mobile.html"), "w",
+         encoding="utf-8").write(to_mobile(doc))
 
     txt = re.sub(r'\s', '', re.sub(r'<[^>]+>', ' ',
           re.sub(r'<!--.*?-->|<script.*?</script>|<style.*?</style>', '', doc, flags=re.S)))
@@ -450,6 +453,58 @@ def main():
         for l in r["leftover"][:3]:
             print(f"     ! 마크다운 잔여: {l.strip()[:70]}")
     print(f"\n{len(a.files)}편 변환, 경고 {fail}편")
+
+
+
+# ══════════════════════════════════════════════════════════
+# 모바일 앱용 변형
+#
+# 티스토리 모바일 앱 에디터에는 HTML 모드가 없습니다(다음 고객센터 공식 안내).
+# 대신 기본(위지윅) 에디터는 서식 있는 붙여넣기를 받습니다.
+# 그래서 class 기반 스타일을 인라인으로 바꾼 변형을 따로 만듭니다.
+# 이걸 리치텍스트로 복사해 붙이면 제목·굵기·표·목록이 살아남습니다.
+#
+# 광고 코드(<ins> + <script>)는 위지윅 붙여넣기에서 제거되므로 빼고,
+# 그 자리는 자동광고(앵커·전면·페이지 내 광고)에 맡깁니다.
+# ══════════════════════════════════════════════════════════
+
+INLINE_STYLE = {
+ "lede": "background:#F7F7F5;border-left:4px solid #C1272D;padding:16px 18px;margin:0 0 22px",
+ "toc": "border:1px solid #E0DED9;padding:16px 18px;margin:0 0 24px;background:#FCFCFB",
+ "toc-t": "font-size:14px;font-weight:700;margin:0 0 10px;color:#555",
+ "tbl-wrap": "overflow-x:auto;margin:0 0 20px",
+ "tip": "background:#F0F4F6;border-left:4px solid #2F4858;padding:14px 16px;margin:0 0 20px",
+ "warn": "background:#FBEDED;border-left:4px solid #C1272D;padding:14px 16px;margin:0 0 20px",
+ "faq": "border-top:1px solid #E0DED9;margin-top:8px",
+ "faq-q": "font-weight:700;font-size:16.5px;margin:20px 0 8px",
+ "faq-a": "margin:0 0 18px",
+ "related": "border:1px solid #E0DED9;padding:18px;margin:0 0 24px;background:#FCFCFB",
+ "related-t": "font-size:15px;font-weight:700;margin:0 0 12px",
+ "disclaimer": "margin-top:28px;padding-top:16px;border-top:1px solid #E8E6E1;font-size:13.5px;color:#777",
+ "post-body": "font-size:17px;line-height:1.75;color:#222;word-break:keep-all",
+}
+
+def to_mobile(doc):
+    """PC용 HTML → 모바일 위지윅 붙여넣기용 (인라인 스타일, 광고 제거)."""
+    s = doc
+    s = re.sub(r'<!--.*?-->', '', s, flags=re.S)          # 주석 제거
+    s = re.sub(r'<style.*?</style>', '', s, flags=re.S)    # 스타일 블록 제거
+    s = re.sub(r'<script.*?</script>', '', s, flags=re.S)  # 광고/스키마 스크립트 제거
+    s = re.sub(r'<ins class="adsbygoogle".*?</ins>', '', s, flags=re.S)
+    # 빈 광고 슬롯 통째로 제거
+    s = re.sub(r'<div class="ad-slot[^"]*">.*?</div>', '', s, flags=re.S)
+    # class → inline style
+    def sub_cls(m):
+        tag, cls = m.group(1), m.group(2)
+        st = INLINE_STYLE.get(cls.split()[0])
+        return f'<{tag} style="{st}">' if st else f'<{tag}>'
+    s = re.sub(r'<(\w+)\s+class="([^"]+)"[^>]*>', sub_cls, s)
+    # 표 기본 테두리 인라인화
+    s = s.replace("<table>", '<table style="border-collapse:collapse;width:100%">')
+    s = re.sub(r'<th>', '<th style="border:1px solid #E0DED9;padding:10px;background:#F4F3F0;text-align:left">', s)
+    s = re.sub(r'<td>', '<td style="border:1px solid #E0DED9;padding:10px;text-align:left">', s)
+    s = re.sub(r'\n{3,}', '\n\n', s)
+    return s.strip()
 
 
 if __name__ == "__main__":

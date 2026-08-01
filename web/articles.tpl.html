@@ -34,6 +34,16 @@
     padding:11px 13px;margin:16px 0 0;border-radius:0 2px 2px 0;font-size:13.5px;color:var(--ink-2)}
   .note b{color:var(--stamp)}
 
+  .how{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+  .way{border:1px solid var(--rule);border-radius:3px;background:var(--raised);padding:13px 14px}
+  .way p{margin:0 0 7px;font-size:13.5px;color:var(--ink-2);line-height:1.65}
+  .way p:last-child{margin:0}
+  .way-t{font-weight:700;font-size:14.5px;color:var(--ink)!important;
+    display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+  .pill{font-family:var(--mono);font-size:10px;letter-spacing:.06em;background:var(--ink);
+    color:var(--paper);padding:3px 7px;border-radius:2px;font-weight:600}
+  .cav{color:var(--muted)!important;font-size:12.5px!important}
+  .way code{font-family:var(--mono);font-size:11.5px;background:var(--rule-soft);padding:1px 4px;border-radius:2px}
   .card{border:1px solid var(--rule);border-radius:3px;background:var(--raised);
     margin-top:14px;overflow:hidden}
   .chead{width:100%;background:none;border:0;text-align:left;font:inherit;color:inherit;
@@ -63,13 +73,31 @@
   <header>
     <p class="eyebrow">2026.08.01 · 원고 <span id="n"></span>편</p>
     <h1>8월 1일 발행 원고 (티스토리 HTML)</h1>
-    <p class="sub">순수 HTML입니다. 티스토리 에디터를 <strong>HTML 모드</strong>로 바꾸고 붙여넣으세요.</p>
+    <p class="sub">폰에서 바로 발행할 수 있게 두 가지 복사 방식을 넣었습니다.</p>
   </header>
 
   <div class="note">
-    <b>반드시 HTML 모드로:</b> 기본(위지윅) 모드에 붙이면 태그가 글자로 찍힙니다.
-    에디터 우측 하단 <strong>기본모드 → HTML</strong> 전환 후 붙여넣으세요.
-    붙인 뒤 <code>ca-pub-…</code>와 <code>/entry/글주소를-여기에</code>를 실제 값으로 바꾸는 것도 잊지 마세요.
+    <b>티스토리 모바일 앱에는 HTML 모드가 없습니다.</b> (다음 고객센터 공식 안내)
+    그래서 복사 버튼을 둘로 나눴습니다.
+  </div>
+
+  <div class="how">
+    <div class="way">
+      <p class="way-t">방법 1 · 앱에서 바로 <span class="pill">서식 복사</span></p>
+      <p>티스토리 앱 → 글쓰기 → <strong>기본 모드에 그대로 붙여넣기</strong>.
+      제목·굵기·표·목록이 서식 그대로 들어갑니다. 가장 빠릅니다.</p>
+      <p class="cav">단, 광고 코드는 위지윅에 안 붙습니다. 본문 광고 없이 나가고
+      <strong>자동광고(앵커·전면·페이지 내 광고 전부 ON)</strong>에 맡기면 됩니다.</p>
+    </div>
+    <div class="way">
+      <p class="way-t">방법 2 · 데스크톱 모드에서 <span class="pill">HTML 복사</span></p>
+      <p>수동 광고 3개까지 그대로 넣고 싶을 때. 폰 브라우저에서 PC 화면을 띄웁니다.</p>
+      <p><strong>아이폰 Safari</strong> 주소창 왼쪽 <strong>ᴀA</strong> → 데스크탑 웹사이트 요청<br>
+      <strong>안드로이드 Chrome</strong> 우측 상단 <strong>⋮</strong> → 데스크톱 사이트 체크</p>
+      <p>그다음 tistory.com 로그인 → 글쓰기 → 우측 하단 <strong>기본모드 → HTML</strong> → 붙여넣기.
+      이때는 자동광고의 <strong>페이지 내 광고를 OFF</strong>로 두세요.</p>
+      <p class="cav">붙인 뒤 <code>ca-pub-…</code>와 <code>/entry/글주소를-여기에</code>를 실제 값으로 교체.</p>
+    </div>
   </div>
 
   <div id="list"></div>
@@ -99,7 +127,8 @@ document.getElementById("list").innerHTML = ARTS.map((a,i)=>{
       <span class="ct">${a.title}</span>
       <span class="ckw">${a.kw}</span>
       <span class="cfoot">
-        <span class="btn pri copy">전문 복사</span>
+        <span class="btn pri copyrich">서식 복사</span>
+        <span class="btn copyhtml">HTML 복사</span>
         <span class="btn">본문 보기</span>
       </span>
     </button>
@@ -111,13 +140,28 @@ document.addEventListener("click", e => {
   const card = e.target.closest(".card");
   if(!card) return;
   const a = ARTS[+card.dataset.i];
-  if(e.target.closest(".copy")){
+  const rich = e.target.closest(".copyrich");
+  const raw  = e.target.closest(".copyhtml");
+  if(rich || raw){
     e.stopPropagation();
-    const btn = e.target.closest(".copy");
-    navigator.clipboard?.writeText(a.md).then(()=>{
-      btn.textContent = "복사됨";
-      setTimeout(()=>btn.textContent="전문 복사", 1500);
-    }).catch(()=>{ btn.textContent = "복사 실패"; });
+    const btn = rich || raw;
+    const label = btn.textContent;
+    const done = () => { btn.textContent = "복사됨";
+      setTimeout(()=>btn.textContent = label, 1500); };
+    const fail = () => { btn.textContent = "복사 실패";
+      setTimeout(()=>btn.textContent = label, 1800); };
+    if(rich){
+      // 위지윅 에디터가 서식을 살려 받도록 text/html로 넣는다
+      try{
+        const item = new ClipboardItem({
+          "text/html": new Blob([a.mob], {type:"text/html"}),
+          "text/plain": new Blob([a.mob], {type:"text/plain"})
+        });
+        navigator.clipboard.write([item]).then(done).catch(fail);
+      }catch(err){ navigator.clipboard?.writeText(a.mob).then(done).catch(fail); }
+    } else {
+      navigator.clipboard?.writeText(a.md).then(done).catch(fail);
+    }
     return;
   }
   const pre = card.querySelector("pre");
