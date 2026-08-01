@@ -21,13 +21,17 @@
 - [docs/00-현실점검.md](docs/00-현실점검.md) — 목표 수치 역산과 격차
 - [docs/03-키워드-수익구조.md](docs/03-키워드-수익구조.md) — 키워드, 광고 배치, 수익 다각화
 - [docs/04-계정보호-금지사항.md](docs/04-계정보호-금지사항.md) — 운영자 본인도 "2억 투자 후 전계정 정지"를 당했음
+- [docs/07-홈판주제-8월캘린더.md](docs/07-홈판주제-8월캘린더.md) — 홈판 주제 선정 + 8월 확정 이벤트 캘린더
 - [docs/05-단기달성-대안경로.md](docs/05-단기달성-대안경로.md) — 사이트 매입 / 언론사 경로
 
 ## 도구
 
 ```bash
+python3 tools/content_engine.py queue               # 8/1~8/31 발행 큐 558편 생성
+python3 tools/content_engine.py today               # 오늘 쓸 18편
+python3 tools/content_engine.py brief "키워드"        # 글 구조 템플릿
+python3 tools/issue_radar.py "쿠팡 장애" --type 사고    # 돌발 이슈 파생 전개
 python3 tools/revenue_model.py                      # 목표 역산 / 시나리오 비교
-python3 tools/issue_radar.py "고유가 지원금" --type 정책   # 이슈 파생 키워드 8축 전개
 python3 tools/keyword_score.py keywords/seed.csv    # 키워드 우선순위 스코어링
 python3 tools/tracker.py init && python3 tools/tracker.py report
 
@@ -40,6 +44,8 @@ YT_API_KEY=... python3 tools/yt_fetch.py --channel UC-SDn1Rid0XP06ovSQwLnZg \
 
 | 항목 | 값 |
 |---|---|
-| 운영 블로그 | 0 / 4 |
+| 운영 블로그 | 0 / 5 (N + A~D) |
+| 키워드 후보 | 3,206개 |
+| 8월 발행 큐 | 558편 (하루 18편) |
 | 누적 발행 글 | 0 |
 | 예상 월 run-rate | ₩0 |
