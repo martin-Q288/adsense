@@ -1,0 +1,336 @@
+<!--
+============================================================
+티스토리 HTML 모드에 그대로 붙여넣으세요.
+
+■ 글 제목 (티스토리 제목 칸에 입력)
+   근로장려금 지급일과 신청자격 2026 — 재산 2.4억 기준 정리
+
+■ 제목 계층
+   본문에 h1을 넣지 않았습니다. 티스토리 스킨이 글 제목을 h1으로
+   렌더링하므로, 본문에 h1을 또 쓰면 제목이 두 개가 되어 색인에 불리합니다.
+   본문은 h2(대목차) / h3(소목차)만 사용합니다.
+   목차의 각 항목은 h2의 id와 앵커로 연결돼 있습니다.
+
+■ 마크다운 기호 없음
+   ** # | - > 같은 기호를 전부 HTML 태그로 변환했습니다.
+   에디터에 붙여넣었을 때 기호가 글자로 찍히지 않습니다.
+
+■ 자동광고 설정 (겹침 방지 - 중요)
+   애드센스 → 광고 → 사이트별 → 편집
+     앵커 광고        ON     모바일 하단 고정
+     전면 광고        ON     링크 클릭 시 Vignette 자동 노출
+     페이지 내 광고   OFF    ← 아래 수동 3개와 겹치지 않게 반드시 끄세요
+
+■ 붙여넣기 후 할 일
+   1. ca-pub-여기에본인퍼블리셔ID / 여기에광고단위ID 를 실제 값으로 교체
+   2. 관련 글의 /entry/글주소를-여기에 를 실제 글 주소로 교체
+   3. 대표 이미지 1200px 이상 가로형 지정
+   4. 발행 후 서치콘솔 URL 검사 → 색인 요청
+
+■ 절대 넣지 마세요 (계정 영구정지 + 미지급 수익 몰수)
+   광고 클릭 유도 문구 / 광고를 가리키는 화살표 /
+   버튼 클릭을 광고 노출 트리거로 삼는 스크립트 /
+   광고를 콘텐츠나 버튼으로 위장하는 배치
+
+   블로그: A (고단가)
+   키워드: 근로장려금 지급일, 근로장려금 신청자격, 재산요건
+============================================================
+-->
+
+<style>
+/* 본문 폭 확보: 336px보다 좁으면 반응형 광고가 300x250으로 떨어져 eCPM 손해 */
+.post-body{font-size:17px;line-height:1.75;color:#222;word-break:keep-all;min-width:0}
+.post-body h2{font-size:21px;font-weight:700;margin:44px 0 14px;padding-bottom:8px;
+  border-bottom:2px solid #222;letter-spacing:-.01em;scroll-margin-top:20px}
+.post-body h3{font-size:18px;font-weight:700;margin:28px 0 10px}
+.post-body p{margin:0 0 16px}
+.post-body ul,.post-body ol{margin:0 0 18px;padding-left:22px}
+.post-body li{margin-bottom:7px}
+.post-body code{background:#F2F1EE;padding:1px 5px;border-radius:3px;font-size:15px}
+
+.lede{background:#F7F7F5;border-left:4px solid #C1272D;padding:16px 18px;
+  margin:0 0 22px;border-radius:0 4px 4px 0}
+.lede p{margin:0 0 10px;font-size:17px}
+.lede p:last-child{margin:0}
+.lede strong{color:#C1272D}
+.lede ul{margin:10px 0 0;padding-left:20px}
+.lede li{font-size:15.5px;color:#444}
+
+.toc{border:1px solid #E0DED9;border-radius:4px;padding:16px 18px;margin:0 0 24px;background:#FCFCFB}
+.toc-t{font-size:14px;font-weight:700;margin:0 0 10px;color:#555}
+.toc ol{margin:0;padding-left:20px}
+.toc li{margin-bottom:6px;font-size:15.5px}
+.toc a{color:#2F4858;text-decoration:none;border-bottom:1px solid #D6D4CF}
+
+.tbl-wrap{overflow-x:auto;margin:0 0 20px;-webkit-overflow-scrolling:touch}
+.post-body table{border-collapse:collapse;width:100%;min-width:340px;font-size:15.5px}
+.post-body th,.post-body td{border:1px solid #E0DED9;padding:11px 12px;text-align:left}
+.post-body th{background:#F4F3F0;font-weight:700;white-space:nowrap}
+.post-body td strong{color:#C1272D}
+
+.tip{background:#F0F4F6;border-left:4px solid #2F4858;padding:14px 16px;
+  margin:0 0 20px;border-radius:0 4px 4px 0;font-size:15.5px}
+.warn{background:#FBEDED;border-left:4px solid #C1272D;padding:14px 16px;
+  margin:0 0 20px;border-radius:0 4px 4px 0;font-size:15.5px}
+
+.faq{border-top:1px solid #E0DED9;margin-top:8px}
+.faq-q{font-weight:700;font-size:16.5px;margin:20px 0 8px;color:#1A1A18}
+.faq-a{margin:0 0 18px;color:#3A3A38}
+
+.related{border:1px solid #E0DED9;border-radius:4px;padding:18px;margin:0 0 24px;background:#FCFCFB}
+.related-t{font-size:15px;font-weight:700;margin:0 0 12px}
+.related ul{margin:0;padding-left:20px}
+.related li{margin-bottom:9px;font-size:16px}
+.related a{color:#2F4858;text-decoration:none;border-bottom:1px solid #C9C7C2}
+
+.disclaimer{margin-top:28px;padding-top:16px;border-top:1px solid #E8E6E1;
+  font-size:13.5px;color:#777;line-height:1.7}
+
+/* 광고 슬롯: min-height로 자리를 예약해 레이아웃 이동(CLS)을 막습니다.
+   광고가 늦게 로드되며 본문이 밀리면 오클릭이 나고, 오클릭은 무효 트래픽으로
+   잡힐 수 있습니다. 상하 28px 여백 = 정책상 20px 이격 기준 충족. */
+.ad-slot{margin:28px 0;display:flex;flex-direction:column;align-items:center}
+.ad-slot .ad-label{font-size:11px;color:#AAA;letter-spacing:.08em;margin-bottom:6px;align-self:flex-start}
+.ad-slot ins{display:block;width:100%}
+.ad-inline{min-height:280px}
+.ad-multiplex{min-height:400px}
+
+@media(max-width:600px){
+  .post-body{font-size:16px}
+  .post-body h2{font-size:19px}
+  .ad-slot{margin:24px 0}
+  .ad-inline{min-height:250px}
+  .ad-multiplex{min-height:600px}
+}
+</style>
+
+<div class="post-body">
+
+<div class="lede">
+  <p><strong>결론부터: 정기신청분은 9월 말까지 지급됩니다.</strong> 단독가구 연소득 2,200만 원, 홑벌이 3,200만 원, 맞벌이 4,400만 원 미만이면서 가구 재산 합계가 2.4억 원 미만이어야 받을 수 있습니다.</p>
+  <ul>
+    <li>소득 기준: 단독 <strong>2,200만</strong> / 홑벌이 <strong>3,200만</strong> / 맞벌이 <strong>4,400만</strong> 원 미만</li>
+    <li>재산 기준: 가구원 전체 합계 <strong>2.4억 원 미만</strong></li>
+    <li><strong>1.7억~2.4억 구간은 산정액의 50%만</strong> 지급</li>
+    <li>정기신청분 지급: <strong>9월 말까지</strong></li>
+  </ul>
+</div>
+
+<!-- ═══ AD 1 ═══════════════════════════════════════
+     위치: 결론 박스 뒤 / 목차 앞 (본문 약 8%)
+     근거: 독자가 결론을 읽고 목차로 넘어가며 반드시 지나가고 잠깐 멈추는
+           구간. Active View 조건(면적 50%가 1초 이상)을 채우기 가장 쉽습니다.
+     설정: 반응형 디스플레이 / 지연 로딩 금지
+═══════════════════════════════════════════════════ -->
+<div class="ad-slot ad-inline">
+  <span class="ad-label">광고</span>
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-여기에본인퍼블리셔ID"
+       data-ad-slot="여기에광고단위ID"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<nav class="toc">
+  <p class="toc-t">목차</p>
+  <ol>
+    <li><a href="#s1">근로장려금이 뭔가</a></li>
+    <li><a href="#s2">신청자격 — 소득요건</a></li>
+    <li><a href="#s3">재산요건 — 여기서 가장 많이 탈락합니다</a></li>
+    <li><a href="#s4">얼마를 받나</a></li>
+    <li><a href="#s5">지급일과 조회 방법</a></li>
+    <li><a href="#s6">못 받는 경우</a></li>
+    <li><a href="#s7">자주 묻는 질문</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1">근로장려금이 뭔가</h2>
+<p>일은 하는데 소득이 적은 가구에 국가가 현금을 지급하는 제도입니다. 세금을 깎아주는 게 아니라 <strong>계좌로 직접 입금</strong>됩니다. 근로소득자뿐 아니라 사업소득자, 종교인소득자도 대상입니다.</p>
+<p>가구 유형은 세 가지로 나뉩니다.</p>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>유형</th><th>정의</th></tr></thead>
+  <tbody>
+    <tr><td>단독가구</td><td>배우자·부양자녀·70세 이상 직계존속이 없는 가구</td></tr>
+    <tr><td>홑벌이가구</td><td>배우자 총급여 300만 원 미만이거나, 부양자녀 또는 70세 이상 직계존속이 있는 가구</td></tr>
+    <tr><td>맞벌이가구</td><td>배우자 총급여 <strong>300만 원 이상</strong>인 가구</td></tr>
+  </tbody>
+</table>
+</div>
+<h2 id="s2">신청자격 — 소득요건</h2>
+<p><strong>부부 합산</strong> 전년도 연간 총소득 기준입니다.</p>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>가구 유형</th><th>총소득 기준</th></tr></thead>
+  <tbody>
+    <tr><td>단독가구</td><td><strong>2,200만 원 미만</strong></td></tr>
+    <tr><td>홑벌이가구</td><td><strong>3,200만 원 미만</strong></td></tr>
+    <tr><td>맞벌이가구</td><td><strong>4,400만 원 미만</strong></td></tr>
+  </tbody>
+</table>
+</div>
+<p>여기서 '총소득'은 근로소득만이 아닙니다. 사업소득, 이자·배당소득, 연금소득, 기타소득을 모두 합칩니다. 근로소득만 보고 신청했다가 탈락하는 경우가 많은 이유입니다.</p>
+<h2 id="s3">재산요건 — 여기서 가장 많이 탈락합니다</h2>
+<p><strong>가구원 전체의 재산 합계가 2.4억 원 미만</strong>이어야 합니다. 그리고 중요한 함정이 둘 있습니다.</p>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>재산 구간</th><th>지급률</th></tr></thead>
+  <tbody>
+    <tr><td>1.7억 원 미만</td><td><strong>100%</strong></td></tr>
+    <tr><td>1.7억 ~ 2.4억 원</td><td><strong>50%</strong></td></tr>
+    <tr><td>2.4억 원 이상</td><td><strong>지급 불가</strong></td></tr>
+  </tbody>
+</table>
+</div>
+<p><strong>부채는 차감되지 않습니다.</strong> 전세보증금 2억에 대출 1.8억이 있어도 재산은 2억으로 봅니다. 이것 때문에 실제로는 여유가 없는데 탈락하는 사례가 대단히 많습니다.</p>
+<h3>재산에 포함되는 것</h3>
+<ul>
+  <li>주택, 토지, 건물 (기준시가)</li>
+  <li><strong>전세보증금</strong> (임차보증금)</li>
+  <li>자동차 (시가표준액)</li>
+  <li>예금·적금 (잔액)</li>
+  <li>주식, 회원권</li>
+</ul>
+<p>기준일은 <strong>전년도 6월 1일</strong> 현재입니다. 그 이후에 재산이 줄었어도 반영되지 않습니다.</p>
+<h2 id="s4">얼마를 받나</h2>
+<p>가구 유형과 소득에 따라 다릅니다. 최대 지급액은 이렇습니다.</p>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>가구 유형</th><th>최대 지급액</th></tr></thead>
+  <tbody>
+    <tr><td>단독가구</td><td>약 165만 원</td></tr>
+    <tr><td>홑벌이가구</td><td>약 285만 원</td></tr>
+    <tr><td>맞벌이가구</td><td>약 330만 원</td></tr>
+  </tbody>
+</table>
+</div>
+<p>소득이 아주 적으면 오히려 적게 나옵니다. <strong>점증구간 → 평탄구간 → 점감구간</strong> 구조라, 일정 소득 구간에서 최대액이 나오고 그보다 적거나 많으면 줄어듭니다.</p>
+<p>재산이 1.7억을 넘으면 위 금액의 절반입니다.</p>
+<h2 id="s5">지급일과 조회 방법</h2>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>구분</th><th>신청 시기</th><th>지급 시기</th></tr></thead>
+  <tbody>
+    <tr><td>정기신청</td><td>5월</td><td><strong>9월 말까지</strong></td></tr>
+    <tr><td>반기신청(상반기분)</td><td>9월</td><td>12월 말</td></tr>
+    <tr><td>반기신청(하반기분)</td><td>3월</td><td>6월 말</td></tr>
+    <tr><td>기한 후 신청</td><td>6월~11월</td><td>신청일로부터 4개월 이내 (<strong>90%만 지급</strong>)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ═══ AD 2 ═══════════════════════════════════════
+     위치: 본문 중반 (약 50~60%)
+     근거: 실측 상위 블로그 밀도는 본문 1,000~1,300자당 1개.
+     설정: 인아티클 / 지연 로딩 허용
+═══════════════════════════════════════════════════ -->
+<div class="ad-slot ad-inline">
+  <span class="ad-label">광고</span>
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-여기에본인퍼블리셔ID"
+       data-ad-slot="여기에광고단위ID"
+       data-ad-format="fluid"
+       data-ad-layout="in-article"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<h3>조회 방법</h3>
+<ol>
+  <li>홈택스(hometax.go.kr) 로그인 → 장려금·연말정산 → 근로장려금 → 심사진행상황 조회</li>
+  <li>손택스 앱에서도 동일</li>
+  <li>ARS 1544-9944</li>
+</ol>
+<p>지급은 신청 시 등록한 계좌로 입금됩니다. 계좌를 등록하지 않았다면 국세환급금 통지서를 받아 우체국에서 수령해야 하니, <strong>계좌 등록 여부를 반드시 확인</strong>하세요.</p>
+<h2 id="s6">못 받는 경우</h2>
+<ul>
+  <li>전년도 12월 31일 기준 <strong>대한민국 국적이 아닌 경우</strong> (내국인과 혼인한 경우는 예외)</li>
+  <li>전문직 사업자 (변호사, 의사, 세무사 등)</li>
+  <li><strong>다른 거주자의 부양가족</strong>으로 등록된 경우</li>
+  <li>소득세법상 <strong>비과세 소득만</strong> 있는 경우</li>
+  <li>재산 2.4억 원 이상</li>
+</ul>
+<p><strong>중복 수급 불가 항목도 확인하세요.</strong> 자녀장려금은 근로장려금과 함께 받을 수 있지만, 신청 시 함께 접수해야 합니다.</p>
+<h2 id="s7">자주 묻는 질문</h2>
+<div class="faq">
+  <p class="faq-q">Q1. 5월에 신청을 못 했습니다. 지금도 되나요?</p>
+  <p class="faq-a">기한 후 신청이 11월까지 가능합니다. 다만 산정액의 <strong>90%만</strong> 지급되고, 지급도 신청일로부터 4개월 정도 걸립니다.</p>
+  <p class="faq-q">Q2. 지급일이 지났는데 입금이 안 됐습니다.</p>
+  <p class="faq-a">심사가 길어지는 경우가 있습니다. 홈택스에서 심사진행상황을 먼저 확인하고, '지급' 상태인데 미입금이면 계좌 오류일 가능성이 큽니다. 국세청(126)으로 문의하세요.</p>
+  <p class="faq-q">Q3. 전세보증금이 2억인데 신청이 되나요?</p>
+  <p class="faq-a">재산 합계가 2.4억 미만이면 신청은 됩니다. 다만 1.7억을 넘으므로 산정액의 50%만 받습니다.</p>
+  <p class="faq-q">Q4. 작년에 받았는데 올해는 안 나왔습니다.</p>
+  <p class="faq-a">소득이 늘었거나, 재산 기준일(전년도 6월 1일) 시점의 재산이 증가했을 가능성이 큽니다. 홈택스에서 심사결과 사유를 확인할 수 있습니다.</p>
+  <p class="faq-a"><strong>함께 보면 좋은 글</strong></p>
+<ul>
+  <li>자녀장려금 신청 자격과 지급액 — 근로장려금과 중복 가능할까</li>
+  <li>홈택스 근로장려금 심사진행상황 조회하는 법</li>
+  <li>실업급여 조건 2026 — 상한액 68,100원, 얼마나 받나</li>
+</ul>
+</div>
+<!-- ═══ AD 3 ═══════════════════════════════════════
+     위치: 글 최하단 (관련 글 뒤)
+     형식: 멀티플렉스. 세션당 PV를 올려 전면광고 노출도 함께 늘립니다.
+     주의: 관련 글 링크 위를 광고로 막지 않았습니다. 그 링크 클릭이
+           Vignette 수익의 출발점입니다.
+═══════════════════════════════════════════════════ -->
+<div class="ad-slot ad-multiplex">
+  <span class="ad-label">광고</span>
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-여기에본인퍼블리셔ID"
+       data-ad-slot="여기에광고단위ID"
+       data-ad-format="autorelaxed"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<p class="disclaimer">본 글은 2026년 8월 기준이며 세법 개정에 따라 달라질 수 있습니다. 개인별 수급 가능 여부와 정확한 지급액은 홈택스(hometax.go.kr) 또는 국세청 상담센터(126)에서 확인하시기 바랍니다.</p>
+
+</div>
+
+<!-- FAQ 구조화 데이터. 본문과 다른 내용을 쓰면 정책 위반입니다.
+     반드시 본문과 동일하게 유지하세요. -->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "5월에 신청을 못 했습니다. 지금도 되나요?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "기한 후 신청이 11월까지 가능합니다. 다만 산정액의 90%만 지급되고, 지급도 신청일로부터 4개월 정도 걸립니다."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "지급일이 지났는데 입금이 안 됐습니다.",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "심사가 길어지는 경우가 있습니다. 홈택스에서 심사진행상황을 먼저 확인하고, '지급' 상태인데 미입금이면 계좌 오류일 가능성이 큽니다. 국세청(126)으로 문의하세요."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "전세보증금이 2억인데 신청이 되나요?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "재산 합계가 2.4억 미만이면 신청은 됩니다. 다만 1.7억을 넘으므로 산정액의 50%만 받습니다."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "작년에 받았는데 올해는 안 나왔습니다.",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "소득이 늘었거나, 재산 기준일(전년도 6월 1일) 시점의 재산이 증가했을 가능성이 큽니다. 홈택스에서 심사결과 사유를 확인할 수 있습니다. 함께 보면 좋은 글"
+   }
+  }
+ ]
+}
+</script>

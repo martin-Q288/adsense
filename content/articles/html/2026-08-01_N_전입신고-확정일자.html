@@ -1,0 +1,305 @@
+<!--
+============================================================
+티스토리 HTML 모드에 그대로 붙여넣으세요.
+
+■ 글 제목 (티스토리 제목 칸에 입력)
+   전입신고와 확정일자, 하루만 늦어도 보증금을 잃습니다
+
+■ 제목 계층
+   본문에 h1을 넣지 않았습니다. 티스토리 스킨이 글 제목을 h1으로
+   렌더링하므로, 본문에 h1을 또 쓰면 제목이 두 개가 되어 색인에 불리합니다.
+   본문은 h2(대목차) / h3(소목차)만 사용합니다.
+   목차의 각 항목은 h2의 id와 앵커로 연결돼 있습니다.
+
+■ 마크다운 기호 없음
+   ** # | - > 같은 기호를 전부 HTML 태그로 변환했습니다.
+   에디터에 붙여넣었을 때 기호가 글자로 찍히지 않습니다.
+
+■ 자동광고 설정 (겹침 방지 - 중요)
+   애드센스 → 광고 → 사이트별 → 편집
+     앵커 광고        ON     모바일 하단 고정
+     전면 광고        ON     링크 클릭 시 Vignette 자동 노출
+     페이지 내 광고   OFF    ← 아래 수동 3개와 겹치지 않게 반드시 끄세요
+
+■ 붙여넣기 후 할 일
+   1. ca-pub-여기에본인퍼블리셔ID / 여기에광고단위ID 를 실제 값으로 교체
+   2. 관련 글의 /entry/글주소를-여기에 를 실제 글 주소로 교체
+   3. 대표 이미지 1200px 이상 가로형 지정
+   4. 발행 후 서치콘솔 URL 검사 → 색인 요청
+
+■ 절대 넣지 마세요 (계정 영구정지 + 미지급 수익 몰수)
+   광고 클릭 유도 문구 / 광고를 가리키는 화살표 /
+   버튼 클릭을 광고 노출 트리거로 삼는 스크립트 /
+   광고를 콘텐츠나 버튼으로 위장하는 배치
+
+   블로그: N (네이버 · 홈판 엔진)
+   키워드: 전입신고 방법, 확정일자 받는 법, 전입신고 확정일자 순서
+============================================================
+-->
+
+<style>
+/* 본문 폭 확보: 336px보다 좁으면 반응형 광고가 300x250으로 떨어져 eCPM 손해 */
+.post-body{font-size:17px;line-height:1.75;color:#222;word-break:keep-all;min-width:0}
+.post-body h2{font-size:21px;font-weight:700;margin:44px 0 14px;padding-bottom:8px;
+  border-bottom:2px solid #222;letter-spacing:-.01em;scroll-margin-top:20px}
+.post-body h3{font-size:18px;font-weight:700;margin:28px 0 10px}
+.post-body p{margin:0 0 16px}
+.post-body ul,.post-body ol{margin:0 0 18px;padding-left:22px}
+.post-body li{margin-bottom:7px}
+.post-body code{background:#F2F1EE;padding:1px 5px;border-radius:3px;font-size:15px}
+
+.lede{background:#F7F7F5;border-left:4px solid #C1272D;padding:16px 18px;
+  margin:0 0 22px;border-radius:0 4px 4px 0}
+.lede p{margin:0 0 10px;font-size:17px}
+.lede p:last-child{margin:0}
+.lede strong{color:#C1272D}
+.lede ul{margin:10px 0 0;padding-left:20px}
+.lede li{font-size:15.5px;color:#444}
+
+.toc{border:1px solid #E0DED9;border-radius:4px;padding:16px 18px;margin:0 0 24px;background:#FCFCFB}
+.toc-t{font-size:14px;font-weight:700;margin:0 0 10px;color:#555}
+.toc ol{margin:0;padding-left:20px}
+.toc li{margin-bottom:6px;font-size:15.5px}
+.toc a{color:#2F4858;text-decoration:none;border-bottom:1px solid #D6D4CF}
+
+.tbl-wrap{overflow-x:auto;margin:0 0 20px;-webkit-overflow-scrolling:touch}
+.post-body table{border-collapse:collapse;width:100%;min-width:340px;font-size:15.5px}
+.post-body th,.post-body td{border:1px solid #E0DED9;padding:11px 12px;text-align:left}
+.post-body th{background:#F4F3F0;font-weight:700;white-space:nowrap}
+.post-body td strong{color:#C1272D}
+
+.tip{background:#F0F4F6;border-left:4px solid #2F4858;padding:14px 16px;
+  margin:0 0 20px;border-radius:0 4px 4px 0;font-size:15.5px}
+.warn{background:#FBEDED;border-left:4px solid #C1272D;padding:14px 16px;
+  margin:0 0 20px;border-radius:0 4px 4px 0;font-size:15.5px}
+
+.faq{border-top:1px solid #E0DED9;margin-top:8px}
+.faq-q{font-weight:700;font-size:16.5px;margin:20px 0 8px;color:#1A1A18}
+.faq-a{margin:0 0 18px;color:#3A3A38}
+
+.related{border:1px solid #E0DED9;border-radius:4px;padding:18px;margin:0 0 24px;background:#FCFCFB}
+.related-t{font-size:15px;font-weight:700;margin:0 0 12px}
+.related ul{margin:0;padding-left:20px}
+.related li{margin-bottom:9px;font-size:16px}
+.related a{color:#2F4858;text-decoration:none;border-bottom:1px solid #C9C7C2}
+
+.disclaimer{margin-top:28px;padding-top:16px;border-top:1px solid #E8E6E1;
+  font-size:13.5px;color:#777;line-height:1.7}
+
+/* 광고 슬롯: min-height로 자리를 예약해 레이아웃 이동(CLS)을 막습니다.
+   광고가 늦게 로드되며 본문이 밀리면 오클릭이 나고, 오클릭은 무효 트래픽으로
+   잡힐 수 있습니다. 상하 28px 여백 = 정책상 20px 이격 기준 충족. */
+.ad-slot{margin:28px 0;display:flex;flex-direction:column;align-items:center}
+.ad-slot .ad-label{font-size:11px;color:#AAA;letter-spacing:.08em;margin-bottom:6px;align-self:flex-start}
+.ad-slot ins{display:block;width:100%}
+.ad-inline{min-height:280px}
+.ad-multiplex{min-height:400px}
+
+@media(max-width:600px){
+  .post-body{font-size:16px}
+  .post-body h2{font-size:19px}
+  .ad-slot{margin:24px 0}
+  .ad-inline{min-height:250px}
+  .ad-multiplex{min-height:600px}
+}
+</style>
+
+<div class="post-body">
+
+<div class="lede">
+  <p><strong>결론부터: 이사 당일에 전입신고와 확정일자를 같이 끝내세요.</strong> 대항력은 전입신고 <strong>다음 날 0시</strong>부터 생깁니다. 이사 당일에 집주인이 대출을 받으면 그 근저당이 내 보증금보다 앞서게 됩니다.</p>
+  <ul>
+    <li>전입신고: 이사 후 <strong>14일 이내</strong> 의무 (과태료 5만 원)</li>
+    <li>대항력 발생: 전입신고 <strong>다음 날 0시</strong></li>
+    <li>우선변제권: <strong>대항력 + 확정일자</strong> 둘 다 있어야 성립</li>
+    <li>정부24에서 <strong>둘 다 온라인으로</strong> 가능</li>
+  </ul>
+</div>
+
+<!-- ═══ AD 1 ═══════════════════════════════════════
+     위치: 결론 박스 뒤 / 목차 앞 (본문 약 8%)
+     근거: 독자가 결론을 읽고 목차로 넘어가며 반드시 지나가고 잠깐 멈추는
+           구간. Active View 조건(면적 50%가 1초 이상)을 채우기 가장 쉽습니다.
+     설정: 반응형 디스플레이 / 지연 로딩 금지
+═══════════════════════════════════════════════════ -->
+<div class="ad-slot ad-inline">
+  <span class="ad-label">광고</span>
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-여기에본인퍼블리셔ID"
+       data-ad-slot="여기에광고단위ID"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<nav class="toc">
+  <p class="toc-t">목차</p>
+  <ol>
+    <li><a href="#s1">전입신고와 확정일자가 뭐가 다른가</a></li>
+    <li><a href="#s2">왜 하루가 중요한가</a></li>
+    <li><a href="#s3">온라인으로 하는 법</a></li>
+    <li><a href="#s4">주민센터에서 하는 법</a></li>
+    <li><a href="#s5">놓치기 쉬운 함정</a></li>
+    <li><a href="#s6">자주 묻는 질문</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1">전입신고와 확정일자가 뭐가 다른가</h2>
+<p>이름이 비슷해서 헷갈리는데, 하는 일이 다릅니다.</p>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>구분</th><th>전입신고</th><th>확정일자</th></tr></thead>
+  <tbody>
+    <tr><td>목적</td><td>주소지 등록</td><td>계약 날짜 공증</td></tr>
+    <tr><td>생기는 권리</td><td><strong>대항력</strong></td><td>(단독으로는 없음)</td></tr>
+    <tr><td>효력</td><td>집이 팔려도 계속 살 권리</td><td>경매 시 <strong>배당 순위</strong></td></tr>
+    <tr><td>비용</td><td>무료</td><td>600원</td></tr>
+  </tbody>
+</table>
+</div>
+<p><strong>둘 다 있어야 보증금을 지킬 수 있습니다.</strong></p>
+<ul>
+  <li>전입신고만 → 계속 살 수는 있지만 경매 시 배당 순위가 없습니다</li>
+  <li>확정일자만 → 배당 순위 자체가 성립하지 않습니다</li>
+  <li><strong>전입신고 + 실제 거주 + 확정일자</strong> → 우선변제권 완성</li>
+</ul>
+<h2 id="s2">왜 하루가 중요한가</h2>
+<p>전입신고의 효력은 <strong>신고한 다음 날 0시</strong>부터입니다. 여기에 함정이 있습니다.</p>
+<div class="tip">8월 1일 09:00  이사 + 전입신고<br>8월 1일 15:00  집주인이 은행에서 담보대출 (근저당 설정)<br>8월 2일 00:00  내 대항력 발생  ← 근저당이 하루 빠름</div>
+<p>이 경우 경매가 진행되면 <strong>은행이 먼저 배당받고 남은 돈으로 내 보증금을 받습니다.</strong> 남는 게 없으면 못 받습니다.</p>
+<p>그래서 실무에서는 이렇게 합니다.</p>
+<ol>
+  <li>계약서 특약에 <strong>"잔금일 다음 날까지 근저당 설정 금지"</strong> 조항을 넣습니다</li>
+  <li>잔금 치르기 직전에 <strong>등기부등본을 다시 발급</strong>해서 확인합니다</li>
+  <li>이사 당일 오전에 전입신고와 확정일자를 끝냅니다</li>
+</ol>
+<h2 id="s3">온라인으로 하는 법</h2>
+<p>정부24와 인터넷등기소에서 각각 처리합니다. 공동인증서나 간편인증이 필요합니다.</p>
+<h3>전입신고 - 정부24에서 하는 법</h3>
+<ol>
+  <li>정부24 접속 → '전입신고' 검색</li>
+  <li>신청서 작성 (이사 전 주소, 이사 온 주소, 세대주 정보)</li>
+  <li>세대주 확인이 필요한 경우 세대주가 별도 승인</li>
+  <li>처리 완료 (보통 당일, 근무시간 외 신청은 다음 근무일)</li>
+</ol>
+<h3>확정일자 - 인터넷등기소에서 하는 법</h3>
+<ol>
+  <li>인터넷등기소 접속 → '확정일자' 메뉴</li>
+  <li>임대차계약서 스캔본 업로드</li>
+  <li>수수료 600원 결제</li>
+  <li>즉시 부여</li>
+</ol>
+<p><strong>주의:</strong> 온라인 전입신고는 접수 시점이 아니라 <strong>담당 공무원이 처리한 시점</strong>이 기준입니다. 금요일 저녁이나 공휴일에 신청하면 처리가 다음 근무일로 밀립니다. 급하면 주민센터로 가세요.</p>
+<h2 id="s4">주민센터에서 하는 법</h2>
+<p>가장 확실합니다. <strong>한 번에 둘 다 처리됩니다.</strong></p>
+<h3>준비물</h3>
+<ul>
+  <li>신분증</li>
+  <li><strong>임대차계약서 원본</strong></li>
+  <li>확정일자 수수료 600원</li>
+</ul>
+<p>가까운 주민센터(행정복지센터) 어디든 가능합니다. 관할이 아니어도 됩니다. 창구에서 "전입신고랑 확정일자 같이 할게요"라고 하면 5분이면 끝납니다.</p>
+<h2 id="s5">놓치기 쉬운 함정</h2>
+<p><strong>세대주가 아니면 대항력이 없나요?</strong> 아닙니다. 세대원으로 전입해도 실제 거주 중이면 대항력이 인정됩니다. 다만 <strong>계약 당사자 본인</strong>이 전입돼 있어야 합니다.</p>
+<p><strong>전입신고를 뺐다가 다시 넣으면?</strong> 그 순간 대항력이 사라지고, 재전입일 다음 날부터 새로 시작됩니다. 그 사이에 설정된 권리에 밀립니다. 임대차 기간 중에는 <strong>절대 주소를 빼지 마세요.</strong></p>
+<p><strong>계약 갱신 시 확정일자를 다시 받아야 하나요?</strong> 보증금이 오르지 않았다면 기존 확정일자가 유지됩니다. <strong>보증금을 올렸다면 증액분에 대해 새로 받아야</strong> 합니다. 이때 증액분은 새 날짜 기준이라 순위가 뒤로 갑니다.</p>
+<p><strong>전세보증금 반환보증도 같이 확인하세요.</strong> 확정일자와 대항력은 경매 시 배당 순위를 정할 뿐, 보증금을 보장해 주지는 않습니다. HUG나 SGI의 전세보증금 반환보증에 가입하면 집주인이 못 돌려줄 때 보증기관이 대신 지급합니다.</p>
+
+<!-- ═══ AD 2 ═══════════════════════════════════════
+     위치: 본문 중반 (약 50~60%)
+     근거: 실측 상위 블로그 밀도는 본문 1,000~1,300자당 1개.
+     설정: 인아티클 / 지연 로딩 허용
+═══════════════════════════════════════════════════ -->
+<div class="ad-slot ad-inline">
+  <span class="ad-label">광고</span>
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-여기에본인퍼블리셔ID"
+       data-ad-slot="여기에광고단위ID"
+       data-ad-format="fluid"
+       data-ad-layout="in-article"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<h2 id="s6">자주 묻는 질문</h2>
+<div class="faq">
+  <p class="faq-q">Q1. 전입신고 14일을 넘겼습니다.</p>
+  <p class="faq-a">과태료 5만 원이 부과될 수 있습니다. 다만 지금이라도 하는 게 훨씬 중요합니다. 늦어도 즉시 하세요.</p>
+  <p class="faq-q">Q2. 오피스텔도 되나요?</p>
+  <p class="faq-a">주거용으로 실제 사용 중이면 주택임대차보호법이 적용됩니다. 전입신고와 확정일자 모두 가능합니다. 다만 사업자등록이 돼 있는 오피스텔은 임대인이 전입을 꺼리는 경우가 있으니 계약 전에 확인하세요.</p>
+  <p class="faq-q">Q3. 확정일자를 잃어버렸는데 다시 확인할 수 있나요?</p>
+  <p class="faq-a">인터넷등기소에서 '확정일자 열람'으로 조회할 수 있습니다. 계약서에 찍힌 도장이 지워져도 기록은 남습니다.</p>
+  <p class="faq-q">Q4. 전세대출을 받으면 은행이 알아서 해주나요?</p>
+  <p class="faq-a">은행이 질권설정이나 채권양도 절차를 진행하지만, <strong>전입신고와 확정일자는 임차인 본인이 해야 합니다.</strong> 은행이 대신 해주지 않습니다.</p>
+  <p class="faq-a"><strong>함께 보면 좋은 글</strong></p>
+<ul>
+  <li>버팀목 전세자금대출 조건 2026 — 금리 2%대, 한도 2억</li>
+  <li>전세보증금 반환보증 가입 조건과 보증료 계산</li>
+  <li>등기부등본 보는 법 — 근저당·가압류 확인 포인트</li>
+</ul>
+</div>
+<!-- ═══ AD 3 ═══════════════════════════════════════
+     위치: 글 최하단 (관련 글 뒤)
+     형식: 멀티플렉스. 세션당 PV를 올려 전면광고 노출도 함께 늘립니다.
+     주의: 관련 글 링크 위를 광고로 막지 않았습니다. 그 링크 클릭이
+           Vignette 수익의 출발점입니다.
+═══════════════════════════════════════════════════ -->
+<div class="ad-slot ad-multiplex">
+  <span class="ad-label">광고</span>
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-여기에본인퍼블리셔ID"
+       data-ad-slot="여기에광고단위ID"
+       data-ad-format="autorelaxed"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<p class="disclaimer">본 글은 2026년 8월 기준 일반적인 절차 안내이며 개별 사안에 대한 법률 자문이 아닙니다. 보증금 규모가 크거나 등기부상 권리관계가 복잡한 경우 대한법률구조공단(132) 또는 공인중개사·변호사 상담을 권합니다.</p>
+
+</div>
+
+<!-- FAQ 구조화 데이터. 본문과 다른 내용을 쓰면 정책 위반입니다.
+     반드시 본문과 동일하게 유지하세요. -->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "전입신고 14일을 넘겼습니다.",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "과태료 5만 원이 부과될 수 있습니다. 다만 지금이라도 하는 게 훨씬 중요합니다. 늦어도 즉시 하세요."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "오피스텔도 되나요?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "주거용으로 실제 사용 중이면 주택임대차보호법이 적용됩니다. 전입신고와 확정일자 모두 가능합니다. 다만 사업자등록이 돼 있는 오피스텔은 임대인이 전입을 꺼리는 경우가 있으니 계약 전에 확인하세요."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "확정일자를 잃어버렸는데 다시 확인할 수 있나요?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "인터넷등기소에서 '확정일자 열람'으로 조회할 수 있습니다. 계약서에 찍힌 도장이 지워져도 기록은 남습니다."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "전세대출을 받으면 은행이 알아서 해주나요?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "은행이 질권설정이나 채권양도 절차를 진행하지만, 전입신고와 확정일자는 임차인 본인이 해야 합니다. 은행이 대신 해주지 않습니다. 함께 보면 좋은 글"
+   }
+  }
+ ]
+}
+</script>
