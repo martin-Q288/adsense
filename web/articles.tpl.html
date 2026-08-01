@@ -113,10 +113,10 @@
 <script>
 const ARTS = /*__ARTS__*/;
 document.getElementById("n").textContent = ARTS.length;
-const BLOGNAME = {N:"네이버 홈판",A:"고단가",B:"이슈",C:"커머스",D:"워드프레스"};
+const BLOGNAME = {T1:"금융·정책·생활정보",T2:"커머스·쿠팡",N:"네이버 홈판"};
 
 document.getElementById("list").innerHTML = ARTS.map((a,i)=>{
-  const b = (a.blog.match(/^[NABCD]/)||[""])[0];
+  const b = (a.blog.match(/^(T1|T2|N)/)||[""])[0];
   return `<article class="card" data-i="${i}">
     <button class="chead" type="button">
       <span class="tags">

@@ -27,8 +27,14 @@ OUT = os.path.join(ROOT, "content", "publish_queue.csv")
 
 START, END = date(2026, 8, 1), date(2026, 8, 31)
 
-# 블로그별 하루 발행 슬롯 (docs/02 기준)
-SLOTS = {"N": 3, "A": 3, "B": 7, "C": 3, "D": 2}
+# 블로그별 하루 발행 슬롯 (docs/11 실측 근거로 4개 → 3개 통합)
+#   T1  금융·정책·생활정보  (구 A+B+D 통합)
+#   T2  커머스·제품 비교     (구 C)
+#   N   네이버 홈판 엔진
+SLOTS = {"N": 3, "T1": 10, "T2": 5}
+
+# 키워드 뱅크의 기존 블로그 표기를 통합 구조로 매핑
+BLOG_MAP = {"A": "T1", "B": "T1", "D": "T1", "C": "T2", "N": "N"}
 
 # 축별 진입 난이도 가중 — 롱테일일수록 신규 블로그가 먹기 쉬움
 AXIS_WEIGHT = {
@@ -104,14 +110,11 @@ def score(it, today=START):
 
 def assign_blog(it):
     if it["blog"]:
-        return it["blog"]
+        return BLOG_MAP.get(it["blog"], "T1")
     kw = it["keyword"]
     if any(w in kw for w in ["추천", "비교", "순위", "후기"]):
-        return "C"
-    # 고단가 시즌/정책은 이슈 블로그가 아니라 고단가 블로그로
-    if it["cpc_tier"] >= 4:
-        return "A"
-    return "B"
+        return "T2"
+    return "T1"
 
 
 # 이벤트 우선순위 → 그 이벤트에 예약할 글 수.
@@ -124,8 +127,6 @@ def fits(it, blog):
     """이 키워드를 이 블로그에 배치해도 되는가."""
     if blog == "N":                   # 네이버 홈판: 생활밀착 저단가 위주
         return it["cpc_tier"] <= 3
-    if blog == "D":                   # 워드프레스: 에버그린(시즌물 제외)
-        return it["source"] == "bank" and it["cpc_tier"] >= 3
     return it["blog"] == blog
 
 
@@ -161,7 +162,7 @@ def reserve_events(items, used):
             target = start + timedelta(days=(placed * span) // quota)
             # 주 블로그가 기간 내내 차 있으면 B(이슈 블로그, 슬롯 최다)로 흘린다
             spot = None
-            for blog in (it["blog"], "B"):
+            for blog in (it["blog"], "T1"):
                 cap = SLOTS.get(blog, 1)
                 day = target
                 while day <= END:
@@ -201,7 +202,8 @@ def build_queue():
             filled = 0
             # 하루치가 한 축·한 시드로 쏠리지 않게 제한한다
             day_axis, day_seed = {}, set()
-            axis_cap = max(1, round(n / 2))
+            # 슬롯이 큰 블로그일수록 한 축 쏠림이 심해지므로 1/3로 제한
+            axis_cap = max(2, round(n / 3))
 
             # 예약된 이벤트 글을 먼저 깐다
             for it in reserved.get((day, blog), [])[:n]:
