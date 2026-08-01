@@ -4,23 +4,36 @@
 자산: 애드센스 승인 완료 계정 1개 (티스토리)
 목표(사용자 설정): 월 1,000만원
 
+## 핵심 요약
+
+지정 채널(알파남) **전체 512편**을 YouTube Data API로 전수 분석해 도출한 결론:
+
+- 한국 시장의 최대 트래픽 레버는 구글 디스커버가 아니라 **네이버 홈판** (채널 실측: 하루 10만 유입, 월 1,800만원 사례). 512편 중 디스커버 영상은 0편
+- 가장 재현성 높은 전술은 **이슈 파생 키워드** — 뉴스의 메인 키워드가 아니라 검색자가 실제 겪는 문제를 노림
+- 월 1,000만원은 **홈판 반복 적중 시나리오에서만** 나옴. 발행량만으로는 도달하지 않음
+- **최대 분기점: 8/14 홈판 노출 여부 게이트**
+
 ## 먼저 읽을 것
 
-- **[docs/00-현실점검.md](docs/00-현실점검.md)** — 목표 수치의 역산. 왜 31일 안에 신규 4블로그로 월 1,000만원이 불가능한지, 그리고 무엇이 가능한지.
-- [docs/01-알파남-채널분석.md](docs/01-알파남-채널분석.md) — 지정 채널 조사 결과와 실제로 쓸 수 있는 것 / 없는 것
-- [docs/02-31일-실행계획.md](docs/02-31일-실행계획.md) — 8월 1~31일 일자별 실행안
-- [docs/03-키워드-수익구조.md](docs/03-키워드-수익구조.md) — 키워드 선정, 광고 배치, 수익 다각화
-- [docs/04-계정보호-금지사항.md](docs/04-계정보호-금지사항.md) — 이것만 어겨도 프로젝트 전체가 0원이 되는 항목
-- [docs/05-단기달성-대안경로.md](docs/05-단기달성-대안경로.md) — 31일 안에 월 1,000만원에 실제로 도달할 수 있는 유일한 경로들
+- **[docs/06-핵심플레이북.md](docs/06-핵심플레이북.md)** ← 실행의 중심. 이슈 파생 8축 + 네이버 홈판
+- [docs/02-31일-실행계획.md](docs/02-31일-실행계획.md) — 8월 일자별 실행안, KPI, 8/14 게이트
+- [docs/01-알파남-채널분석.md](docs/01-알파남-채널분석.md) — 512편 전수 분석
+- [docs/00-현실점검.md](docs/00-현실점검.md) — 목표 수치 역산과 격차
+- [docs/03-키워드-수익구조.md](docs/03-키워드-수익구조.md) — 키워드, 광고 배치, 수익 다각화
+- [docs/04-계정보호-금지사항.md](docs/04-계정보호-금지사항.md) — 운영자 본인도 "2억 투자 후 전계정 정지"를 당했음
+- [docs/05-단기달성-대안경로.md](docs/05-단기달성-대안경로.md) — 사이트 매입 / 언론사 경로
 
 ## 도구
 
 ```bash
-python3 tools/revenue_model.py                     # 목표 역산 / 시나리오 비교
-python3 tools/revenue_model.py --scenario aggressive
-python3 tools/keyword_score.py keywords/seed.csv   # 키워드 우선순위 스코어링
-python3 tools/tracker.py init                      # 일일 실적 로그 생성
-python3 tools/tracker.py report                    # run-rate 집계
+python3 tools/revenue_model.py                      # 목표 역산 / 시나리오 비교
+python3 tools/issue_radar.py "고유가 지원금" --type 정책   # 이슈 파생 키워드 8축 전개
+python3 tools/keyword_score.py keywords/seed.csv    # 키워드 우선순위 스코어링
+python3 tools/tracker.py init && python3 tools/tracker.py report
+
+# 채널 데이터 재수집 (API 키는 환경변수로만)
+YT_API_KEY=... python3 tools/yt_fetch.py --channel UC-SDn1Rid0XP06ovSQwLnZg \
+  -o content/alphamale_videos.json
 ```
 
 ## 현재 상태

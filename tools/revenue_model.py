@@ -17,13 +17,16 @@ RPM_BANDS = {
     "금융/보험/법률(YMYL)": (5000, 15000),
 }
 
-# 31일 시나리오: 블로그 4개 합산 기준
+# 31일 시나리오: 애드센스 블로그 4개(A~D) 합산 기준
 # (일평균 발행수, 8월말 일PV, 가중평균RPM)
+# 512편 채널 분석 반영: 최대 레버는 구글 디스커버가 아니라 네이버 홈판.
 SCENARIOS = {
-    "conservative": (5, 3000, 1400),
-    "realistic": (10, 8000, 2000),
-    "aggressive": (15, 20000, 2800),
-    "discover_hit": (15, 70000, 2400),
+    "conservative": (8, 3000, 1400),
+    "base": (15, 12000, 2200),          # 홈판 미적중, 이슈 파생만
+    "homepan_1hit": (17, 30000, 2400),  # 네이버 홈판 1회 적중
+    # 홈판 주 2~3회 재현 = 1000만원 경로.
+    # 채널 실측 주장(하루 10만 유입 / 하루 60만원 = 월 1800만원)을 RPM 보수화해 반영
+    "homepan_repeat": (19, 100000, 3300),
 }
 
 
@@ -65,8 +68,8 @@ def simulate(goal, days=31):
             f"{won(daily_rev):>11}{won(run_rate):>14}{pct:>8.1f}%"
         )
     print("-" * 68)
-    total_posts = SCENARIOS["aggressive"][0] * days
-    print(f" 'aggressive' 기준 8월 누적 발행량: {total_posts}편")
+    total_posts = SCENARIOS["homepan_repeat"][0] * days
+    print(f" 최대 강도 기준 8월 누적 발행량: {total_posts}편 (N+A~D 합산)")
 
 
 def payout_timeline():
@@ -85,18 +88,18 @@ def payout_timeline():
 
 def gap_analysis(goal):
     print(f"\n{'='*68}")
-    print(" 격차 분석")
+    print(" 목표까지의 경로")
     print(f"{'='*68}")
-    best = SCENARIOS["aggressive"]
-    run_rate = best[1] * best[2] / 1000 * 30
-    print(f"  목표             : {won(goal)}")
-    print(f"  공격적 시나리오  : {won(run_rate)}")
-    print(f"  격차             : {goal/run_rate:.1f}배")
-    print(f"\n  → 이 격차는 노력으로 메울 수 있는 크기가 아닙니다.")
-    print(f"     docs/05-단기달성-대안경로.md 참조.")
-    site_price_lo, site_price_hi = goal * 20, goal * 40
-    print(f"\n  월 {won(goal)} 수익 사이트 매입 시세: "
-          f"{won(site_price_lo)} ~ {won(site_price_hi)}")
+    for name in ("base", "homepan_1hit", "homepan_repeat"):
+        _, pv, rpm = SCENARIOS[name]
+        rr = pv * rpm / 1000 * 30
+        mark = " ← 목표 달성" if rr >= goal else f"  (목표까지 {goal/rr:.1f}배)"
+        print(f"  {name:<18}{won(rr):>14}{mark}")
+    print(f"\n  → 월 {won(goal)}은 '홈판 반복 적중'에서만 나옵니다.")
+    print(f"     발행량만으로는 도달하지 않습니다. docs/06-핵심플레이북.md 참조.")
+    print(f"     최대 분기점: 8/14 홈판 노출 여부 게이트")
+    print(f"\n  [대안] 월 {won(goal)} 수익 사이트 매입 시세: "
+          f"{won(goal*20)} ~ {won(goal*40)}  (docs/05 참조)")
 
 
 def main():

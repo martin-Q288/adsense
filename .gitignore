@@ -1,3 +1,6 @@
 content/daily_log.csv
 __pycache__/
 *.pyc
+.env
+*.key
+secrets/
