@@ -17,16 +17,19 @@ RPM_BANDS = {
     "금융/보험/법률(YMYL)": (5000, 15000),
 }
 
-# 31일 시나리오: 애드센스 블로그 4개(A~D) 합산 기준
-# (일평균 발행수, 8월말 일PV, 가중평균RPM)
-# 512편 채널 분석 반영: 최대 레버는 구글 디스커버가 아니라 네이버 홈판.
+# 31일 시나리오 (docs/11 3분할 구조 기준: T1 10 + T2 5 + N 3 = 18편/일)
+# 애드센스 수익은 T1+T2에서만 발생. N은 유입 공급만 함.
+# (일평균 발행수, 8월말 T1+T2 합산 일PV, 가중평균RPM)
+#
+# 4분할 → 3분할 통합 효과는 내부링크·도메인신뢰도 집중으로 +15~25% 수준.
+# 자릿수를 바꾸지는 못하므로 base를 소폭 상향 반영.
 SCENARIOS = {
-    "conservative": (8, 3000, 1400),
-    "base": (15, 12000, 2200),          # 홈판 미적중, 이슈 파생만
-    "homepan_1hit": (17, 30000, 2400),  # 네이버 홈판 1회 적중
+    "conservative": (18, 3500, 1500),
+    "base": (18, 14000, 2300),          # 홈판 미적중, 검색 유입만
+    "homepan_1hit": (18, 32000, 2500),  # 네이버 홈판 1회 적중
     # 홈판 주 2~3회 재현 = 1000만원 경로.
     # 채널 실측 주장(하루 10만 유입 / 하루 60만원 = 월 1800만원)을 RPM 보수화해 반영
-    "homepan_repeat": (19, 100000, 3300),
+    "homepan_repeat": (18, 100000, 3300),
 }
 
 
@@ -34,11 +37,11 @@ def won(n):
     return f"₩{n:,.0f}"
 
 
-def backsolve(goal, blogs=4):
+def backsolve(goal, blogs=2):
     print(f"\n{'='*68}")
     print(f" 목표 {won(goal)}/월 달성에 필요한 트래픽 역산 (블로그 {blogs}개)")
     print(f"{'='*68}")
-    print(f"{'니치':<24}{'RPM':>8}{'필요 월PV':>14}{'필요 일PV':>12}{'블로그당 일PV':>14}")
+    print(f"{'니치':<24}{'RPM':>8}{'필요 월PV':>14}{'필요 일PV':>12}{'T1/T2 각 일PV':>14}")
     print("-" * 68)
     for niche, (lo, hi) in RPM_BANDS.items():
         for rpm in (lo, hi):
@@ -69,7 +72,7 @@ def simulate(goal, days=31):
         )
     print("-" * 68)
     total_posts = SCENARIOS["homepan_repeat"][0] * days
-    print(f" 최대 강도 기준 8월 누적 발행량: {total_posts}편 (N+A~D 합산)")
+    print(f" 최대 강도 기준 8월 누적 발행량: {total_posts}편 (T1+T2+N 합산)")
 
 
 def payout_timeline():
@@ -105,7 +108,7 @@ def gap_analysis(goal):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--goal", type=int, default=10_000_000, help="월 목표 수익(원)")
-    p.add_argument("--blogs", type=int, default=4, help="운영 블로그 수")
+    p.add_argument("--blogs", type=int, default=2, help="애드센스 블로그 수(T1,T2)")
     p.add_argument("--scenario", choices=list(SCENARIOS), help="특정 시나리오만 출력")
     a = p.parse_args()
 
