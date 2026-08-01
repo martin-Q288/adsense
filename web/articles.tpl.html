@@ -1,0 +1,126 @@
+<title>8월 1일 발행 원고</title>
+<style>
+  :root{
+    --paper:#FCFCFB; --raised:#FFFFFF; --ink:#1A1A18; --ink-2:#43413C;
+    --muted:#6E6C66; --rule:#DAD8D3; --rule-soft:#EBE9E4;
+    --stamp:#C1272D; --stamp-soft:#FBEDED; --slate:#2F4858; --done:#4A7C59;
+    --kr:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--paper:#141416;--raised:#1C1C1F;--ink:#E9E7E2;--ink-2:#C3C0B9;
+      --muted:#8C8981;--rule:#2E2E32;--rule-soft:#242427;
+      --stamp:#E4676C;--stamp-soft:#2A1A1C;--slate:#8FB0C4;--done:#7BAE8A;}
+  }
+  :root[data-theme="dark"]{--paper:#141416;--raised:#1C1C1F;--ink:#E9E7E2;--ink-2:#C3C0B9;
+    --muted:#8C8981;--rule:#2E2E32;--rule-soft:#242427;
+    --stamp:#E4676C;--stamp-soft:#2A1A1C;--slate:#8FB0C4;--done:#7BAE8A;}
+  :root[data-theme="light"]{--paper:#FCFCFB;--raised:#FFFFFF;--ink:#1A1A18;--ink-2:#43413C;
+    --muted:#6E6C66;--rule:#DAD8D3;--rule-soft:#EBE9E4;
+    --stamp:#C1272D;--stamp-soft:#FBEDED;--slate:#2F4858;--done:#4A7C59;}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--kr);
+    font-size:16px;line-height:1.65;-webkit-text-size-adjust:100%;overflow-x:hidden}
+  .wrap{max-width:660px;margin:0 auto;padding:0 16px 80px}
+
+  header{padding:22px 0 16px;border-bottom:2px solid var(--ink)}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+  h1{margin:0;font-size:23px;font-weight:700;letter-spacing:-.01em}
+  .sub{margin:7px 0 0;font-size:13.5px;color:var(--muted)}
+
+  .note{border-left:3px solid var(--stamp);background:var(--stamp-soft);
+    padding:11px 13px;margin:16px 0 0;border-radius:0 2px 2px 0;font-size:13.5px;color:var(--ink-2)}
+  .note b{color:var(--stamp)}
+
+  .card{border:1px solid var(--rule);border-radius:3px;background:var(--raised);
+    margin-top:14px;overflow:hidden}
+  .chead{width:100%;background:none;border:0;text-align:left;font:inherit;color:inherit;
+    padding:14px;cursor:pointer;display:block}
+  .chead:focus-visible{outline:2px solid var(--slate);outline-offset:-2px}
+  .tags{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:7px}
+  .tg{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.08em;
+    padding:2px 6px;border-radius:2px;background:var(--slate);color:var(--paper)}
+  .tg.rpm{background:none;color:var(--muted);border:1px solid var(--rule)}
+  .ct{display:block;font-size:16.5px;font-weight:700;line-height:1.45;word-break:keep-all;letter-spacing:-.01em}
+  .ckw{display:block;font-size:12.5px;color:var(--muted);margin-top:5px}
+  .cfoot{display:flex;gap:8px;align-items:center;margin-top:11px}
+  .btn{font:inherit;font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+    background:var(--raised);color:var(--ink-2);border:1px solid var(--rule);
+    border-radius:2px;padding:8px 13px;cursor:pointer;min-height:38px}
+  .btn.pri{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .btn:active{opacity:.7}
+  .cbody{display:none;border-top:1px solid var(--rule-soft);padding:14px}
+  .card.open .cbody{display:block}
+  pre{margin:0;font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--ink-2);
+    white-space:pre-wrap;word-break:break-word;overflow-wrap:anywhere}
+  footer{margin-top:28px;font-size:12px;color:var(--muted);line-height:1.75}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">2026.08.01 · 원고 <span id="n"></span>편</p>
+    <h1>8월 1일 발행 원고</h1>
+    <p class="sub">전부 사실확인 완료. 제목 눌러 펼치고 “전문 복사” 후 에디터에 붙여넣으세요.</p>
+  </header>
+
+  <div class="note">
+    <b>붙여넣기 전 30초:</b> 키워드를 네이버·구글에 검색해 상위 10개에 블로그 글이
+    3개 미만인지 확인하세요. 3개 이상이면 그 글은 미루고 다음 편으로 갑니다.
+  </div>
+
+  <div id="list"></div>
+
+  <footer>
+    수치는 2026년 8월 기준으로 조사했습니다. 발행 전 각 글 하단의 공식 출처
+    (고용보험 ei.go.kr · 홈택스 · 주택도시기금 nhuf.molit.go.kr · 한전:ON)에서
+    한 번 더 확인하면 안전합니다. YMYL 주제라 숫자가 틀리면 순위가 아니라
+    사이트가 위험합니다.
+  </footer>
+</div>
+
+<script>
+const ARTS = /*__ARTS__*/;
+document.getElementById("n").textContent = ARTS.length;
+const BLOGNAME = {N:"네이버 홈판",A:"고단가",B:"이슈",C:"커머스",D:"워드프레스"};
+
+document.getElementById("list").innerHTML = ARTS.map((a,i)=>{
+  const b = (a.blog.match(/^[NABCD]/)||[""])[0];
+  return `<article class="card" data-i="${i}">
+    <button class="chead" type="button">
+      <span class="tags">
+        <span class="tg">${b} · ${BLOGNAME[b]||""}</span>
+        <span class="tg rpm">${a.rpm.replace(/·.*/,"").trim()}</span>
+        <span class="tg rpm">${a.len}</span>
+      </span>
+      <span class="ct">${a.title}</span>
+      <span class="ckw">${a.kw}</span>
+      <span class="cfoot">
+        <span class="btn pri copy">전문 복사</span>
+        <span class="btn">본문 보기</span>
+      </span>
+    </button>
+    <div class="cbody"><pre></pre></div>
+  </article>`;
+}).join("");
+
+document.addEventListener("click", e => {
+  const card = e.target.closest(".card");
+  if(!card) return;
+  const a = ARTS[+card.dataset.i];
+  if(e.target.closest(".copy")){
+    e.stopPropagation();
+    const btn = e.target.closest(".copy");
+    navigator.clipboard?.writeText(a.md).then(()=>{
+      btn.textContent = "복사됨";
+      setTimeout(()=>btn.textContent="전문 복사", 1500);
+    }).catch(()=>{ btn.textContent = "복사 실패"; });
+    return;
+  }
+  const pre = card.querySelector("pre");
+  if(!pre.textContent) pre.textContent = a.md;
+  card.classList.toggle("open");
+});
+</script>
