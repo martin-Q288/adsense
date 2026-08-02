@@ -1,0 +1,320 @@
+<!--
+============================================================
+티스토리 HTML 모드에 그대로 붙여넣으세요.
+
+■ 글 제목 (티스토리 제목 칸에 입력)
+   신용점수 올리는 법 — 3개월 안에 실제로 오르는 것만
+
+■ 제목 계층
+   본문에 h1을 넣지 않았습니다. 티스토리 스킨이 글 제목을 h1으로
+   렌더링하므로, 본문에 h1을 또 쓰면 제목이 두 개가 되어 색인에 불리합니다.
+   본문은 h2(대목차) / h3(소목차)만 사용합니다.
+   목차의 각 항목은 h2의 id와 앵커로 연결돼 있습니다.
+
+■ 마크다운 기호 없음
+   ** # | - > 같은 기호를 전부 HTML 태그로 변환했습니다.
+   에디터에 붙여넣었을 때 기호가 글자로 찍히지 않습니다.
+
+■ 자동광고 설정 (겹침 방지 - 중요)
+   애드센스 → 광고 → 사이트별 → 편집
+     앵커 광고        ON     모바일 하단 고정
+     전면 광고        ON     링크 클릭 시 Vignette 자동 노출
+     페이지 내 광고   OFF    ← 아래 수동 3개와 겹치지 않게 반드시 끄세요
+
+■ 붙여넣기 후 할 일
+   1. ca-pub-여기에본인퍼블리셔ID / 여기에광고단위ID 를 실제 값으로 교체
+   2. 관련 글의 /entry/글주소를-여기에 를 실제 글 주소로 교체
+   3. 대표 이미지 1200px 이상 가로형 지정
+   4. 발행 후 서치콘솔 URL 검사 → 색인 요청
+
+■ 절대 넣지 마세요 (계정 영구정지 + 미지급 수익 몰수)
+   광고 클릭 유도 문구 / 광고를 가리키는 화살표 /
+   버튼 클릭을 광고 노출 트리거로 삼는 스크립트 /
+   광고를 콘텐츠나 버튼으로 위장하는 배치
+
+   블로그: T1 (금융·정책·생활정보)
+   키워드: 신용점수 올리는 법, NICE 점수 올리기, 신용점수 조회
+============================================================
+-->
+
+<style>
+/* 본문 폭 확보: 336px보다 좁으면 반응형 광고가 300x250으로 떨어져 eCPM 손해 */
+.post-body{font-size:17px;line-height:1.75;color:#222;word-break:keep-all;min-width:0}
+.post-body h2{font-size:21px;font-weight:700;margin:44px 0 14px;padding-bottom:8px;
+  border-bottom:2px solid #222;letter-spacing:-.01em;scroll-margin-top:20px}
+.post-body h3{font-size:18px;font-weight:700;margin:28px 0 10px}
+.post-body p{margin:0 0 16px}
+.post-body ul,.post-body ol{margin:0 0 18px;padding-left:22px}
+.post-body li{margin-bottom:7px}
+.post-body code{background:#F2F1EE;padding:1px 5px;border-radius:3px;font-size:15px}
+
+.lede{background:#F7F7F5;border-left:4px solid #C1272D;padding:16px 18px;
+  margin:0 0 22px;border-radius:0 4px 4px 0}
+.lede p{margin:0 0 10px;font-size:17px}
+.lede p:last-child{margin:0}
+.lede strong{color:#C1272D}
+.lede ul{margin:10px 0 0;padding-left:20px}
+.lede li{font-size:15.5px;color:#444}
+
+.toc{border:1px solid #E0DED9;border-radius:4px;padding:16px 18px;margin:0 0 24px;background:#FCFCFB}
+.toc-t{font-size:14px;font-weight:700;margin:0 0 10px;color:#555}
+.toc ol{margin:0;padding-left:20px}
+.toc li{margin-bottom:6px;font-size:15.5px}
+.toc a{color:#2F4858;text-decoration:none;border-bottom:1px solid #D6D4CF}
+
+.tbl-wrap{overflow-x:auto;margin:0 0 20px;-webkit-overflow-scrolling:touch}
+.post-body table{border-collapse:collapse;width:100%;min-width:340px;font-size:15.5px}
+.post-body th,.post-body td{border:1px solid #E0DED9;padding:11px 12px;text-align:left}
+.post-body th{background:#F4F3F0;font-weight:700;white-space:nowrap}
+.post-body td strong{color:#C1272D}
+
+.tip{background:#F0F4F6;border-left:4px solid #2F4858;padding:14px 16px;
+  margin:0 0 20px;border-radius:0 4px 4px 0;font-size:15.5px}
+.warn{background:#FBEDED;border-left:4px solid #C1272D;padding:14px 16px;
+  margin:0 0 20px;border-radius:0 4px 4px 0;font-size:15.5px}
+
+.faq{border-top:1px solid #E0DED9;margin-top:8px}
+.faq-q{font-weight:700;font-size:16.5px;margin:20px 0 8px;color:#1A1A18}
+.faq-a{margin:0 0 18px;color:#3A3A38}
+
+.related{border:1px solid #E0DED9;border-radius:4px;padding:18px;margin:0 0 24px;background:#FCFCFB}
+.related-t{font-size:15px;font-weight:700;margin:0 0 12px}
+.related ul{margin:0;padding-left:20px}
+.related li{margin-bottom:9px;font-size:16px}
+.related a{color:#2F4858;text-decoration:none;border-bottom:1px solid #C9C7C2}
+
+.disclaimer{margin-top:28px;padding-top:16px;border-top:1px solid #E8E6E1;
+  font-size:13.5px;color:#777;line-height:1.7}
+
+/* 광고 슬롯: min-height로 자리를 예약해 레이아웃 이동(CLS)을 막습니다.
+   광고가 늦게 로드되며 본문이 밀리면 오클릭이 나고, 오클릭은 무효 트래픽으로
+   잡힐 수 있습니다. 상하 28px 여백 = 정책상 20px 이격 기준 충족. */
+.ad-slot{margin:28px 0;display:flex;flex-direction:column;align-items:center}
+.ad-slot .ad-label{font-size:11px;color:#AAA;letter-spacing:.08em;margin-bottom:6px;align-self:flex-start}
+.ad-slot ins{display:block;width:100%}
+.ad-inline{min-height:280px}
+.ad-multiplex{min-height:400px}
+
+@media(max-width:600px){
+  .post-body{font-size:16px}
+  .post-body h2{font-size:19px}
+  .ad-slot{margin:24px 0}
+  .ad-inline{min-height:250px}
+  .ad-multiplex{min-height:600px}
+}
+</style>
+
+<div class="post-body">
+
+<div class="lede">
+  <p><strong>결론부터: 가장 빠른 건 '카드론·리볼빙 정리'와 '비금융정보 등록'입니다.</strong> 통신비·건강보험료 납부 내역을 제출하면 며칠 안에 반영되고, 리볼빙은 해지하는 순간 평가에서 빠집니다. 반면 연체 기록은 어떤 방법으로도 즉시 지울 수 없습니다.</p>
+  <ul>
+    <li>즉효(수일~2주): 비금융정보 등록, 리볼빙 해지, 카드론 상환</li>
+    <li>중기(1~3개월): 카드 사용률 낮추기, 조회 기록 정리</li>
+    <li>장기(6개월~): 연체 기록 소멸, 거래 기간 축적</li>
+    <li>신용점수 조회 자체는 <strong>점수에 영향 없습니다</strong></li>
+  </ul>
+</div>
+
+<!-- ═══ AD 1 ═══════════════════════════════════════
+     위치: 결론 박스 뒤 / 목차 앞 (본문 약 8%)
+     근거: 독자가 결론을 읽고 목차로 넘어가며 반드시 지나가고 잠깐 멈추는
+           구간. Active View 조건(면적 50%가 1초 이상)을 채우기 가장 쉽습니다.
+     설정: 반응형 디스플레이 / 지연 로딩 금지
+═══════════════════════════════════════════════════ -->
+<div class="ad-slot ad-inline">
+  <span class="ad-label">광고</span>
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-여기에본인퍼블리셔ID"
+       data-ad-slot="여기에광고단위ID"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<nav class="toc">
+  <p class="toc-t">목차</p>
+  <ol>
+    <li><a href="#s1">신용점수는 무엇으로 매겨지나</a></li>
+    <li><a href="#s2">즉시 효과 나는 것</a></li>
+    <li><a href="#s3">1~3개월 걸리는 것</a></li>
+    <li><a href="#s4">시간이 답인 것</a></li>
+    <li><a href="#s5">오히려 점수를 깎는 오해</a></li>
+    <li><a href="#s6">대출 신청 3개월 전 체크리스트</a></li>
+    <li><a href="#s7">자주 묻는 질문</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1">신용점수는 무엇으로 매겨지나</h2>
+<p>NICE와 KCB 두 곳에서 각각 산정합니다. 은행마다 보는 곳이 다르고, 두 점수가 100점 이상 차이 나기도 합니다.</p>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>평가 항목</th><th>비중(대략)</th><th>내용</th></tr></thead>
+  <tbody>
+    <tr><td>상환 이력</td><td>가장 큼</td><td>연체 여부와 기간</td></tr>
+    <tr><td>부채 수준</td><td>큼</td><td>대출 잔액, 카드 사용률</td></tr>
+    <tr><td>거래 기간</td><td>중간</td><td>신용거래를 얼마나 오래 했나</td></tr>
+    <tr><td>신용 형태</td><td>중간</td><td>고금리 대출 비중</td></tr>
+  </tbody>
+</table>
+</div>
+<p><strong>고금리 대출의 비중이 특히 큽니다.</strong> 카드론·현금서비스·리볼빙은 금액이 작아도 점수를 크게 깎습니다. 같은 100만원이라도 은행 신용대출과 카드론은 평가가 다릅니다.</p>
+<h2 id="s2">즉시 효과 나는 것</h2>
+<h3>비금융정보 등록 (가장 빠릅니다)</h3>
+<p>통신비, 건강보험료, 국민연금, 도시가스·전기요금 납부 내역을 제출하면 가점을 받습니다. <strong>6개월 이상 성실 납부 이력</strong>이 있으면 됩니다.</p>
+<ul>
+  <li>신청: 나이스지키미, KCB 올크레딧 홈페이지·앱</li>
+  <li>반영: 보통 며칠~2주</li>
+  <li>효과: 통상 5~30점</li>
+</ul>
+<p>무료이고 리스크가 없습니다. <strong>안 했으면 지금 바로 하세요.</strong></p>
+<h3>리볼빙 해지</h3>
+<p>일부결제금액이월약정(리볼빙)은 본인이 쓰는지 모르는 경우가 많습니다. 카드사 앱에서 확인하고 해지하세요. 잔액이 있으면 상환 후 해지됩니다.</p>
+<h3>카드론·현금서비스 상환</h3>
+<p>여윳돈이 있으면 다른 무엇보다 이것부터 갚으세요. 금액 대비 점수 영향이 가장 큽니다.</p>
+<h2 id="s3">1~3개월 걸리는 것</h2>
+<h3>카드 사용률 낮추기</h3>
+<p><strong>한도 대비 사용액 비율</strong>을 봅니다. 한도 500만원에 400만원을 쓰면 사용률 80%로 불리합니다.</p>
+<ul>
+  <li>목표: <strong>30% 이하</strong></li>
+  <li>방법 1: 결제일 전에 일부 선결제</li>
+  <li>방법 2: 한도 상향 (사용액이 같아도 비율이 내려갑니다)</li>
+</ul>
+<p>한도 상향은 카드사 앱에서 신청할 수 있고, 승인되면 즉시 비율이 개선됩니다.</p>
+<h3>조회 기록 정리</h3>
+<p>여러 금융사에 단기간 대출 조회를 하면 기록이 쌓여 불리합니다. <strong>한 곳씩 순차로</strong> 진행하고, 조회 후에는 최소 2~4주 간격을 두세요.</p>
+<p>단, <strong>본인이 자기 점수를 조회하는 건 영향이 없습니다.</strong> 토스·카카오페이 등에서 아무리 확인해도 점수가 내려가지 않습니다.</p>
+<h3>소액 신용거래 유지</h3>
+<p>신용카드를 전혀 안 쓰면 평가 자료가 없어 점수가 낮게 나옵니다. 소액이라도 꾸준히 쓰고 <strong>전액 결제</strong>하는 게 유리합니다. 체크카드도 월 30만원 이상 6개월 사용 시 가점이 있습니다.</p>
+<h2 id="s4">시간이 답인 것</h2>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>항목</th><th>소멸·반영 기간</th></tr></thead>
+  <tbody>
+    <tr><td>연체 기록 (90일 미만)</td><td>상환 후 최대 3년</td></tr>
+    <tr><td>연체 기록 (90일 이상)</td><td>상환 후 최대 5년</td></tr>
+    <tr><td>거래 기간 축적</td><td>길수록 유리</td></tr>
+  </tbody>
+</table>
+</div>
+<p><strong>연체는 즉시 지울 방법이 없습니다.</strong> "신용회복 대행"을 표방하며 기록 삭제를 약속하는 곳은 대부분 사기입니다. 정상적인 방법은 상환하고 기다리는 것뿐입니다.</p>
+<p>다만 <strong>소액 단기 연체는 상환 즉시 영향이 줄어듭니다.</strong> 10만원 미만 5영업일 이내 연체는 기록에 남지 않는 경우도 있으니, 발견 즉시 갚으세요.</p>
+
+<!-- ═══ AD 2 ═══════════════════════════════════════
+     위치: 본문 중반 (약 50~60%)
+     근거: 실측 상위 블로그 밀도는 본문 1,000~1,300자당 1개.
+     설정: 인아티클 / 지연 로딩 허용
+═══════════════════════════════════════════════════ -->
+<div class="ad-slot ad-inline">
+  <span class="ad-label">광고</span>
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-여기에본인퍼블리셔ID"
+       data-ad-slot="여기에광고단위ID"
+       data-ad-format="fluid"
+       data-ad-layout="in-article"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<h2 id="s5">오히려 점수를 깎는 오해</h2>
+<ul>
+  <li><strong>"주거래은행만 쓰면 점수가 오른다"</strong> — 직접적 상관이 없습니다</li>
+  <li><strong>"카드를 다 없애면 좋다"</strong> — 신용거래 이력이 사라져 오히려 불리합니다</li>
+  <li><strong>"점수를 자주 조회하면 깎인다"</strong> — 본인 조회는 영향 없습니다</li>
+  <li><strong>"소득이 높으면 점수가 높다"</strong> — 소득은 신용점수 산정 항목이 아닙니다. 대출 심사에서는 별도로 봅니다</li>
+  <li><strong>"현금만 쓰면 안전하다"</strong> — 평가할 자료가 없어 중간 점수에 머뭅니다</li>
+</ul>
+<h2 id="s6">대출 신청 3개월 전 체크리스트</h2>
+<p>전세대출이나 주담대를 계획 중이라면 최소 3개월 전부터 준비하세요.</p>
+<ul>
+  <li>[ ] 비금융정보 등록 (통신비·건보료)</li>
+  <li>[ ] 리볼빙 해지 확인</li>
+  <li>[ ] 카드론·현금서비스 전액 상환</li>
+  <li>[ ] 카드 사용률 30% 이하로 조정</li>
+  <li>[ ] 신규 카드 발급 중단</li>
+  <li>[ ] 여러 금융사 동시 조회 중단</li>
+  <li>[ ] 자동이체 잔액 부족으로 인한 소액 연체 점검</li>
+  <li>[ ] NICE·KCB 양쪽 점수 확인 (은행마다 보는 곳이 다릅니다)</li>
+</ul>
+<h2 id="s7">자주 묻는 질문</h2>
+<div class="faq">
+  <p class="faq-q">Q1. NICE와 KCB 중 어느 게 중요한가요?</p>
+  <p class="faq-a">은행마다 다릅니다. 두 곳 모두 관리해야 하고, 무료 조회로 양쪽을 확인할 수 있습니다.</p>
+  <p class="faq-q">Q2. 학자금대출도 점수에 영향이 있나요?</p>
+  <p class="faq-a">있습니다. 다만 정책 대출이라 고금리 대출보다 부정적 영향이 적습니다. 연체만 하지 않으면 문제되지 않습니다.</p>
+  <p class="faq-q">Q3. 통신비를 부모님 명의로 내고 있는데요?</p>
+  <p class="faq-a">본인 명의 납부 이력만 인정됩니다. 명의를 본인으로 바꾸고 6개월 이상 납부해야 등록할 수 있습니다.</p>
+  <p class="faq-q">Q4. 점수가 갑자기 떨어졌습니다.</p>
+  <p class="faq-a">카드 사용률 급증, 신규 대출, 조회 기록 누적이 대표적입니다. 나이스지키미·올크레딧에서 변동 사유를 확인할 수 있습니다.</p>
+  <p class="faq-a"><strong>함께 보면 좋은 글</strong></p>
+<ul>
+  <li>전세자금대출 거절 사유 7가지 — 은행이 말 안 해주는 진짜 이유</li>
+  <li>개인회생 자격조건과 변제금 계산 — 2026년 최저생계비 1인 154만원</li>
+  <li>버팀목 전세자금대출 조건 2026 — 금리 2%대, 한도 2억</li>
+</ul>
+</div>
+<!-- ═══ AD 3 ═══════════════════════════════════════
+     위치: 글 최하단 (관련 글 뒤)
+     형식: 멀티플렉스. 세션당 PV를 올려 전면광고 노출도 함께 늘립니다.
+     주의: 관련 글 링크 위를 광고로 막지 않았습니다. 그 링크 클릭이
+           Vignette 수익의 출발점입니다.
+═══════════════════════════════════════════════════ -->
+<div class="ad-slot ad-multiplex">
+  <span class="ad-label">광고</span>
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-여기에본인퍼블리셔ID"
+       data-ad-slot="여기에광고단위ID"
+       data-ad-format="autorelaxed"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<p class="disclaimer">본 글은 2026년 8월 기준 일반 정보입니다. 신용평가 모형과 가점 항목은 평가사 정책에 따라 변경될 수 있으므로, 정확한 내용은 나이스지키미 또는 KCB 올크레딧에서 확인하시기 바랍니다.</p>
+
+</div>
+
+<!-- FAQ 구조화 데이터. 본문과 다른 내용을 쓰면 정책 위반입니다.
+     반드시 본문과 동일하게 유지하세요. -->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "NICE와 KCB 중 어느 게 중요한가요?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "은행마다 다릅니다. 두 곳 모두 관리해야 하고, 무료 조회로 양쪽을 확인할 수 있습니다."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "학자금대출도 점수에 영향이 있나요?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "있습니다. 다만 정책 대출이라 고금리 대출보다 부정적 영향이 적습니다. 연체만 하지 않으면 문제되지 않습니다."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "통신비를 부모님 명의로 내고 있는데요?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "본인 명의 납부 이력만 인정됩니다. 명의를 본인으로 바꾸고 6개월 이상 납부해야 등록할 수 있습니다."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "점수가 갑자기 떨어졌습니다.",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "카드 사용률 급증, 신규 대출, 조회 기록 누적이 대표적입니다. 나이스지키미·올크레딧에서 변동 사유를 확인할 수 있습니다. 함께 보면 좋은 글"
+   }
+  }
+ ]
+}
+</script>

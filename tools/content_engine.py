@@ -38,6 +38,7 @@ BLOG_MAP = {"A": "T1", "B": "T1", "D": "T1", "C": "T2", "N": "N"}
 
 # 축별 진입 난이도 가중 — 롱테일일수록 신규 블로그가 먹기 쉬움
 AXIS_WEIGHT = {
+    "원본": 1.60,
     "오류/문제해결": 1.30, "준비물/서류": 1.25, "연락처/창구": 1.25,
     "자격/조건": 1.15, "계산/금액": 1.10, "시청/접속": 1.10,
     "방법/절차": 1.00, "비교/대안": 0.90,
@@ -48,9 +49,24 @@ def d(s):
     return datetime.strptime(s, "%Y-%m-%d").date()
 
 
+# 이미 완성형 검색어인 시드는 축 전개를 최소화한다.
+# "전세자금대출 거절 사유"를 또 전개하면 "…거절 사유 고객센터" 같은
+# 아무도 안 찾는 조합이 나온다.
+READY_TAIL = ("방법", "사유", "조건", "계산", "기간", "절차", "신청",
+              "발급", "조회", "비교", "기준", "자격", "해지", "전환")
+
+
+def is_ready(seed):
+    return len(seed.split()) >= 3 or seed.endswith(READY_TAIL)
+
+
 def expand(seed, itype):
     from issue_radar import expand as _ex
-    return [(ax, kw) for ax, kw, _ in _ex(seed, itype)]
+    full = [(ax, kw) for ax, kw, _ in _ex(seed, itype)]
+    if is_ready(seed):
+        # 시드 자체를 최우선으로 쓰고, 축 전개는 소수만 덧붙인다
+        return [("원본", seed)] + full[:3]
+    return full
 
 
 def load_all():
