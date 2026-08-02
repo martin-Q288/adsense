@@ -2,10 +2,22 @@
 """실측 검색량 기반 키워드 우선순위 산정.
 
 네이버 검색광고 API로 받은 keywords/volume.csv를 점수화합니다.
-기존 8축 기계 전개와 달리 여기 있는 키워드는 전부 네이버가 반환한
-'실제로 검색되는' 질의입니다.
 
-점수 = log10(월검색량) × 단가티어 × (1 − 경쟁도)²
+■ 2026-08-02 공식 수정 (중요)
+  초판은 `(1 − 경쟁도)²`로 광고 경쟁도가 낮을수록 점수를 올렸습니다.
+  SEO 진입이 쉬울 것이라는 의도였으나 두 가지가 틀렸습니다.
+
+  1. compIdx는 광고 경쟁도이지 SEO 경쟁도가 아닙니다. SERP를 직접 확인해
+     보니 실업급여계산기·부동산양도세계산기·청년미래적금 모두 상위가
+     정부기관·은행·대형플랫폼·전용도구로 채워져 있고 블로그는 0개였습니다.
+  2. 애드센스 RPM은 광고주 입찰이 만듭니다. 광고가 0~2개라는 건 그 트래픽에
+     돈을 낼 광고주가 없다는 뜻이고, 곧 RPM이 낮다는 뜻입니다.
+     즉 낮은 광고 경쟁도는 기회 신호가 아니라 수익성 경고 신호입니다.
+
+  → 경쟁도·광고수를 RPM 대리지표로 삼아 점수를 올리는 방향으로 바꾸고,
+    SEO 진입 가능성은 질의 유형으로 별도 판정합니다.
+
+점수 = log10(월검색량) × 단가티어 × RPM계수 × 질의유형계수
 
 사용법:
     python3 tools/rank_keywords.py                    # 상위 40개
@@ -74,10 +86,42 @@ def assign_blog(kw, blog_hint):
     return "T1"
 
 
-def score(volume, tier, comp):
+# 질의 유형 — 블로그가 상위노출을 가져갈 수 있는 형태인가
+TOOL_Q = ["계산기", "조회", "발급", "로그인", "홈페이지", "사이트",
+          "바로가기", "신청하기", "앱", "다운로드"]
+BRAND_Q = ["은행", "카드", "증권", "보험사", "우체국", "카카오", "토스",
+           "신한", "국민", "하나", "우리", "농협", "삼성", "현대", "KB"]
+INFO_Q = ["조건", "방법", "사유", "차이", "얼마", "언제", "서류", "자격",
+          "기준", "대상", "신청방법", "지급일", "후기", "비교", "추천",
+          "안될때", "거절", "탈락", "주의", "실수"]
+
+
+def query_type(kw):
+    """도구형·브랜드형은 블로그가 못 먹는다. 정보형이 블로그 영역."""
+    flat = kw.replace(" ", "")
+    if any(w in flat for w in TOOL_Q):
+        return "도구형", 0.15
+    if any(w in flat for w in INFO_Q):
+        return "정보형", 1.30
+    if any(w in flat for w in BRAND_Q):
+        return "브랜드형", 0.30
+    return "단일어", 0.55       # "국민연금" 같은 단독 명사 = 공식사이트가 먹음
+
+
+def rpm_factor(comp, ad_depth):
+    """광고 경쟁도와 노출 광고 수를 RPM 대리지표로 사용.
+
+    광고주가 많이 붙는 키워드일수록 페이지 RPM이 높다.
+    광고 0~1개는 붙을 광고 인벤토리 자체가 빈약하다는 뜻이다.
+    """
+    return (0.4 + comp) * (0.5 + min(ad_depth, 10) / 10)
+
+
+def score(volume, tier, comp, ad_depth, qfactor):
     if volume < 100:
         return 0.0
-    return math.log10(volume) * tier * ((1 - comp) ** 2) * 100
+    return (math.log10(volume) * tier
+            * rpm_factor(comp, ad_depth) * qfactor * 100)
 
 
 def main():
@@ -85,9 +129,21 @@ def main():
     p.add_argument("--top", type=int, default=40)
     p.add_argument("--blog", choices=["T1", "T2", "N"])
     p.add_argument("--min-volume", type=int, default=1000)
-    p.add_argument("--max-comp", type=float, default=1.0)
+    p.add_argument("--min-comp", type=float, default=0.0,
+                   help="최소 광고 경쟁도 (RPM 하한 역할)")
+    p.add_argument("--min-ads", type=int, default=0,
+                   help="최소 노출 광고 수. 0~1이면 RPM이 낮습니다")
+    p.add_argument("--info-only", action="store_true",
+                   help="정보형 질의만 (블로그가 먹을 수 있는 것)")
+    p.add_argument("--longtail", action="store_true",
+                   help="신규 블로그 진입 구간 프리셋: 검색량 300~3,000 + 광고 5개 이상.\n"
+                        "대형 키워드는 법무법인·보험사가 전담 페이지로 방어하지만\n"
+                        "이 구간은 그들이 페이지를 만들 유인이 없으면서 광고는 붙습니다.")
+    p.add_argument("--max-volume", type=int, default=10**9)
     p.add_argument("-o", "--out")
     a = p.parse_args()
+    if a.longtail:
+        a.min_volume, a.max_volume, a.min_ads = 300, 3000, 5
 
     bank = load_bank()
     rows = []
@@ -96,20 +152,26 @@ def main():
             kw = r["keyword"].strip()
             vol = int(r["total"])
             comp = float(r["competition"])
-            if vol < a.min_volume or comp > a.max_comp:
+            if vol < a.min_volume or vol > a.max_volume or comp < a.min_comp:
+                continue
+            if int(r["ad_depth"]) < a.min_ads:
                 continue
             if EXCLUDE.search(kw):
                 continue
             tier, hint = tier_and_blog(kw, bank)
             blog = assign_blog(kw, hint)
+            depth = int(r["ad_depth"])
+            qt, qf = query_type(kw)
             rows.append({
                 "keyword": kw, "volume": vol,
                 "comp": r["comp_label"], "competition": comp,
-                "ad_depth": int(r["ad_depth"]),
+                "ad_depth": depth, "qtype": qt,
                 "tier": tier, "blog": blog,
-                "score": round(score(vol, tier, comp), 1),
+                "score": round(score(vol, tier, comp, depth, qf), 1),
             })
 
+    if a.info_only:
+        rows = [r for r in rows if r["qtype"] == "정보형"]
     rows.sort(key=lambda x: -x["score"])
     if a.blog:
         rows = [r for r in rows if r["blog"] == a.blog]
@@ -123,13 +185,16 @@ def main():
         print(f"저장: {out} ({len(rows)}개)\n")
 
     print(f"{'키워드':<26}{'월검색량':>10}{'경쟁':>6}{'광고':>5}"
-          f"{'티어':>5}{'블로그':>7}{'점수':>8}")
-    print("-" * 70)
+          f"{'유형':>8}{'티어':>5}{'점수':>8}")
+    print("-" * 74)
     for r in rows[:a.top]:
         print(f"{r['keyword'][:24]:<26}{r['volume']:>10,}{r['comp']:>6}"
-              f"{r['ad_depth']:>5}{r['tier']:>5}{r['blog']:>7}{r['score']:>8.0f}")
-    print("-" * 70)
-    print(f"조건 통과 {len(rows):,}개 / 전체 검토 대상")
+              f"{r['ad_depth']:>5}{r['qtype']:>8}{r['tier']:>5}{r['score']:>8.0f}")
+    print("-" * 74)
+    print(f"조건 통과 {len(rows):,}개")
+    print("\n※ 점수는 수익 잠재력입니다. SEO 진입 가능성은 질의유형으로만")
+    print("   근사한 것이므로, 발행 전 실제 검색으로 상위 10개에 블로그가")
+    print("   있는지 반드시 확인하세요.")
 
 
 if __name__ == "__main__":
