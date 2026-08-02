@@ -190,6 +190,8 @@ def convert(md, meta):
 
     # 본문
     faq, related, disclaimer = [], [], []
+    steps, headings = [], []
+    summary = " ".join(b[2] for b in lede if b[0] == "p")[:300]
     mode, run, ad2_done = None, 0, False
     for i, b in enumerate(rest):
         k, lv, v = b
@@ -206,6 +208,8 @@ def convert(md, meta):
                 continue
             tag = f"h{min(lv,3)}"
             idp = f' id="{heads[i]}"' if i in heads else ""
+            if lv == 2:
+                headings.append(t)
             out.append(f'<{tag}{idp}>{inline(t)}</{tag}>')
             continue
 
@@ -234,6 +238,8 @@ def convert(md, meta):
             for it in v: out.append(f"  <li>{inline(it)}</li>")
             out.append("</ul>")
         elif k == "ol":
+            if len(v) >= 3 and not steps:
+                steps = [re.sub(r'\*\*(.+?)\*\*', r'\1', x) for x in v]
             out.append("<ol>")
             for it in v: out.append(f"  <li>{inline(it)}</li>")
             out.append("</ol>")
@@ -271,7 +277,7 @@ def convert(md, meta):
     if disclaimer:
         out.append(f'<p class="disclaimer">{inline(" ".join(disclaimer))}</p>')
 
-    return title, "\n".join(out), faq
+    return title, "\n".join(out), faq, steps, headings, summary
 
 
 CSS = """<style>
@@ -372,6 +378,15 @@ def head_comment(title, meta):
    3. 대표 이미지 1200px 이상 가로형 지정
    4. 발행 후 서치콘솔 URL 검사 → 색인 요청
 
+■ GEO/AEO — AI 검색(제미나이·ChatGPT·클로드) 인용을 노린 구조
+   구조화 데이터로 Article + FAQPage + HowTo를 @graph에 넣었습니다.
+   SITE 상수(블로그명·주소·필자명)를 실제 값으로 바꾸세요.
+   빈약하거나 본문과 어긋나는 스키마는 없는 것보다 나쁩니다.
+
+   AI는 페이지가 아니라 문단 단위(청크)를 임베딩해 검색합니다.
+   그래서 각 섹션이 그 자체로 답이 되어야 하고, 숫자와 출처가
+   글 하단이 아니라 해당 섹션 안에 있어야 인용됩니다.
+
 ■ 절대 넣지 마세요 (계정 영구정지 + 미지급 수익 몰수)
    광고 클릭 유도 문구 / 광고를 가리키는 화살표 /
    버튼 클릭을 광고 노출 트리거로 삼는 스크립트 /
@@ -383,18 +398,67 @@ def head_comment(title, meta):
 -->"""
 
 
-def faq_schema(faq):
-    items = []
+# ── GEO/AEO 구조화 데이터 ──────────────────────────
+# 근거: 속성이 풍부한 스키마는 인용률 61.7%. 다만 빈약하거나 본문과
+# 어긋나는 스키마는 아예 없는 것보다 나쁩니다. 본문에 실재하는 값만 넣습니다.
+
+SITE = {
+    "name": "여기에 블로그 이름",
+    "url": "https://여기에-블로그-주소",
+    "author": "여기에 필자명",
+    "authorUrl": "https://여기에-소개-페이지",
+}
+
+
+def build_schema(title, faq, steps, meta, headings, summary):
+    """Article + FAQPage + (단계가 있으면) HowTo 를 @graph로 묶는다."""
+    date = meta.get("발행일", "").split()[0] or "2026-08-01"
+    kws = [k.strip() for k in meta.get("키워드", "").split(",") if k.strip()]
+
+    article = {
+        "@type": "Article",
+        "headline": title[:110],
+        "description": summary[:200],
+        "inLanguage": "ko-KR",
+        "datePublished": date,
+        "dateModified": date,
+        "author": {"@type": "Person", "name": SITE["author"],
+                   "url": SITE["authorUrl"]},
+        "publisher": {"@type": "Organization", "name": SITE["name"],
+                      "url": SITE["url"]},
+        "mainEntityOfPage": {"@type": "WebPage", "@id": SITE["url"]},
+        "articleSection": headings[:8],
+        "speakable": {"@type": "SpeakableSpecification",
+                      "cssSelector": [".lede", ".faq-a"]},
+    }
+    if kws:
+        article["keywords"] = kws
+    graph = [article]
+
+    qs = []
     for q, a in faq:
         q = re.sub(r'^Q\d+\.\s*', '', q).strip()
         a = re.sub(r'\*\*(.+?)\*\*', r'\1', a).strip()
         if q and a:
-            items.append({"@type": "Question", "name": q,
-                          "acceptedAnswer": {"@type": "Answer", "text": a}})
-    if not items: return ""
-    data = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": items}
-    return ('\n<!-- FAQ 구조화 데이터. 본문과 다른 내용을 쓰면 정책 위반입니다.\n'
-            '     반드시 본문과 동일하게 유지하세요. -->\n'
+            qs.append({"@type": "Question", "name": q,
+                       "acceptedAnswer": {"@type": "Answer", "text": a}})
+    if qs:
+        graph.append({"@type": "FAQPage", "mainEntity": qs})
+
+    if len(steps) >= 3:
+        graph.append({
+            "@type": "HowTo",
+            "name": title[:110],
+            "step": [{"@type": "HowToStep", "position": i,
+                      "name": t[:70], "text": t}
+                     for i, t in enumerate(steps[:8], 1)],
+        })
+
+    data = {"@context": "https://schema.org", "@graph": graph}
+    return ('\n<!-- 구조화 데이터 (GEO/AEO)\n'
+            '     Article + FAQPage + HowTo. 본문과 다른 내용을 넣으면\n'
+            '     정책 위반이자 인용률이 떨어집니다. 반드시 본문과 일치시키세요.\n'
+            '     SITE 상수의 블로그명·주소·필자명을 실제 값으로 바꾸세요. -->\n'
             '<script type="application/ld+json">\n'
             + json.dumps(data, ensure_ascii=False, indent=1) + '\n</script>')
 
@@ -411,10 +475,10 @@ def build(path, outdir):
                 k, v = line.split(":", 1); meta[k.strip()] = v.strip()
         body = m.group(2)
 
-    title, inner, faq = convert(body.strip(), meta)
+    title, inner, faq, steps, headings, summary = convert(body.strip(), meta)
     doc = "\n".join([head_comment(title, meta), "", CSS, "",
                      '<div class="post-body">', "", inner, "", "</div>",
-                     faq_schema(faq)])
+                     build_schema(title, faq, steps, meta, headings, summary)])
 
     # 검증: 마크다운 잔여 기호
     check = re.sub(r'<!--.*?-->', '', doc, flags=re.S)

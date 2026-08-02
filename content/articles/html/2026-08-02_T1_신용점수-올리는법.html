@@ -27,6 +27,15 @@
    3. 대표 이미지 1200px 이상 가로형 지정
    4. 발행 후 서치콘솔 URL 검사 → 색인 요청
 
+■ GEO/AEO — AI 검색(제미나이·ChatGPT·클로드) 인용을 노린 구조
+   구조화 데이터로 Article + FAQPage + HowTo를 @graph에 넣었습니다.
+   SITE 상수(블로그명·주소·필자명)를 실제 값으로 바꾸세요.
+   빈약하거나 본문과 어긋나는 스키마는 없는 것보다 나쁩니다.
+
+   AI는 페이지가 아니라 문단 단위(청크)를 임베딩해 검색합니다.
+   그래서 각 섹션이 그 자체로 답이 되어야 하고, 숫자와 출처가
+   글 하단이 아니라 해당 섹션 안에 있어야 인용됩니다.
+
 ■ 절대 넣지 마세요 (계정 영구정지 + 미지급 수익 몰수)
    광고 클릭 유도 문구 / 광고를 가리키는 화살표 /
    버튼 클릭을 광고 노출 트리거로 삼는 스크립트 /
@@ -276,44 +285,92 @@
 
 </div>
 
-<!-- FAQ 구조화 데이터. 본문과 다른 내용을 쓰면 정책 위반입니다.
-     반드시 본문과 동일하게 유지하세요. -->
+<!-- 구조화 데이터 (GEO/AEO)
+     Article + FAQPage + HowTo. 본문과 다른 내용을 넣으면
+     정책 위반이자 인용률이 떨어집니다. 반드시 본문과 일치시키세요.
+     SITE 상수의 블로그명·주소·필자명을 실제 값으로 바꾸세요. -->
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
- "@type": "FAQPage",
- "mainEntity": [
+ "@graph": [
   {
-   "@type": "Question",
-   "name": "NICE와 KCB 중 어느 게 중요한가요?",
-   "acceptedAnswer": {
-    "@type": "Answer",
-    "text": "은행마다 다릅니다. 두 곳 모두 관리해야 하고, 무료 조회로 양쪽을 확인할 수 있습니다."
-   }
+   "@type": "Article",
+   "headline": "신용점수 올리는 법 — 3개월 안에 실제로 오르는 것만",
+   "description": "**결론부터: 가장 빠른 건 '카드론·리볼빙 정리'와 '비금융정보 등록'입니다.** 통신비·건강보험료 납부 내역을 제출하면 며칠 안에 반영되고, 리볼빙은 해지하는 순간 평가에서 빠집니다. 반면 연체 기록은 어떤 방법으로도 즉시 지울 수 없습니다.",
+   "inLanguage": "ko-KR",
+   "datePublished": "2026-08-02",
+   "dateModified": "2026-08-02",
+   "author": {
+    "@type": "Person",
+    "name": "여기에 필자명",
+    "url": "https://여기에-소개-페이지"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "여기에 블로그 이름",
+    "url": "https://여기에-블로그-주소"
+   },
+   "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://여기에-블로그-주소"
+   },
+   "articleSection": [
+    "신용점수는 무엇으로 매겨지나",
+    "즉시 효과 나는 것",
+    "1~3개월 걸리는 것",
+    "시간이 답인 것",
+    "오히려 점수를 깎는 오해",
+    "대출 신청 3개월 전 체크리스트"
+   ],
+   "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+     ".lede",
+     ".faq-a"
+    ]
+   },
+   "keywords": [
+    "신용점수 올리는 법",
+    "NICE 점수 올리기",
+    "신용점수 조회"
+   ]
   },
   {
-   "@type": "Question",
-   "name": "학자금대출도 점수에 영향이 있나요?",
-   "acceptedAnswer": {
-    "@type": "Answer",
-    "text": "있습니다. 다만 정책 대출이라 고금리 대출보다 부정적 영향이 적습니다. 연체만 하지 않으면 문제되지 않습니다."
-   }
-  },
-  {
-   "@type": "Question",
-   "name": "통신비를 부모님 명의로 내고 있는데요?",
-   "acceptedAnswer": {
-    "@type": "Answer",
-    "text": "본인 명의 납부 이력만 인정됩니다. 명의를 본인으로 바꾸고 6개월 이상 납부해야 등록할 수 있습니다."
-   }
-  },
-  {
-   "@type": "Question",
-   "name": "점수가 갑자기 떨어졌습니다.",
-   "acceptedAnswer": {
-    "@type": "Answer",
-    "text": "카드 사용률 급증, 신규 대출, 조회 기록 누적이 대표적입니다. 나이스지키미·올크레딧에서 변동 사유를 확인할 수 있습니다. 함께 보면 좋은 글"
-   }
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "NICE와 KCB 중 어느 게 중요한가요?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "은행마다 다릅니다. 두 곳 모두 관리해야 하고, 무료 조회로 양쪽을 확인할 수 있습니다."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "학자금대출도 점수에 영향이 있나요?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "있습니다. 다만 정책 대출이라 고금리 대출보다 부정적 영향이 적습니다. 연체만 하지 않으면 문제되지 않습니다."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "통신비를 부모님 명의로 내고 있는데요?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "본인 명의 납부 이력만 인정됩니다. 명의를 본인으로 바꾸고 6개월 이상 납부해야 등록할 수 있습니다."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "점수가 갑자기 떨어졌습니다.",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "카드 사용률 급증, 신규 대출, 조회 기록 누적이 대표적입니다. 나이스지키미·올크레딧에서 변동 사유를 확인할 수 있습니다. 함께 보면 좋은 글"
+     }
+    }
+   ]
   }
  ]
 }
