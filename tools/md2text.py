@@ -51,14 +51,18 @@ def split_sentence(s):
 
 
 def wrap_para(text, out):
-    """문단 하나를 문장 단위로 쪼개 모바일 가독성에 맞게 늘어놓는다."""
+    """문단 하나를 문장 단위로 쪼개 모바일 가독성에 맞게 늘어놓는다.
+
+    빈 줄은 문장이 끝난 자리에만 넣는다. 긴 문장을 절 단위로 나눈 조각들은
+    한 문장이므로 사이를 벌리지 않는다.
+    """
     parts = SENT_END.sub(r"\1\n", text).split("\n")
-    sents = [x for s in parts if s.strip() for x in split_sentence(s.strip())]
+    sents = [split_sentence(s.strip()) for s in parts if s.strip()]
     if len(sents) <= 1:
-        out.append(text)
+        out.extend(sents[0] if sents else [text])
         return
-    for i, s in enumerate(sents):
-        out.append(s)
+    for i, lines in enumerate(sents):
+        out.extend(lines)
         left = len(sents) - (i + 1)
         # 한 문장만 남으면 끊지 않는다. 홀로 떨어진 줄이 생기지 않게.
         if (i + 1) % SENT_PER_BLOCK == 0 and left > 1:
