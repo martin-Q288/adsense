@@ -163,6 +163,14 @@ def convert(md, meta):
 
     total = sum(text_len(b) for b in rest) or 1
 
+    # 광고 개수를 분량에 맞춰 조정 (docs/10 실측: 1,000~1,300자당 1개)
+    #
+    # 단답형 생활정보는 800~1,200자로 짧습니다. 여기에 롱폼과 같은 3개를
+    # 넣으면 400자당 1개가 되어 실측 상위 사이트의 3배 밀도가 됩니다.
+    # 밀도 초과는 정책 위험이자 이탈 요인이므로 분량에 비례시킵니다.
+    # 자동광고(앵커·전면)는 별도로 얹히므로 수동은 보수적으로 잡습니다.
+    n_ads = 3 if total >= 2000 else (2 if total >= 1200 else 1)
+
     out = []
     # 결론 박스
     if lede:
@@ -251,15 +259,15 @@ def convert(md, meta):
             else: out.append(f'<div class="tip">{inline(v)}</div>')
         elif k == "hr": pass
 
-        # AD2 삽입: 누적 50% 넘고 다음이 h2일 때
-        if (not ad2_done and run / total >= 0.5
+        # AD2 삽입: 누적 50% 넘고 다음이 h2일 때 (롱폼에만)
+        if (n_ads >= 3 and not ad2_done and run / total >= 0.5
                 and i + 1 < len(rest) and rest[i+1][0] == "h"):
             out.append("")
             out.append(ad_block(2))
             ad2_done = True
 
     if mode == "faq": out.append("</div>")
-    if not ad2_done: out.append(ad_block(2))
+    if n_ads >= 3 and not ad2_done: out.append(ad_block(2))
 
     # 관련 글
     if related:
@@ -272,7 +280,8 @@ def convert(md, meta):
         out.append("  </ul>")
         out.append("</div>\n")
 
-    out.append(ad_block(3))
+    if n_ads >= 2:
+        out.append(ad_block(3))
 
     if disclaimer:
         out.append(f'<p class="disclaimer">{inline(" ".join(disclaimer))}</p>')
