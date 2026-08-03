@@ -1,0 +1,395 @@
+<!--
+============================================================
+티스토리 HTML 모드에 그대로 붙여넣으세요.
+
+■ 글 제목 (티스토리 제목 칸에 입력)
+   에어컨 전기요금 계산 2026 — 450kWh 넘는 순간 요금이 뜁니다
+
+■ 제목 계층
+   본문에 h1을 넣지 않았습니다. 티스토리 스킨이 글 제목을 h1으로
+   렌더링하므로, 본문에 h1을 또 쓰면 제목이 두 개가 되어 색인에 불리합니다.
+   본문은 h2(대목차) / h3(소목차)만 사용합니다.
+   목차의 각 항목은 h2의 id와 앵커로 연결돼 있습니다.
+
+■ 마크다운 기호 없음
+   ** # | - > 같은 기호를 전부 HTML 태그로 변환했습니다.
+   에디터에 붙여넣었을 때 기호가 글자로 찍히지 않습니다.
+
+■ 자동광고 설정 (겹침 방지 - 중요)
+   애드센스 → 광고 → 사이트별 → 편집
+     앵커 광고        ON     모바일 하단 고정
+     전면 광고        ON     링크 클릭 시 Vignette 자동 노출
+     페이지 내 광고   OFF    ← 아래 수동 3개와 겹치지 않게 반드시 끄세요
+
+■ 붙여넣기 후 할 일
+   1. ca-pub-여기에본인퍼블리셔ID / 여기에광고단위ID 를 실제 값으로 교체
+   2. 관련 글의 /entry/글주소를-여기에 를 실제 글 주소로 교체
+   3. 대표 이미지 1200px 이상 가로형 지정
+   4. 발행 후 서치콘솔 URL 검사 → 색인 요청
+
+■ GEO/AEO — AI 검색(제미나이·ChatGPT·클로드) 인용을 노린 구조
+   구조화 데이터로 Article + FAQPage + HowTo를 @graph에 넣었습니다.
+   SITE 상수(블로그명·주소·필자명)를 실제 값으로 바꾸세요.
+   빈약하거나 본문과 어긋나는 스키마는 없는 것보다 나쁩니다.
+
+   AI는 페이지가 아니라 문단 단위(청크)를 임베딩해 검색합니다.
+   그래서 각 섹션이 그 자체로 답이 되어야 하고, 숫자와 출처가
+   글 하단이 아니라 해당 섹션 안에 있어야 인용됩니다.
+
+■ 절대 넣지 마세요 (계정 영구정지 + 미지급 수익 몰수)
+   광고 클릭 유도 문구 / 광고를 가리키는 화살표 /
+   버튼 클릭을 광고 노출 트리거로 삼는 스크립트 /
+   광고를 콘텐츠나 버튼으로 위장하는 배치
+
+   블로그: T1 (금융·정책·생활정보)
+   키워드: 에어컨 전기요금, 누진세 구간, 여름 전기요금 계산
+============================================================
+-->
+
+<style>
+/* 본문 폭 확보: 336px보다 좁으면 반응형 광고가 300x250으로 떨어져 eCPM 손해 */
+.post-body{font-size:17px;line-height:1.75;color:#222;word-break:keep-all;min-width:0}
+.post-body h2{font-size:21px;font-weight:700;margin:44px 0 14px;padding-bottom:8px;
+  border-bottom:2px solid #222;letter-spacing:-.01em;scroll-margin-top:20px}
+.post-body h3{font-size:18px;font-weight:700;margin:28px 0 10px}
+.post-body p{margin:0 0 16px}
+.post-body ul,.post-body ol{margin:0 0 18px;padding-left:22px}
+.post-body li{margin-bottom:7px}
+.post-body code{background:#F2F1EE;padding:1px 5px;border-radius:3px;font-size:15px}
+
+.lede{background:#F7F7F5;border-left:4px solid #C1272D;padding:16px 18px;
+  margin:0 0 22px;border-radius:0 4px 4px 0}
+.lede p{margin:0 0 10px;font-size:17px}
+.lede p:last-child{margin:0}
+.lede strong{color:#C1272D}
+.lede ul{margin:10px 0 0;padding-left:20px}
+.lede li{font-size:15.5px;color:#444}
+
+.toc{border:1px solid #E0DED9;border-radius:4px;padding:16px 18px;margin:0 0 24px;background:#FCFCFB}
+.toc-t{font-size:14px;font-weight:700;margin:0 0 10px;color:#555}
+.toc ol{margin:0;padding-left:20px}
+.toc li{margin-bottom:6px;font-size:15.5px}
+.toc a{color:#2F4858;text-decoration:none;border-bottom:1px solid #D6D4CF}
+
+.tbl-wrap{overflow-x:auto;margin:0 0 20px;-webkit-overflow-scrolling:touch}
+.post-body table{border-collapse:collapse;width:100%;min-width:340px;font-size:15.5px}
+.post-body th,.post-body td{border:1px solid #E0DED9;padding:11px 12px;text-align:left}
+.post-body th{background:#F4F3F0;font-weight:700;white-space:nowrap}
+.post-body td strong{color:#C1272D}
+
+.tip{background:#F0F4F6;border-left:4px solid #2F4858;padding:14px 16px;
+  margin:0 0 20px;border-radius:0 4px 4px 0;font-size:15.5px}
+.warn{background:#FBEDED;border-left:4px solid #C1272D;padding:14px 16px;
+  margin:0 0 20px;border-radius:0 4px 4px 0;font-size:15.5px}
+
+.faq{border-top:1px solid #E0DED9;margin-top:8px}
+.faq-q{font-weight:700;font-size:16.5px;margin:20px 0 8px;color:#1A1A18}
+.faq-a{margin:0 0 18px;color:#3A3A38}
+
+.related{border:1px solid #E0DED9;border-radius:4px;padding:18px;margin:0 0 24px;background:#FCFCFB}
+.related-t{font-size:15px;font-weight:700;margin:0 0 12px}
+.related ul{margin:0;padding-left:20px}
+.related li{margin-bottom:9px;font-size:16px}
+.related a{color:#2F4858;text-decoration:none;border-bottom:1px solid #C9C7C2}
+
+.disclaimer{margin-top:28px;padding-top:16px;border-top:1px solid #E8E6E1;
+  font-size:13.5px;color:#777;line-height:1.7}
+
+/* 광고 슬롯: min-height로 자리를 예약해 레이아웃 이동(CLS)을 막습니다.
+   광고가 늦게 로드되며 본문이 밀리면 오클릭이 나고, 오클릭은 무효 트래픽으로
+   잡힐 수 있습니다. 상하 28px 여백 = 정책상 20px 이격 기준 충족. */
+.ad-slot{margin:28px 0;display:flex;flex-direction:column;align-items:center}
+.ad-slot .ad-label{font-size:11px;color:#AAA;letter-spacing:.08em;margin-bottom:6px;align-self:flex-start}
+.ad-slot ins{display:block;width:100%}
+.ad-inline{min-height:280px}
+.ad-multiplex{min-height:400px}
+
+@media(max-width:600px){
+  .post-body{font-size:16px}
+  .post-body h2{font-size:19px}
+  .ad-slot{margin:24px 0}
+  .ad-inline{min-height:250px}
+  .ad-multiplex{min-height:600px}
+}
+</style>
+
+<div class="post-body">
+
+<div class="lede">
+  <p><strong>결론부터: 여름철(7~8월) 주택용 저압 3단계 진입선은 월 450kWh이고, 이 선을 넘으면 kWh당 307.3원이 붙습니다.</strong> 1~2단계 단가가 각각 120.0원, 214.6원이므로 마지막 구간의 단가는 첫 구간의 약 2.6배입니다. 전기요금이 갑자기 두 배가 되는 체감은 대부분 이 선을 넘었기 때문입니다.</p>
+  <ul>
+    <li>여름철 누진 구간: <strong>300kWh / 450kWh</strong> 경계 (7~8월 한시 완화 적용)</li>
+    <li>단가: 1단계 <strong>120.0원</strong> / 2단계 <strong>214.6원</strong> / 3단계 <strong>307.3원</strong></li>
+    <li>기본요금: 910원 / 1,600원 / 7,300원</li>
+    <li>에어컨은 <strong>껐다 켰다 하는 것이 가장 비쌉니다</strong></li>
+  </ul>
+</div>
+
+<!-- ═══ AD 1 ═══════════════════════════════════════
+     위치: 결론 박스 뒤 / 목차 앞 (본문 약 8%)
+     근거: 독자가 결론을 읽고 목차로 넘어가며 반드시 지나가고 잠깐 멈추는
+           구간. Active View 조건(면적 50%가 1초 이상)을 채우기 가장 쉽습니다.
+     설정: 반응형 디스플레이 / 지연 로딩 금지
+═══════════════════════════════════════════════════ -->
+<div class="ad-slot ad-inline">
+  <span class="ad-label">광고</span>
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-여기에본인퍼블리셔ID"
+       data-ad-slot="여기에광고단위ID"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<nav class="toc">
+  <p class="toc-t">목차</p>
+  <ol>
+    <li><a href="#s1">누진 구간부터 정확히</a></li>
+    <li><a href="#s2">실제로 계산해 보면</a></li>
+    <li><a href="#s3">에어컨이 실제로 쓰는 전기</a></li>
+    <li><a href="#s4">껐다 켜면 더 나오는 이유</a></li>
+    <li><a href="#s5">요금을 미리 확인하는 방법</a></li>
+    <li><a href="#s6">놓치기 쉬운 할인</a></li>
+    <li><a href="#s7">자주 묻는 질문</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1">누진 구간부터 정확히</h2>
+<p>한국전력 주택용 전력(저압) 요금표는 3단계 누진제입니다. 7~8월에는 냉방 수요를 감안해 구간 경계가 완화됩니다.</p>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>구간</th><th>평상시</th><th>여름철(7~8월)</th><th>기본요금</th><th>전력량요금</th></tr></thead>
+  <tbody>
+    <tr><td>1단계</td><td>~200kWh</td><td>~<strong>300kWh</strong></td><td>910원</td><td><strong>120.0원/kWh</strong></td></tr>
+    <tr><td>2단계</td><td>201~400kWh</td><td>301~<strong>450kWh</strong></td><td>1,600원</td><td><strong>214.6원/kWh</strong></td></tr>
+    <tr><td>3단계</td><td>400kWh 초과</td><td><strong>450kWh 초과</strong></td><td>7,300원</td><td><strong>307.3원/kWh</strong></td></tr>
+  </tbody>
+</table>
+</div>
+<p>누진제는 <strong>초과분에만</strong> 높은 단가가 붙는 구조입니다. 500kWh를 썼다고 500kWh 전부에 307.3원이 적용되는 것이 아니라, 300kWh까지는 120원, 다음 150kWh는 214.6원, 나머지 50kWh에만 307.3원이 붙습니다.</p>
+<p>정확한 요금표는 한국전력 사이버지점(cyber.kepco.co.kr)의 '주택용 전력 요금표'에서 확인할 수 있습니다.</p>
+<h2 id="s2">실제로 계산해 보면</h2>
+<p>여름철에 월 500kWh를 쓴 4인 가구 기준으로 계산합니다.</p>
+<div class="tip">기본요금 (3단계)                        7,300원<br>1단계  300kWh × 120.0원   =           36,000원<br>2단계  150kWh × 214.6원   =           32,190원<br>3단계   50kWh × 307.3원   =           15,365원<br>──────────────────────────────────────────────<br>전기요금 계                            90,855원<br>부가세 10%                              9,086원<br>전력산업기반기금 3.7%                    3,362원<br>──────────────────────────────────────────────<br>청구액                              약 103,300원</div>
+<p>같은 조건에서 <strong>450kWh만 썼다면</strong> 2단계에 머물러 기본요금이 1,600원이고 청구액은 약 8만 5천원입니다. 50kWh 차이가 요금 1만 8천원을 만듭니다.</p>
+<p><strong>기본요금 점프가 숨은 함정입니다.</strong> 2단계 1,600원에서 3단계 7,300원으로, 1kWh만 넘어도 5,700원이 추가됩니다.</p>
+<h2 id="s3">에어컨이 실제로 쓰는 전기</h2>
+<p>에어컨 소비전력은 냉방능력과 정격소비전력으로 결정됩니다. 제품 스티커의 '냉방 소비전력' 항목을 보면 됩니다.</p>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>유형</th><th>정격소비전력</th><th>1일 8시간</th><th>30일</th></tr></thead>
+  <tbody>
+    <tr><td>벽걸이 (6평형)</td><td>약 0.6kW</td><td>4.8kWh</td><td>144kWh</td></tr>
+    <tr><td>스탠드 인버터 (16평형)</td><td>약 1.8kW</td><td>14.4kWh</td><td>432kWh</td></tr>
+    <tr><td>스탠드 정속형 (16평형)</td><td>약 2.0kW</td><td>16.0kWh</td><td>480kWh</td></tr>
+  </tbody>
+</table>
+</div>
+<p>인버터 모델은 실제로는 표기값보다 적게 나옵니다. 설정 온도에 도달한 뒤 압축기 출력을 낮춰 유지하기 때문에, 실사용 기준으로 정격의 <strong>30~50% 수준</strong>에서 돌아가는 시간이 깁니다.</p>
+<p>정속형은 다릅니다. 설정 온도에 도달하면 압축기를 아예 끄고, 온도가 오르면 다시 최대 출력으로 켭니다. 켜고 끄는 것 외에 중간이 없습니다.</p>
+<h2 id="s4">껐다 켜면 더 나오는 이유</h2>
+<p><strong>인버터 에어컨은 계속 켜두는 편이 쌉니다.</strong> 압축기를 처음 돌릴 때 소비전력이 가장 크고, 실내 온도가 목표에 도달한 뒤에는 낮은 출력으로 유지하기 때문입니다.</p>
+<p>껐다 켜면 매번 최대 출력 구간을 다시 지나야 합니다. 2시간 외출이라면 켜두는 편이, 그보다 길면 끄는 편이 대체로 유리합니다.</p>
+<p>에너지관리공단이 권고하는 절약 방법은 아래와 같습니다.</p>
+<ol>
+  <li><strong>설정 온도를 26~28도로</strong> — 1도 올리면 소비전력 약 7% 절감</li>
+  <li><strong>바람 세기를 강하게</strong> — 약풍으로 오래 트는 것보다 강풍으로 빨리 도달시키는 편이 유리</li>
+  <li><strong>선풍기·서큘레이터 병행</strong> — 체감온도가 2~3도 내려가 설정 온도를 높일 수 있음</li>
+  <li><strong>필터를 2주에 한 번 청소</strong> — 막힌 필터는 소비전력을 최대 5%까지 올림</li>
+  <li><strong>실외기 주변 통풍 확보</strong> — 직사광선과 밀폐가 효율을 떨어뜨림</li>
+</ol>
+
+<!-- ═══ AD 2 ═══════════════════════════════════════
+     위치: 본문 중반 (약 50~60%)
+     근거: 실측 상위 블로그 밀도는 본문 1,000~1,300자당 1개.
+     설정: 인아티클 / 지연 로딩 허용
+═══════════════════════════════════════════════════ -->
+<div class="ad-slot ad-inline">
+  <span class="ad-label">광고</span>
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-여기에본인퍼블리셔ID"
+       data-ad-slot="여기에광고단위ID"
+       data-ad-format="fluid"
+       data-ad-layout="in-article"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<h2 id="s5">요금을 미리 확인하는 방법</h2>
+<p>한국전력 사이버지점과 한전 앱에서 <strong>실시간 사용량</strong>을 조회할 수 있습니다. AMI(스마트계량기)가 설치된 가구는 전일까지의 누적 사용량과 예상 청구액을 볼 수 있습니다.</p>
+<p>한전 요금계산기(cyber.kepco.co.kr)에 사용량을 넣으면 정확한 청구액이 나옵니다. 월 중순에 한 번 확인해서 450kWh를 넘길 것 같으면 남은 기간에 조절하는 것이 실질적인 절약입니다.</p>
+<h2 id="s6">놓치기 쉬운 할인</h2>
+<ul>
+  <li><strong>주택용 필수사용량 보장공제</strong> — 폐지됐습니다. 예전 정보를 참고하지 마세요</li>
+  <li><strong>다자녀 할인</strong> — 3자녀 이상 세대 월 30% (최대 16,000원)</li>
+  <li><strong>대가족 할인</strong> — 5인 이상 세대 월 30% (최대 16,000원)</li>
+  <li><strong>출산가구 할인</strong> — 출생일로부터 3년 미만 영아가 있는 세대 월 30%</li>
+  <li><strong>복지할인</strong> — 장애인·국가유공자·기초생활수급자·차상위계층</li>
+</ul>
+<p>할인은 <strong>신청해야 적용됩니다.</strong> 한전 고객센터 123 또는 사이버지점에서 신청할 수 있고, 조건이 되는데 신청을 안 해 몇 년째 못 받는 가구가 적지 않습니다.</p>
+<h2 id="s7">자주 묻는 질문</h2>
+<div class="faq">
+  <p class="faq-q">Q1. 아파트인데 누진제가 적용되나요?</p>
+  <p class="faq-a">개별 계량기로 한전과 직접 계약한 세대는 위 요금표가 그대로 적용됩니다. 단지 전체가 한전과 계약하고 관리사무소가 배분하는 '단일계약' 아파트는 계산 방식이 다릅니다. 관리비 고지서의 전기료 산정 방식을 확인하세요.</p>
+  <p class="faq-q">Q2. 7월 말에 에어컨을 많이 썼는데 8월 고지서에 나오나요?</p>
+  <p class="faq-a">검침일 기준입니다. 검침일이 매월 15일이면 7월 16일~8월 15일 사용량이 8월분으로 청구됩니다. 본인 검침일은 고지서나 한전 앱에서 확인할 수 있습니다.</p>
+  <p class="faq-q">Q3. 여름철 완화 구간은 언제까지 적용되나요?</p>
+  <p class="faq-a">7월 1일부터 8월 31일 사용분에 적용됩니다. 9월 검침분부터는 평상시 구간(200/400kWh)으로 돌아갑니다.</p>
+  <p class="faq-q">Q4. 전기요금이 갑자기 두 배가 됐습니다.</p>
+  <p class="faq-a">3단계에 진입했을 가능성이 큽니다. 기본요금 5,700원 증가와 초과분 307.3원 단가가 겹치면 체감상 두 배가 됩니다. 한전 앱에서 사용량 추이를 확인해 보세요.</p>
+  <p class="faq-a"><strong>함께 보면 좋은 글</strong></p>
+<ul>
+  <li>제습기와 에어컨 제습 모드, 전기요금 어느 쪽이 적게 나올까</li>
+  <li>한전 에너지캐시백 신청 방법과 실제 환급액</li>
+  <li>여름철 실내 적정 온도와 냉방병 예방</li>
+</ul>
+</div>
+<!-- ═══ AD 3 ═══════════════════════════════════════
+     위치: 글 최하단 (관련 글 뒤)
+     형식: 멀티플렉스. 세션당 PV를 올려 전면광고 노출도 함께 늘립니다.
+     주의: 관련 글 링크 위를 광고로 막지 않았습니다. 그 링크 클릭이
+           Vignette 수익의 출발점입니다.
+═══════════════════════════════════════════════════ -->
+<div class="ad-slot ad-multiplex">
+  <span class="ad-label">광고</span>
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-여기에본인퍼블리셔ID"
+       data-ad-slot="여기에광고단위ID"
+       data-ad-format="autorelaxed"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<p class="disclaimer">본 글은 2026년 8월 2일 기준 한국전력 주택용 전력(저압) 요금표를 기준으로 작성했습니다. 요금 단가와 할인 제도는 변경될 수 있으므로 한국전력 사이버지점(cyber.kepco.co.kr) 또는 고객센터 123에서 최신 정보를 확인하시기 바랍니다.</p>
+
+</div>
+
+<!-- 구조화 데이터 (GEO/AEO)
+     Article + FAQPage + HowTo. 본문과 다른 내용을 넣으면
+     정책 위반이자 인용률이 떨어집니다. 반드시 본문과 일치시키세요.
+     SITE 상수의 블로그명·주소·필자명을 실제 값으로 바꾸세요. -->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Article",
+   "headline": "에어컨 전기요금 계산 2026 — 450kWh 넘는 순간 요금이 뜁니다",
+   "description": "**결론부터: 여름철(7~8월) 주택용 저압 3단계 진입선은 월 450kWh이고, 이 선을 넘으면 kWh당 307.3원이 붙습니다.** 1~2단계 단가가 각각 120.0원, 214.6원이므로 마지막 구간의 단가는 첫 구간의 약 2.6배입니다. 전기요금이 갑자기 두 배가 되는 체감은 대부분 이 선을 넘었기 때문입니다.",
+   "inLanguage": "ko-KR",
+   "datePublished": "2026-08-02",
+   "dateModified": "2026-08-02",
+   "author": {
+    "@type": "Person",
+    "name": "여기에 필자명",
+    "url": "https://여기에-소개-페이지"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "여기에 블로그 이름",
+    "url": "https://여기에-블로그-주소"
+   },
+   "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://여기에-블로그-주소"
+   },
+   "articleSection": [
+    "누진 구간부터 정확히",
+    "실제로 계산해 보면",
+    "에어컨이 실제로 쓰는 전기",
+    "껐다 켜면 더 나오는 이유",
+    "요금을 미리 확인하는 방법",
+    "놓치기 쉬운 할인"
+   ],
+   "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+     ".lede",
+     ".faq-a"
+    ]
+   },
+   "keywords": [
+    "에어컨 전기요금",
+    "누진세 구간",
+    "여름 전기요금 계산"
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "아파트인데 누진제가 적용되나요?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "개별 계량기로 한전과 직접 계약한 세대는 위 요금표가 그대로 적용됩니다. 단지 전체가 한전과 계약하고 관리사무소가 배분하는 '단일계약' 아파트는 계산 방식이 다릅니다. 관리비 고지서의 전기료 산정 방식을 확인하세요."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "7월 말에 에어컨을 많이 썼는데 8월 고지서에 나오나요?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "검침일 기준입니다. 검침일이 매월 15일이면 7월 16일~8월 15일 사용량이 8월분으로 청구됩니다. 본인 검침일은 고지서나 한전 앱에서 확인할 수 있습니다."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "여름철 완화 구간은 언제까지 적용되나요?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "7월 1일부터 8월 31일 사용분에 적용됩니다. 9월 검침분부터는 평상시 구간(200/400kWh)으로 돌아갑니다."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "전기요금이 갑자기 두 배가 됐습니다.",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "3단계에 진입했을 가능성이 큽니다. 기본요금 5,700원 증가와 초과분 307.3원 단가가 겹치면 체감상 두 배가 됩니다. 한전 앱에서 사용량 추이를 확인해 보세요. 함께 보면 좋은 글"
+     }
+    }
+   ]
+  },
+  {
+   "@type": "HowTo",
+   "name": "에어컨 전기요금 계산 2026 — 450kWh 넘는 순간 요금이 뜁니다",
+   "step": [
+    {
+     "@type": "HowToStep",
+     "position": 1,
+     "name": "설정 온도를 26~28도로 — 1도 올리면 소비전력 약 7% 절감",
+     "text": "설정 온도를 26~28도로 — 1도 올리면 소비전력 약 7% 절감"
+    },
+    {
+     "@type": "HowToStep",
+     "position": 2,
+     "name": "바람 세기를 강하게 — 약풍으로 오래 트는 것보다 강풍으로 빨리 도달시키는 편이 유리",
+     "text": "바람 세기를 강하게 — 약풍으로 오래 트는 것보다 강풍으로 빨리 도달시키는 편이 유리"
+    },
+    {
+     "@type": "HowToStep",
+     "position": 3,
+     "name": "선풍기·서큘레이터 병행 — 체감온도가 2~3도 내려가 설정 온도를 높일 수 있음",
+     "text": "선풍기·서큘레이터 병행 — 체감온도가 2~3도 내려가 설정 온도를 높일 수 있음"
+    },
+    {
+     "@type": "HowToStep",
+     "position": 4,
+     "name": "필터를 2주에 한 번 청소 — 막힌 필터는 소비전력을 최대 5%까지 올림",
+     "text": "필터를 2주에 한 번 청소 — 막힌 필터는 소비전력을 최대 5%까지 올림"
+    },
+    {
+     "@type": "HowToStep",
+     "position": 5,
+     "name": "실외기 주변 통풍 확보 — 직사광선과 밀폐가 효율을 떨어뜨림",
+     "text": "실외기 주변 통풍 확보 — 직사광선과 밀폐가 효율을 떨어뜨림"
+    }
+   ]
+  }
+ ]
+}
+</script>

@@ -1,0 +1,436 @@
+<!--
+============================================================
+티스토리 HTML 모드에 그대로 붙여넣으세요.
+
+■ 글 제목 (티스토리 제목 칸에 입력)
+   실업급여 조건 2026 — 상한액 68,100원, 180일 계산이 관건
+
+■ 제목 계층
+   본문에 h1을 넣지 않았습니다. 티스토리 스킨이 글 제목을 h1으로
+   렌더링하므로, 본문에 h1을 또 쓰면 제목이 두 개가 되어 색인에 불리합니다.
+   본문은 h2(대목차) / h3(소목차)만 사용합니다.
+   목차의 각 항목은 h2의 id와 앵커로 연결돼 있습니다.
+
+■ 마크다운 기호 없음
+   ** # | - > 같은 기호를 전부 HTML 태그로 변환했습니다.
+   에디터에 붙여넣었을 때 기호가 글자로 찍히지 않습니다.
+
+■ 자동광고 설정 (겹침 방지 - 중요)
+   애드센스 → 광고 → 사이트별 → 편집
+     앵커 광고        ON     모바일 하단 고정
+     전면 광고        ON     링크 클릭 시 Vignette 자동 노출
+     페이지 내 광고   OFF    ← 아래 수동 3개와 겹치지 않게 반드시 끄세요
+
+■ 붙여넣기 후 할 일
+   1. ca-pub-여기에본인퍼블리셔ID / 여기에광고단위ID 를 실제 값으로 교체
+   2. 관련 글의 /entry/글주소를-여기에 를 실제 글 주소로 교체
+   3. 대표 이미지 1200px 이상 가로형 지정
+   4. 발행 후 서치콘솔 URL 검사 → 색인 요청
+
+■ GEO/AEO — AI 검색(제미나이·ChatGPT·클로드) 인용을 노린 구조
+   구조화 데이터로 Article + FAQPage + HowTo를 @graph에 넣었습니다.
+   SITE 상수(블로그명·주소·필자명)를 실제 값으로 바꾸세요.
+   빈약하거나 본문과 어긋나는 스키마는 없는 것보다 나쁩니다.
+
+   AI는 페이지가 아니라 문단 단위(청크)를 임베딩해 검색합니다.
+   그래서 각 섹션이 그 자체로 답이 되어야 하고, 숫자와 출처가
+   글 하단이 아니라 해당 섹션 안에 있어야 인용됩니다.
+
+■ 절대 넣지 마세요 (계정 영구정지 + 미지급 수익 몰수)
+   광고 클릭 유도 문구 / 광고를 가리키는 화살표 /
+   버튼 클릭을 광고 노출 트리거로 삼는 스크립트 /
+   광고를 콘텐츠나 버튼으로 위장하는 배치
+
+   블로그: T1 (금융·정책·생활정보)
+   키워드: 실업급여 조건, 실업급여 상한액, 실업급여 지급일수
+============================================================
+-->
+
+<style>
+/* 본문 폭 확보: 336px보다 좁으면 반응형 광고가 300x250으로 떨어져 eCPM 손해 */
+.post-body{font-size:17px;line-height:1.75;color:#222;word-break:keep-all;min-width:0}
+.post-body h2{font-size:21px;font-weight:700;margin:44px 0 14px;padding-bottom:8px;
+  border-bottom:2px solid #222;letter-spacing:-.01em;scroll-margin-top:20px}
+.post-body h3{font-size:18px;font-weight:700;margin:28px 0 10px}
+.post-body p{margin:0 0 16px}
+.post-body ul,.post-body ol{margin:0 0 18px;padding-left:22px}
+.post-body li{margin-bottom:7px}
+.post-body code{background:#F2F1EE;padding:1px 5px;border-radius:3px;font-size:15px}
+
+.lede{background:#F7F7F5;border-left:4px solid #C1272D;padding:16px 18px;
+  margin:0 0 22px;border-radius:0 4px 4px 0}
+.lede p{margin:0 0 10px;font-size:17px}
+.lede p:last-child{margin:0}
+.lede strong{color:#C1272D}
+.lede ul{margin:10px 0 0;padding-left:20px}
+.lede li{font-size:15.5px;color:#444}
+
+.toc{border:1px solid #E0DED9;border-radius:4px;padding:16px 18px;margin:0 0 24px;background:#FCFCFB}
+.toc-t{font-size:14px;font-weight:700;margin:0 0 10px;color:#555}
+.toc ol{margin:0;padding-left:20px}
+.toc li{margin-bottom:6px;font-size:15.5px}
+.toc a{color:#2F4858;text-decoration:none;border-bottom:1px solid #D6D4CF}
+
+.tbl-wrap{overflow-x:auto;margin:0 0 20px;-webkit-overflow-scrolling:touch}
+.post-body table{border-collapse:collapse;width:100%;min-width:340px;font-size:15.5px}
+.post-body th,.post-body td{border:1px solid #E0DED9;padding:11px 12px;text-align:left}
+.post-body th{background:#F4F3F0;font-weight:700;white-space:nowrap}
+.post-body td strong{color:#C1272D}
+
+.tip{background:#F0F4F6;border-left:4px solid #2F4858;padding:14px 16px;
+  margin:0 0 20px;border-radius:0 4px 4px 0;font-size:15.5px}
+.warn{background:#FBEDED;border-left:4px solid #C1272D;padding:14px 16px;
+  margin:0 0 20px;border-radius:0 4px 4px 0;font-size:15.5px}
+
+.faq{border-top:1px solid #E0DED9;margin-top:8px}
+.faq-q{font-weight:700;font-size:16.5px;margin:20px 0 8px;color:#1A1A18}
+.faq-a{margin:0 0 18px;color:#3A3A38}
+
+.related{border:1px solid #E0DED9;border-radius:4px;padding:18px;margin:0 0 24px;background:#FCFCFB}
+.related-t{font-size:15px;font-weight:700;margin:0 0 12px}
+.related ul{margin:0;padding-left:20px}
+.related li{margin-bottom:9px;font-size:16px}
+.related a{color:#2F4858;text-decoration:none;border-bottom:1px solid #C9C7C2}
+
+.disclaimer{margin-top:28px;padding-top:16px;border-top:1px solid #E8E6E1;
+  font-size:13.5px;color:#777;line-height:1.7}
+
+/* 광고 슬롯: min-height로 자리를 예약해 레이아웃 이동(CLS)을 막습니다.
+   광고가 늦게 로드되며 본문이 밀리면 오클릭이 나고, 오클릭은 무효 트래픽으로
+   잡힐 수 있습니다. 상하 28px 여백 = 정책상 20px 이격 기준 충족. */
+.ad-slot{margin:28px 0;display:flex;flex-direction:column;align-items:center}
+.ad-slot .ad-label{font-size:11px;color:#AAA;letter-spacing:.08em;margin-bottom:6px;align-self:flex-start}
+.ad-slot ins{display:block;width:100%}
+.ad-inline{min-height:280px}
+.ad-multiplex{min-height:400px}
+
+@media(max-width:600px){
+  .post-body{font-size:16px}
+  .post-body h2{font-size:19px}
+  .ad-slot{margin:24px 0}
+  .ad-inline{min-height:250px}
+  .ad-multiplex{min-height:600px}
+}
+</style>
+
+<div class="post-body">
+
+<div class="lede">
+  <p><strong>결론부터: 2026년 실업급여 1일 상한액은 68,100원, 하한액은 66,048원입니다(고용노동부 고시).</strong> 비자발적으로 퇴사하고 이직일 이전 18개월 동안 고용보험 피보험단위기간이 180일 이상이면 신청할 수 있습니다. 반려 사유 1위는 이 180일 계산 착오입니다.</p>
+  <ul>
+    <li>1일 상한액 <strong>68,100원</strong> / 하한액 <strong>66,048원</strong> (2026년 기준)</li>
+    <li>지급일수 <strong>120~270일</strong> — 만 나이와 가입기간에 따라</li>
+    <li>신청 기한: 이직일 다음 날부터 <strong>12개월 이내</strong></li>
+    <li>2026년부터 반복수급자(5년 내 3회 이상) 급여 <strong>최대 50% 감액</strong></li>
+  </ul>
+</div>
+
+<!-- ═══ AD 1 ═══════════════════════════════════════
+     위치: 결론 박스 뒤 / 목차 앞 (본문 약 8%)
+     근거: 독자가 결론을 읽고 목차로 넘어가며 반드시 지나가고 잠깐 멈추는
+           구간. Active View 조건(면적 50%가 1초 이상)을 채우기 가장 쉽습니다.
+     설정: 반응형 디스플레이 / 지연 로딩 금지
+═══════════════════════════════════════════════════ -->
+<div class="ad-slot ad-inline">
+  <span class="ad-label">광고</span>
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-여기에본인퍼블리셔ID"
+       data-ad-slot="여기에광고단위ID"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<nav class="toc">
+  <p class="toc-t">목차</p>
+  <ol>
+    <li><a href="#s1">수급 요건 네 가지</a></li>
+    <li><a href="#s2">180일 계산 — 반려 사유 1위</a></li>
+    <li><a href="#s3">얼마를 받나 — 상한액과 하한액</a></li>
+    <li><a href="#s4">며칠 동안 받나</a></li>
+    <li><a href="#s5">신청 절차와 첫 지급까지</a></li>
+    <li><a href="#s6">자발적 퇴사인데 받을 수 있는 경우</a></li>
+    <li><a href="#s7">2026년 달라진 점 — 반복수급 제재</a></li>
+    <li><a href="#s8">실수로 못 받는 경우</a></li>
+    <li><a href="#s9">자주 묻는 질문</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1">수급 요건 네 가지</h2>
+<p>실업급여(구직급여)를 받으려면 고용보험법상 네 요건을 모두 충족해야 합니다. 하나라도 빠지면 수급자격이 인정되지 않습니다.</p>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>요건</th><th>기준</th></tr></thead>
+  <tbody>
+    <tr><td>고용보험 가입</td><td>이직일 이전 <strong>18개월간 피보험단위기간 180일 이상</strong></td></tr>
+    <tr><td>퇴사 사유</td><td><strong>비자발적 이직</strong> (권고사직·계약만료·경영상 해고 등)</td></tr>
+    <tr><td>근로 의사</td><td>일할 능력과 의사가 있으나 취업하지 못한 상태</td></tr>
+    <tr><td>재취업 노력</td><td>적극적으로 구직활동을 할 것</td></tr>
+  </tbody>
+</table>
+</div>
+<p>고용보험법 제40조는 구직급여 수급요건을 "이직일 이전 18개월간 피보험 단위기간이 통산하여 180일 이상일 것"으로 규정합니다. 여기서 <strong>'피보험 단위기간'은 재직일수가 아닙니다.</strong></p>
+<p>기준은 고용보험(ei.go.kr) 기준이며, 본인의 피보험 단위기간은 고용보험 홈페이지 '피보험자격 이력내역서'에서 직접 조회할 수 있습니다.</p>
+<h2 id="s2">180일 계산 — 반려 사유 1위</h2>
+<p>피보험 단위기간은 <strong>보수 지급의 기초가 된 날</strong>만 셉니다. 주 5일 근무자라면 근무일 5일에 유급휴일 1일(통상 일요일)을 더해 <strong>주 6일</strong>이 산입되고, 무급인 토요일은 빠집니다.</p>
+<div class="tip">주 5일 근무자<br>  주당 산입일수 = 근무 5일 + 유급휴일 1일 = 6일<br>  180일 ÷ 6일 = 30주 ≒ 약 7개월</div>
+<p>즉 <strong>실제로는 7개월 이상 근무해야 180일이 채워집니다.</strong> 6개월만 다니고 신청했다가 반려되는 사례가 여기서 나옵니다.</p>
+<p>무급휴직·결근일은 산입되지 않습니다. 다만 <strong>직전 직장에서 못 채운 기간은 그 이전 직장 이력과 합산</strong>할 수 있습니다. 단, 이전에 실업급여를 받은 이력이 있으면 그 시점 이후부터만 계산됩니다.</p>
+<h2 id="s3">얼마를 받나 — 상한액과 하한액</h2>
+<p>구직급여 1일 지급액은 <strong>이직 전 3개월 평균임금의 60%</strong>입니다. 여기에 상한과 하한이 걸립니다.</p>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>구분</th><th>2026년 1일 금액</th><th>30일 환산</th></tr></thead>
+  <tbody>
+    <tr><td>상한액</td><td><strong>68,100원</strong></td><td>약 204만 원</td></tr>
+    <tr><td>하한액</td><td><strong>66,048원</strong></td><td>약 198만 원</td></tr>
+  </tbody>
+</table>
+</div>
+<p>상한액은 고용노동부가 매년 고시하며 2025년 66,000원에서 인상됐습니다. 하한액은 최저임금법상 최저임금의 80%에 1일 소정근로시간을 곱해 산정합니다.</p>
+<p>상한과 하한의 차이가 약 2,000원에 불과해, <strong>실제로는 대부분의 수급자가 월 200만 원 내외를 받습니다.</strong> 이직 전 급여가 500만 원이든 250만 원이든 실수령액이 크게 다르지 않다는 뜻입니다.</p>
+<h2 id="s4">며칠 동안 받나</h2>
+<p>소정급여일수는 <strong>퇴사 당시 만 나이</strong>와 <strong>고용보험 총 가입기간</strong>으로 정해집니다(고용보험법 별표1).</p>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>가입기간</th><th>50세 미만</th><th>50세 이상·장애인</th></tr></thead>
+  <tbody>
+    <tr><td>1년 미만</td><td>120일</td><td>120일</td></tr>
+    <tr><td>1~3년</td><td>150일</td><td>180일</td></tr>
+    <tr><td>3~5년</td><td>180일</td><td>210일</td></tr>
+    <tr><td>5~10년</td><td>210일</td><td>240일</td></tr>
+    <tr><td>10년 이상</td><td>240일</td><td><strong>270일</strong></td></tr>
+  </tbody>
+</table>
+</div>
+<p>최대치인 270일은 약 9개월이고, 상한액 기준 총액은 약 1,839만 원입니다(68,100원 × 270일).</p>
+<p>만 나이는 퇴사일 기준입니다. 생일이 며칠 차이로 50세를 넘기면 지급일수가 30일 늘어나는 구간이 있으니, 퇴사일 조정이 가능하다면 확인해 볼 값어치가 있습니다.</p>
+<h2 id="s5">신청 절차와 첫 지급까지</h2>
+<p>절차 순서가 정해져 있고 앞 단계가 끝나야 다음이 진행됩니다.</p>
+<ol>
+  <li><strong>회사가 이직확인서·피보험자격 상실신고 제출</strong> — 회사가 처리합니다. 제출 여부는 고용보험(ei.go.kr)에서 직접 조회할 수 있고, 미제출 시 근로복지공단에 처리를 요청할 수 있습니다</li>
+  <li><strong>고용24(work24.go.kr)에서 구직 신청</strong></li>
+  <li><strong>수급자격 신청자 온라인 교육 수강</strong> — 약 1시간</li>
+  <li><strong>거주지 관할 고용센터 방문</strong> — 신분증 지참</li>
+  <li><strong>수급자격 인정 후 1차 실업인정일에 첫 지급</strong></li>
+</ol>
+<p>준비 서류는 신분증, 통장 사본, 그리고 해당하는 경우 퇴직증명서와 근로계약서입니다.</p>
+<p><strong>신청부터 첫 입금까지 통상 3~4주 걸립니다.</strong> 대기기간 7일이 있고 그 뒤 1차 실업인정일이 잡히기 때문입니다. 퇴사 직후 바로 신청하는 편이 좋습니다.</p>
+
+<!-- ═══ AD 2 ═══════════════════════════════════════
+     위치: 본문 중반 (약 50~60%)
+     근거: 실측 상위 블로그 밀도는 본문 1,000~1,300자당 1개.
+     설정: 인아티클 / 지연 로딩 허용
+═══════════════════════════════════════════════════ -->
+<div class="ad-slot ad-inline">
+  <span class="ad-label">광고</span>
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-여기에본인퍼블리셔ID"
+       data-ad-slot="여기에광고단위ID"
+       data-ad-format="fluid"
+       data-ad-layout="in-article"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<h2 id="s6">자발적 퇴사인데 받을 수 있는 경우</h2>
+<p>원칙적으로 자진 퇴사는 수급 대상이 아니지만, 고용보험법 시행규칙 별표2는 '정당한 이직 사유'를 열거하고 있습니다.</p>
+<ul>
+  <li>2개월 이상 임금 체불</li>
+  <li>최저임금 미달</li>
+  <li>주 52시간 초과 근로 지속</li>
+  <li>직장 내 괴롭힘·성희롱</li>
+  <li>사업장 이전이나 전근으로 <strong>통근 왕복 3시간 이상</strong></li>
+  <li>질병·부상으로 업무 수행이 어렵고 회사가 배치전환을 못 해준 경우</li>
+  <li>배우자·부양가족과 동거를 위한 거주지 이전</li>
+  <li>임신·출산·육아로 퇴사하는데 회사가 휴직을 허용하지 않은 경우</li>
+</ul>
+<p><strong>입증 자료가 전부입니다.</strong> 급여명세서, 근로계약서, 카카오톡 대화, 병원 진단서를 퇴사 전에 확보해 두세요. 퇴사 후에는 회사에서 자료를 받기 어려워집니다.</p>
+<h2 id="s7">2026년 달라진 점 — 반복수급 제재</h2>
+<p>2026년부터 <strong>5년 내 3회 이상 수급자는 급여액이 최대 50%까지 감액</strong>되고, 대기기간도 최대 4주까지 연장됩니다. 단기 취업과 실업급여 수급을 반복하는 사례를 제한하기 위한 조치입니다.</p>
+<p>수급 횟수가 늘어날수록 감액률이 커지는 구조이므로, 반복 수급 이력이 있다면 실제 수령액을 고용센터에 미리 확인하는 편이 낫습니다.</p>
+<h2 id="s8">실수로 못 받는 경우</h2>
+<ul>
+  <li><strong>12개월 기한 초과</strong> — 이직일 다음 날부터 12개월이 지나면 소정급여일수가 남아 있어도 지급이 종료됩니다</li>
+  <li><strong>실업인정일 미출석·미신고</strong> — 해당 회차 급여가 지급되지 않습니다</li>
+  <li><strong>아르바이트 소득 미신고</strong> — 부정수급으로 처리되면 반환에 더해 최대 5배 추가징수와 형사처벌 대상이 됩니다</li>
+</ul>
+<p>단기 아르바이트를 했다면 하루를 일했더라도 실업인정 신청서에 신고해야 합니다. 국세청에 신고되는 소득은 고용센터가 사후에 확인할 수 있습니다.</p>
+<h2 id="s9">자주 묻는 질문</h2>
+<div class="faq">
+  <p class="faq-q">Q1. 계약직 계약만료도 실업급여가 되나요?</p>
+  <p class="faq-a">됩니다. 계약만료는 비자발적 이직으로 봅니다. 다만 회사가 재계약을 제안했는데 근로자가 거절한 경우는 자발적 이직으로 처리될 수 있습니다.</p>
+  <p class="faq-q">Q2. 권고사직인데 회사가 자진퇴사로 신고했습니다.</p>
+  <p class="faq-a">고용센터에 이의를 제기할 수 있습니다. 면담 녹취, 문자, 사직 권유 메일 등 권고사직을 입증할 자료를 제출하면 정정이 가능합니다.</p>
+  <p class="faq-q">Q3. 6개월 일했는데 180일이 안 되나요?</p>
+  <p class="faq-a">주 5일 근무 기준으로 6개월은 약 156일입니다. 180일을 채우려면 약 7개월이 필요합니다. 정확한 일수는 고용보험 홈페이지의 피보험자격 이력내역서에서 확인하세요.</p>
+  <p class="faq-q">Q4. 받는 중에 취업하면 남은 금액은 어떻게 되나요?</p>
+  <p class="faq-a">소정급여일수가 절반 이상 남은 상태에서 재취업해 12개월 이상 근무하면 조기재취업수당으로 남은 급여의 50%를 받을 수 있습니다.</p>
+  <p class="faq-q">Q5. 65세 이후 취업했는데 되나요?</p>
+  <p class="faq-a">65세 이후 새로 고용된 경우는 구직급여 대상이 아닙니다. 다만 65세 이전부터 같은 사업장에 계속 고용돼 있었다면 수급이 가능합니다.</p>
+  <p class="faq-a"><strong>함께 보면 좋은 글</strong></p>
+<ul>
+  <li>퇴직금 계산 방법 2026 — 평균임금 산정부터 세후 실수령액까지</li>
+  <li>근로장려금 지급일과 신청자격 — 재산 2.4억 기준</li>
+  <li>실업급여 이직확인서가 처리되지 않을 때 대처 방법</li>
+</ul>
+</div>
+<!-- ═══ AD 3 ═══════════════════════════════════════
+     위치: 글 최하단 (관련 글 뒤)
+     형식: 멀티플렉스. 세션당 PV를 올려 전면광고 노출도 함께 늘립니다.
+     주의: 관련 글 링크 위를 광고로 막지 않았습니다. 그 링크 클릭이
+           Vignette 수익의 출발점입니다.
+═══════════════════════════════════════════════════ -->
+<div class="ad-slot ad-multiplex">
+  <span class="ad-label">광고</span>
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-여기에본인퍼블리셔ID"
+       data-ad-slot="여기에광고단위ID"
+       data-ad-format="autorelaxed"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<p class="disclaimer">본 글은 2026년 8월 2일 기준이며 고용보험법 개정에 따라 달라질 수 있습니다. 개인별 수급 가능 여부와 정확한 금액은 고용보험 홈페이지(ei.go.kr), 고용24(work24.go.kr) 또는 고용노동부 고객상담센터 1350에서 확인하시기 바랍니다.</p>
+
+</div>
+
+<!-- 구조화 데이터 (GEO/AEO)
+     Article + FAQPage + HowTo. 본문과 다른 내용을 넣으면
+     정책 위반이자 인용률이 떨어집니다. 반드시 본문과 일치시키세요.
+     SITE 상수의 블로그명·주소·필자명을 실제 값으로 바꾸세요. -->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Article",
+   "headline": "실업급여 조건 2026 — 상한액 68,100원, 180일 계산이 관건",
+   "description": "**결론부터: 2026년 실업급여 1일 상한액은 68,100원, 하한액은 66,048원입니다(고용노동부 고시).** 비자발적으로 퇴사하고 이직일 이전 18개월 동안 고용보험 피보험단위기간이 180일 이상이면 신청할 수 있습니다. 반려 사유 1위는 이 180일 계산 착오입니다.",
+   "inLanguage": "ko-KR",
+   "datePublished": "2026-08-02",
+   "dateModified": "2026-08-02",
+   "author": {
+    "@type": "Person",
+    "name": "여기에 필자명",
+    "url": "https://여기에-소개-페이지"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "여기에 블로그 이름",
+    "url": "https://여기에-블로그-주소"
+   },
+   "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://여기에-블로그-주소"
+   },
+   "articleSection": [
+    "수급 요건 네 가지",
+    "180일 계산 — 반려 사유 1위",
+    "얼마를 받나 — 상한액과 하한액",
+    "며칠 동안 받나",
+    "신청 절차와 첫 지급까지",
+    "자발적 퇴사인데 받을 수 있는 경우",
+    "2026년 달라진 점 — 반복수급 제재",
+    "실수로 못 받는 경우"
+   ],
+   "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+     ".lede",
+     ".faq-a"
+    ]
+   },
+   "keywords": [
+    "실업급여 조건",
+    "실업급여 상한액",
+    "실업급여 지급일수"
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "계약직 계약만료도 실업급여가 되나요?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "됩니다. 계약만료는 비자발적 이직으로 봅니다. 다만 회사가 재계약을 제안했는데 근로자가 거절한 경우는 자발적 이직으로 처리될 수 있습니다."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "권고사직인데 회사가 자진퇴사로 신고했습니다.",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "고용센터에 이의를 제기할 수 있습니다. 면담 녹취, 문자, 사직 권유 메일 등 권고사직을 입증할 자료를 제출하면 정정이 가능합니다."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "6개월 일했는데 180일이 안 되나요?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "주 5일 근무 기준으로 6개월은 약 156일입니다. 180일을 채우려면 약 7개월이 필요합니다. 정확한 일수는 고용보험 홈페이지의 피보험자격 이력내역서에서 확인하세요."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "받는 중에 취업하면 남은 금액은 어떻게 되나요?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "소정급여일수가 절반 이상 남은 상태에서 재취업해 12개월 이상 근무하면 조기재취업수당으로 남은 급여의 50%를 받을 수 있습니다."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "65세 이후 취업했는데 되나요?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "65세 이후 새로 고용된 경우는 구직급여 대상이 아닙니다. 다만 65세 이전부터 같은 사업장에 계속 고용돼 있었다면 수급이 가능합니다. 함께 보면 좋은 글"
+     }
+    }
+   ]
+  },
+  {
+   "@type": "HowTo",
+   "name": "실업급여 조건 2026 — 상한액 68,100원, 180일 계산이 관건",
+   "step": [
+    {
+     "@type": "HowToStep",
+     "position": 1,
+     "name": "회사가 이직확인서·피보험자격 상실신고 제출 — 회사가 처리합니다. 제출 여부는 고용보험(ei.go.kr)에서 직접 조회할 수 ",
+     "text": "회사가 이직확인서·피보험자격 상실신고 제출 — 회사가 처리합니다. 제출 여부는 고용보험(ei.go.kr)에서 직접 조회할 수 있고, 미제출 시 근로복지공단에 처리를 요청할 수 있습니다"
+    },
+    {
+     "@type": "HowToStep",
+     "position": 2,
+     "name": "고용24(work24.go.kr)에서 구직 신청",
+     "text": "고용24(work24.go.kr)에서 구직 신청"
+    },
+    {
+     "@type": "HowToStep",
+     "position": 3,
+     "name": "수급자격 신청자 온라인 교육 수강 — 약 1시간",
+     "text": "수급자격 신청자 온라인 교육 수강 — 약 1시간"
+    },
+    {
+     "@type": "HowToStep",
+     "position": 4,
+     "name": "거주지 관할 고용센터 방문 — 신분증 지참",
+     "text": "거주지 관할 고용센터 방문 — 신분증 지참"
+    },
+    {
+     "@type": "HowToStep",
+     "position": 5,
+     "name": "수급자격 인정 후 1차 실업인정일에 첫 지급",
+     "text": "수급자격 인정 후 1차 실업인정일에 첫 지급"
+    }
+   ]
+  }
+ ]
+}
+</script>
