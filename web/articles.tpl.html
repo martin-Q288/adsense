@@ -114,9 +114,14 @@
 const ARTS = /*__ARTS__*/;
 document.getElementById("n").textContent = ARTS.length;
 const BLOGNAME = {T1:"금융·정책·생활정보",T2:"커머스·쿠팡",N:"네이버 홈판"};
+// 네이버 스마트에디터는 임의 HTML/CSS/스크립트를 받지 않습니다.
+// 자체 블록(소제목·인용구·구분선)만 쓰므로 "HTML 복사"(티스토리 PC HTML
+// 모드용) 버튼은 N 카드에서 의미가 없어 숨기고, 앱 안내 문구도 다르게 냅니다.
+const DEST = {T1:"티스토리 앱", T2:"티스토리 앱", N:"네이버 블로그 앱"};
 
 document.getElementById("list").innerHTML = ARTS.map((a,i)=>{
   const b = (a.blog.match(/^(T1|T2|N)/)||[""])[0];
+  const isNaver = b === "N";
   return `<article class="card" data-i="${i}">
     <button class="chead" type="button">
       <span class="tags">
@@ -126,9 +131,10 @@ document.getElementById("list").innerHTML = ARTS.map((a,i)=>{
       </span>
       <span class="ct">${a.title}</span>
       <span class="ckw">${a.kw}</span>
+      <span class="ckw">→ ${DEST[b]||"티스토리 앱"}${isNaver ? " (광고 코드 없음, 서식만 붙여넣기)" : ""}</span>
       <span class="cfoot">
         <span class="btn pri copyrich">서식 복사</span>
-        <span class="btn copyhtml">HTML 복사</span>
+        ${isNaver ? "" : '<span class="btn copyhtml">HTML 복사</span>'}
         <span class="btn">본문 보기</span>
       </span>
     </button>
