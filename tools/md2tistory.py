@@ -474,7 +474,7 @@ def build_schema(title, faq, steps, meta, headings, summary):
 
 LEFTOVER = re.compile(r'(\*\*)|(^#{1,6}\s)|(^\s*\|)|(^\s*>\s)|(^\s*[-*]\s)', re.M)
 
-def build(path, outdir):
+def build(path, outdir, pub=None, slot=None):
     raw = open(path, encoding="utf-8").read()
     meta, body = {}, raw
     m = re.match(r'^---\n(.*?)\n---\n(.*)$', raw, re.S)
@@ -488,6 +488,13 @@ def build(path, outdir):
     doc = "\n".join([head_comment(title, meta), "", CSS, "",
                      '<div class="post-body">', "", inner, "", "</div>",
                      build_schema(title, faq, steps, meta, headings, summary)])
+
+    # 발행자·광고단위 ID를 실제 값으로 치환. 세 개 광고 슬롯이 같은
+    # 디스플레이 광고 단위를 재사용하는 건 정상입니다(애드센스 표준 관행).
+    if pub:
+        doc = doc.replace("ca-pub-여기에본인퍼블리셔ID", pub)
+    if slot:
+        doc = doc.replace("여기에광고단위ID", slot)
 
     # 검증: 마크다운 잔여 기호
     check = re.sub(r'<!--.*?-->', '', doc, flags=re.S)
@@ -514,10 +521,19 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("files", nargs="+")
     p.add_argument("-o", "--out", default="content/articles/html")
+    p.add_argument("--pub", default=os.environ.get("ADSENSE_PUB"),
+                   help="애드센스 게시자 ID (ca-pub-1234567890123456). "
+                        "생략하면 ADSENSE_PUB 환경변수를 씁니다.")
+    p.add_argument("--slot", default=os.environ.get("ADSENSE_SLOT"),
+                   help="디스플레이 광고 단위 ID. 세 광고 슬롯이 같은 단위를 "
+                        "재사용해도 정상입니다. 생략하면 ADSENSE_SLOT 환경변수.")
     a = p.parse_args()
+    if not a.pub or not a.slot:
+        print("※ --pub / --slot 없이 실행 — 플레이스홀더가 그대로 남습니다.\n"
+              "   실제 발행 전엔 반드시 채워야 광고가 나옵니다.\n")
     fail = 0
     for f in a.files:
-        r = build(f, a.out)
+        r = build(f, a.out, pub=a.pub, slot=a.slot)
         flag = "OK " if not r["leftover"] else "WARN"
         if r["leftover"]: fail += 1
         print(f"{flag} {os.path.basename(r['out'])}")
