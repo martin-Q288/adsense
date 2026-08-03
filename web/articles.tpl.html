@@ -136,6 +136,34 @@ document.getElementById("list").innerHTML = ARTS.map((a,i)=>{
   </article>`;
 }).join("");
 
+// execCommand('copy') 폴백 — 클립보드 API가 막힌 인앱 브라우저·구형 웹뷰용.
+// 화면 밖에 textarea를 만들어 값을 넣고 선택한 뒤 구식 복사 명령을 씁니다.
+function legacyCopy(text){
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.top = "-9999px";
+  ta.style.left = "-9999px";
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  let ok = false;
+  try{ ok = document.execCommand("copy"); }catch(err){ ok = false; }
+  document.body.removeChild(ta);
+  return ok;
+}
+
+// 자동 복사가 전부 막혔을 때의 마지막 수단 — 본문을 펼치고 직접 길게 눌러
+// 선택하도록 안내합니다. "복사 실패"만 뜨고 아무것도 못 하는 상황을 막습니다.
+function manualFallback(card, text, btn, label){
+  const pre = card.querySelector("pre");
+  pre.textContent = text;
+  card.classList.add("open");
+  btn.textContent = "복사 실패 — 아래 글 길게 눌러 복사하세요";
+  pre.scrollIntoView({behavior:"smooth", block:"center"});
+  setTimeout(()=>btn.textContent = label, 3200);
+}
+
 document.addEventListener("click", e => {
   const card = e.target.closest(".card");
   if(!card) return;
@@ -146,10 +174,13 @@ document.addEventListener("click", e => {
     e.stopPropagation();
     const btn = rich || raw;
     const label = btn.textContent;
+    const text = rich ? a.mob : a.md;
     const done = () => { btn.textContent = "복사됨";
       setTimeout(()=>btn.textContent = label, 1500); };
-    const fail = () => { btn.textContent = "복사 실패";
-      setTimeout(()=>btn.textContent = label, 1800); };
+    const tryLegacy = () => {
+      if(legacyCopy(text)) done();
+      else manualFallback(card, text, btn, label);
+    };
     if(rich){
       // 위지윅 에디터가 서식을 살려 받도록 text/html로 넣는다
       try{
@@ -157,10 +188,13 @@ document.addEventListener("click", e => {
           "text/html": new Blob([a.mob], {type:"text/html"}),
           "text/plain": new Blob([a.mob], {type:"text/plain"})
         });
-        navigator.clipboard.write([item]).then(done).catch(fail);
-      }catch(err){ navigator.clipboard?.writeText(a.mob).then(done).catch(fail); }
+        navigator.clipboard.write([item]).then(done)
+          .catch(()=> navigator.clipboard?.writeText(a.mob).then(done).catch(tryLegacy));
+      }catch(err){
+        navigator.clipboard?.writeText(a.mob).then(done).catch(tryLegacy) ?? tryLegacy();
+      }
     } else {
-      navigator.clipboard?.writeText(a.md).then(done).catch(fail);
+      navigator.clipboard?.writeText(a.md).then(done).catch(tryLegacy) ?? tryLegacy();
     }
     return;
   }
