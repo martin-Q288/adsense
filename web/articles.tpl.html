@@ -72,31 +72,32 @@
 <div class="wrap">
   <header>
     <p class="eyebrow">우선순위순 · 원고 <span id="n"></span>편</p>
-    <h1>발행 대기 원고 (티스토리 HTML)</h1>
-    <p class="sub">폰에서 바로 발행할 수 있게 두 가지 복사 방식을 넣었습니다.</p>
+    <h1>발행 대기 원고</h1>
+    <p class="sub">에디터에 그대로 붙는 순수 텍스트입니다. 광고 코드는 없습니다.</p>
   </header>
 
   <div class="note">
-    <b>티스토리 모바일 앱에는 HTML 모드가 없습니다.</b> (다음 고객센터 공식 안내)
-    그래서 복사 버튼을 둘로 나눴습니다.
+    <b>광고는 본문에 넣지 않습니다.</b> 티스토리 <b>관리 → 수익 → 애드센스 관리</b>에서
+    본문 상단·중간·하단 자동광고를 켜 두면 글마다 알아서 들어갑니다.
+    한 번만 설정하면 끝입니다.
   </div>
 
   <div class="how">
     <div class="way">
-      <p class="way-t">방법 1 · 앱에서 바로 <span class="pill">서식 복사</span></p>
-      <p>티스토리 앱 → 글쓰기 → <strong>기본 모드에 그대로 붙여넣기</strong>.
-      제목·굵기·표·목록이 서식 그대로 들어갑니다. 가장 빠릅니다.</p>
-      <p class="cav">단, 광고 코드는 위지윅에 안 붙습니다. 본문 광고 없이 나가고
-      <strong>자동광고(앵커·전면·페이지 내 광고 전부 ON)</strong>에 맡기면 됩니다.</p>
+      <p class="way-t">발행 순서 <span class="pill">3단계</span></p>
+      <p><strong>1.</strong> 카드에서 <strong>제목 복사</strong> → 앱 글쓰기의 제목 칸에 붙여넣기</p>
+      <p><strong>2.</strong> <strong>본문 복사</strong> → 본문 칸에 붙여넣기</p>
+      <p><strong>3.</strong> 소제목 줄만 블록으로 잡아 에디터의 <strong>소제목(제목2)</strong> 스타일 지정</p>
+      <p class="cav">3번을 건너뛰어도 발행은 됩니다. 다만 소제목을 잡아 줘야
+      검색엔진이 문단 구조를 읽습니다. 한 글에 30초면 됩니다.</p>
     </div>
     <div class="way">
-      <p class="way-t">방법 2 · 데스크톱 모드에서 <span class="pill">HTML 복사</span></p>
-      <p>수동 광고 3개까지 그대로 넣고 싶을 때. 폰 브라우저에서 PC 화면을 띄웁니다.</p>
-      <p><strong>아이폰 Safari</strong> 주소창 왼쪽 <strong>ᴀA</strong> → 데스크탑 웹사이트 요청<br>
-      <strong>안드로이드 Chrome</strong> 우측 상단 <strong>⋮</strong> → 데스크톱 사이트 체크</p>
-      <p>그다음 tistory.com 로그인 → 글쓰기 → 우측 하단 <strong>기본모드 → HTML</strong> → 붙여넣기.
-      이때는 자동광고의 <strong>페이지 내 광고를 OFF</strong>로 두세요.</p>
-      <p class="cav">붙인 뒤 <code>ca-pub-…</code>와 <code>/entry/글주소를-여기에</code>를 실제 값으로 교체.</p>
+      <p class="way-t">붙여넣은 뒤 확인할 것</p>
+      <p>줄 사이가 너무 붙어 있으면 소제목 앞뒤로 <strong>엔터를 한 번씩</strong> 더 넣으세요.
+      모바일에서 읽기가 확연히 달라집니다.</p>
+      <p><strong>썸네일</strong>은 대표 이미지로 넣고, 글 맨 아래
+      <strong>함께 보면 좋은 글</strong> 세 줄은 발행한 글끼리 실제 링크로 연결하세요.</p>
+      <p class="cav">네이버(N)는 스마트에디터가 표를 못 받으므로 이미 텍스트로 풀어 뒀습니다.</p>
     </div>
   </div>
 
@@ -114,33 +115,28 @@
 const ARTS = /*__ARTS__*/;
 document.getElementById("n").textContent = ARTS.length;
 const BLOGNAME = {T1:"금융·정책·생활정보",T2:"커머스·쿠팡",N:"네이버 홈판"};
-// 네이버 스마트에디터는 임의 HTML/CSS/스크립트를 받지 않습니다.
-// 자체 블록(소제목·인용구·구분선)만 쓰므로 "HTML 복사"(티스토리 PC HTML
-// 모드용) 버튼은 N 카드에서 의미가 없어 숨기고, 앱 안내 문구도 다르게 냅니다.
 const DEST = {T1:"티스토리 앱", T2:"티스토리 앱", N:"네이버 블로그 앱"};
+const esc = s => s.replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
 
-document.getElementById("list").innerHTML = ARTS.map((a,i)=>{
-  const b = (a.blog.match(/^(T1|T2|N)/)||[""])[0];
-  const isNaver = b === "N";
-  return `<article class="card" data-i="${i}">
+document.getElementById("list").innerHTML = ARTS.map((a,i)=>`
+  <article class="card" data-i="${i}">
     <button class="chead" type="button">
       <span class="tags">
-        <span class="tg">${b} · ${BLOGNAME[b]||""}</span>
-        <span class="tg rpm">${a.rpm.replace(/·.*/,"").trim()}</span>
+        <span class="tg">${a.blog} · ${BLOGNAME[a.blog]||""}</span>
         <span class="tg rpm">${a.len}</span>
+        ${a.due ? `<span class="tg rpm">${esc(a.due)}</span>` : ""}
       </span>
-      <span class="ct">${a.title}</span>
-      <span class="ckw">${a.kw}</span>
-      <span class="ckw">→ ${DEST[b]||"티스토리 앱"}${isNaver ? " (광고 코드 없음, 서식만 붙여넣기)" : ""}</span>
+      <span class="ct">${esc(a.title)}</span>
+      <span class="ckw">${esc(a.kw)}</span>
+      <span class="ckw">→ ${DEST[a.blog]||"티스토리 앱"}</span>
       <span class="cfoot">
-        <span class="btn pri copyrich">서식 복사</span>
-        ${isNaver ? "" : '<span class="btn copyhtml">HTML 복사</span>'}
+        <span class="btn copytitle">제목 복사</span>
+        <span class="btn pri copybody">본문 복사</span>
         <span class="btn">본문 보기</span>
       </span>
     </button>
     <div class="cbody"><pre></pre></div>
-  </article>`;
-}).join("");
+  </article>`).join("");
 
 // execCommand('copy') 폴백 — 클립보드 API가 막힌 인앱 브라우저·구형 웹뷰용.
 // 화면 밖에 textarea를 만들어 값을 넣고 선택한 뒤 구식 복사 명령을 씁니다.
@@ -174,38 +170,23 @@ document.addEventListener("click", e => {
   const card = e.target.closest(".card");
   if(!card) return;
   const a = ARTS[+card.dataset.i];
-  const rich = e.target.closest(".copyrich");
-  const raw  = e.target.closest(".copyhtml");
-  if(rich || raw){
+  const btn = e.target.closest(".copytitle, .copybody");
+  if(btn){
     e.stopPropagation();
-    const btn = rich || raw;
     const label = btn.textContent;
-    const text = rich ? a.mob : a.md;
+    const text = btn.classList.contains("copytitle") ? a.title : a.body;
     const done = () => { btn.textContent = "복사됨";
       setTimeout(()=>btn.textContent = label, 1500); };
     const tryLegacy = () => {
       if(legacyCopy(text)) done();
       else manualFallback(card, text, btn, label);
     };
-    if(rich){
-      // 위지윅 에디터가 서식을 살려 받도록 text/html로 넣는다
-      try{
-        const item = new ClipboardItem({
-          "text/html": new Blob([a.mob], {type:"text/html"}),
-          "text/plain": new Blob([a.mob], {type:"text/plain"})
-        });
-        navigator.clipboard.write([item]).then(done)
-          .catch(()=> navigator.clipboard?.writeText(a.mob).then(done).catch(tryLegacy));
-      }catch(err){
-        navigator.clipboard?.writeText(a.mob).then(done).catch(tryLegacy) ?? tryLegacy();
-      }
-    } else {
-      navigator.clipboard?.writeText(a.md).then(done).catch(tryLegacy) ?? tryLegacy();
-    }
+    // 순수 텍스트라 text/plain 하나면 충분하다. 에디터가 알아서 문단을 나눈다.
+    navigator.clipboard?.writeText(text).then(done).catch(tryLegacy) ?? tryLegacy();
     return;
   }
   const pre = card.querySelector("pre");
-  if(!pre.textContent) pre.textContent = a.md;
+  if(!pre.textContent) pre.textContent = a.title + "\n\n" + a.body;
   card.classList.toggle("open");
 });
 </script>
