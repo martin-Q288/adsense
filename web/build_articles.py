@@ -3,9 +3,31 @@
 import glob, json, os, re, html
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
+
+# 발행 우선순위 (docs/16). 파일명 날짜가 아니라 실제 마감 기준.
+# 목록에 없는 파일은 뒤로 붙는다 (파일명순).
+PRIORITY = [
+    "2026-08-03_T1_말복-보양식",
+    "2026-08-03_T1_광복절-대체공휴일",
+    "2026-08-02_T1_에어컨-전기요금-누진세",
+    "2026-08-03_T1_쿠팡-고객센터-전화번호",
+    "2026-08-02_T1_근로장려금-지급일-신청자격",
+    "2026-08-02_T1_실업급여-조건",
+    "2026-08-02_T1_퇴직금-계산방법",
+    "2026-08-02_T1_전세보증보험-가입방법",
+    "2026-08-02_N_전입신고-확정일자",
+]
+
+def sort_key(path):
+    base = os.path.basename(path).removesuffix(".html")
+    try:
+        return (0, PRIORITY.index(base))
+    except ValueError:
+        return (1, base)
+
 arts = []
-for p in sorted(x for x in glob.glob(f"{ROOT}/content/articles/html/*.html")
-               if not x.endswith(".mobile.html")):
+for p in sorted((x for x in glob.glob(f"{ROOT}/content/articles/html/*.html")
+               if not x.endswith(".mobile.html")), key=sort_key):
     raw = open(p, encoding="utf-8").read()
     head = re.search(r"<!--(.*?)-->", raw, re.S)
     h = head.group(1) if head else ""
