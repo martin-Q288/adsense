@@ -28,6 +28,43 @@ def split_row(line):
     return [strip_inline(c) for c in line.strip().strip("|").split("|")]
 
 
+# 문장 끝 마침표만 자른다. 한글·닫는괄호·따옴표 뒤의 구두점만 경계로 보므로
+# "2.4억", "hometax.go.kr", "1,157." 같은 것은 잘리지 않는다.
+SENT_END = re.compile(r'(?<=[가-힣)\]"\'])([.!?])\s+')
+
+# 한 화면에 두세 줄씩 — 문장마다 줄을 바꾸고 두 문장마다 빈 줄을 넣는다.
+# 폰에서 문단이 통짜 벽으로 보이는 것을 막는다 (docs/14 8-5).
+SENT_PER_BLOCK = 2
+
+# 폰 한 줄에 대략 25자. 이보다 두 배 이상 긴 문장은 접속 어미 뒤에서 한 번
+# 더 끊는다. 어미를 남기고 자르므로 뜻은 그대로다.
+LONG_SENT = 50
+CLAUSE_END = re.compile(r"(?<=[고며데서만나]),\s+")
+
+
+def split_sentence(s):
+    if len(s) <= LONG_SENT:
+        return [s]
+    parts = [p.strip() for p in CLAUSE_END.sub(",\n", s).split("\n") if p.strip()]
+    # 쪼갠 조각이 너무 짧으면 원래대로 둔다 (토막난 줄이 더 안 읽힌다)
+    return parts if all(len(p) >= 12 for p in parts) else [s]
+
+
+def wrap_para(text, out):
+    """문단 하나를 문장 단위로 쪼개 모바일 가독성에 맞게 늘어놓는다."""
+    parts = SENT_END.sub(r"\1\n", text).split("\n")
+    sents = [x for s in parts if s.strip() for x in split_sentence(s.strip())]
+    if len(sents) <= 1:
+        out.append(text)
+        return
+    for i, s in enumerate(sents):
+        out.append(s)
+        left = len(sents) - (i + 1)
+        # 한 문장만 남으면 끊지 않는다. 홀로 떨어진 줄이 생기지 않게.
+        if (i + 1) % SENT_PER_BLOCK == 0 and left > 1:
+            out.append("")
+
+
 def flush_table(rows, out):
     """표를 텍스트 줄로 푼다.
 
@@ -107,12 +144,15 @@ def convert(md):
                 continue
             if out and out[-1] != "":
                 out.append("")
-            out.append(text)
+            # 기호를 앞에 달아 소제목 스타일을 지정하기 전에도 구조가 보이게
+            # 한다. 에디터에서 소제목으로 잡은 뒤 지워도 된다.
+            out.append(("■ " if len(m.group(1)) == 2 else "▪ ") + text)
             out.append("")
             continue
 
-        # 목록 — 마크다운 기호 대신 가운뎃점, 번호는 그대로 살린다
-        m = re.match(r"^\s*[-*]\s+(.*)", line)
+        # 목록 — 마크다운 기호 대신 가운뎃점, 번호는 그대로 살린다.
+        # 원고에서 이미 가운뎃점으로 쓴 줄도 목록으로 받는다 (문장 분리 제외).
+        m = re.match(r"^\s*[-*·]\s+(.*)", line)
         if m:
             out.append("· " + strip_inline(m.group(1)))
             continue
@@ -123,7 +163,7 @@ def convert(md):
 
         # 인용문 기호는 떼고 평문으로
         line = re.sub(r"^>\s?", "", line)
-        out.append(strip_inline(line))
+        wrap_para(strip_inline(line), out)
 
     if table:
         flush_table(table, out)
