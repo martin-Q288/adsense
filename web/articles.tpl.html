@@ -72,36 +72,37 @@
 <div class="wrap">
   <header>
     <p class="eyebrow">우선순위순 · 원고 <span id="n"></span>편</p>
-    <h1>발행 대기 원고</h1>
-    <p class="sub">에디터에 그대로 붙는 순수 텍스트입니다. 광고 코드는 없습니다.</p>
+    <h1>발행 대기 원고 (완성 HTML)</h1>
+    <p class="sub">복사해서 붙여넣고 바로 발행하면 됩니다. 목차 자동, 광고 코드 없음.</p>
   </header>
 
   <div class="note">
-    <b>광고는 본문에 넣지 않습니다.</b> 티스토리 <b>관리 → 수익 → 애드센스 관리</b>에서
-    본문 상단·중간·하단 자동광고를 켜 두면 글마다 알아서 들어갑니다.
-    한 번만 설정하면 끝입니다.
+    <b>목차·소제목·표가 다 들어간 완성 HTML입니다.</b> 광고 코드는 없습니다.
+    티스토리 <b>관리 → 수익 → 애드센스 관리</b>에서 자동광고만 켜 두면 됩니다.
   </div>
 
   <div class="how">
     <div class="way">
-      <p class="way-t">발행 순서 <span class="pill">3단계</span></p>
-      <p><strong>1.</strong> 카드에서 <strong>제목 복사</strong> → 앱 글쓰기의 제목 칸에 붙여넣기</p>
-      <p><strong>2.</strong> <strong>본문 복사</strong> → 본문 칸에 붙여넣기</p>
-      <p><strong>3.</strong> <code>■</code> 로 시작하는 줄만 잡아 에디터의
-      <strong>소제목(제목2)</strong> 스타일 지정. 스타일을 먹인 뒤
-      <code>■</code> 기호는 지워도 되고 둬도 됩니다</p>
-      <p class="cav">3번을 건너뛰어도 발행은 됩니다. 다만 소제목을 잡아 줘야
-      검색엔진이 문단 구조를 읽습니다. 한 글에 30초면 됩니다.</p>
+      <p class="way-t">폰에서 <span class="pill">서식 복사</span></p>
+      <p>티스토리 앱 → 글쓰기 → <strong>기본 모드에 그대로 붙여넣기</strong>.
+      목차·소제목·표가 서식 그대로 들어갑니다. 손볼 게 없습니다.</p>
+      <p class="cav">네이버(N)도 이 버튼을 쓰세요. 스마트에디터는 HTML 원본을
+      받지 않습니다.</p>
     </div>
     <div class="way">
-      <p class="way-t">줄바꿈은 이미 넣어 뒀습니다</p>
-      <p>폰에서 통짜 문단으로 보이지 않도록 <strong>문장마다 줄을 바꾸고
-      두 문장마다 빈 줄</strong>을 넣은 상태입니다. 긴 문장은 접속 어미
-      뒤에서 한 번 더 끊었습니다.</p>
-      <p>그대로 붙여넣으면 됩니다. <strong>줄 간격을 임의로 지우지 마세요.</strong>
-      붙여넣고 나서 한 번 훑어보고 어색한 데만 손보면 됩니다.</p>
-      <p class="cav">표는 텍스트 줄로 풀어 뒀습니다. 네이버 스마트에디터는
-      표를 그대로 못 받고, 티스토리도 폰에서 가로로 밀립니다.</p>
+      <p class="way-t">PC에서 <span class="pill">HTML 복사</span></p>
+      <p>가장 정확합니다. tistory.com 로그인 → 글쓰기 →
+      우측 하단 <strong>기본모드 → HTML</strong> → 붙여넣기.</p>
+      <p class="cav">폰에서 PC 화면을 띄우려면 — 아이폰 Safari 주소창 왼쪽
+      <strong>ᴀA</strong> → 데스크탑 웹사이트 요청 / 안드로이드 Chrome
+      우측 상단 <strong>⋮</strong> → 데스크톱 사이트</p>
+    </div>
+    <div class="way">
+      <p class="way-t">발행 뒤 두 가지만</p>
+      <p><strong>대표 이미지</strong>를 지정하고, 맨 아래
+      <strong>함께 보면 좋은 글</strong> 세 줄을 실제 글 주소로 연결하세요.
+      이 링크가 체류시간을 만듭니다.</p>
+      <p class="cav">발행 후 서치콘솔에서 URL 검사 → 색인 요청까지 하면 끝입니다.</p>
     </div>
   </div>
 
@@ -135,7 +136,8 @@ document.getElementById("list").innerHTML = ARTS.map((a,i)=>`
       <span class="ckw">→ ${DEST[a.blog]||"티스토리 앱"}</span>
       <span class="cfoot">
         <span class="btn copytitle">제목 복사</span>
-        <span class="btn pri copybody">본문 복사</span>
+        <span class="btn pri copyrich">서식 복사</span>
+        <span class="btn copyhtml">HTML 복사</span>
         <span class="btn">본문 보기</span>
       </span>
     </button>
@@ -174,18 +176,29 @@ document.addEventListener("click", e => {
   const card = e.target.closest(".card");
   if(!card) return;
   const a = ARTS[+card.dataset.i];
-  const btn = e.target.closest(".copytitle, .copybody");
+  const btn = e.target.closest(".copytitle, .copyrich, .copyhtml");
   if(btn){
     e.stopPropagation();
     const label = btn.textContent;
-    const text = btn.classList.contains("copytitle") ? a.title : a.body;
+    const rich = btn.classList.contains("copyrich");
+    const text = btn.classList.contains("copytitle") ? a.title : a.html;
     const done = () => { btn.textContent = "복사됨";
       setTimeout(()=>btn.textContent = label, 1500); };
     const tryLegacy = () => {
       if(legacyCopy(text)) done();
       else manualFallback(card, text, btn, label);
     };
-    // 순수 텍스트라 text/plain 하나면 충분하다. 에디터가 알아서 문단을 나눈다.
+    if(rich){
+      // 위지윅 에디터가 서식을 살려 받도록 text/html 로 넣는다.
+      // text/plain 도 같이 넣어 HTML 모드에 붙여도 원본이 들어가게 한다.
+      try{
+        navigator.clipboard.write([new ClipboardItem({
+          "text/html": new Blob([a.html], {type:"text/html"}),
+          "text/plain": new Blob([a.html], {type:"text/plain"})
+        })]).then(done).catch(tryLegacy);
+      }catch(err){ tryLegacy(); }
+      return;
+    }
     navigator.clipboard?.writeText(text).then(done).catch(tryLegacy) ?? tryLegacy();
     return;
   }

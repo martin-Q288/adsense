@@ -13,6 +13,7 @@ import sys
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 from md2text import convert  # noqa: E402
+from md2html import convert as to_html  # noqa: E402
 
 # 발행 우선순위 (docs/16). 파일명 날짜가 아니라 실제 마감 기준.
 # 목록에 없는 파일은 뒤로 붙는다 (파일명순).
@@ -63,13 +64,16 @@ for p in sorted(glob.glob(f"{ROOT}/content/articles/*.md"), key=sort_key):
         return m.group(1).strip() if m else default
 
     title, text = convert(raw)
+    _, doc = to_html(raw)
     blog = field("블로그")
     arts.append({
         "title": title,
-        "body": text,
+        "html": doc,        # 붙여넣어 바로 발행하는 본문
+        "body": text,       # 본문 보기용 평문
         "blog": (re.match(r"(T1|T2|N)", blog) or [""])[0],
         "kw": field("키워드"),
-        "len": "{:,}자".format(len(re.sub(r"\s", "", text))),
+        "len": "{:,}자 · 목차 {}".format(
+            len(re.sub(r"\s", "", text)), doc.count('href="#s')),
         "due": DEADLINE.get(stem(p), ""),
     })
 
