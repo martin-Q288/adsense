@@ -65,6 +65,12 @@
   .card.open .cbody{display:block}
   pre{margin:0;font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--ink-2);
     white-space:pre-wrap;word-break:break-word;overflow-wrap:anywhere}
+  /* 실제 붙여넣을 HTML을 그대로 렌더링한다 — 블로그는 항상 밝은 배경이라
+     아티팩트가 다크모드여도 흰 배경으로 고정한다. 안 그러면 본문의
+     어두운 글자색(#222)이 다크 배경과 겹쳐 안 보인다. */
+  .preview{background:#fff;color:#222;border:1px solid var(--rule);
+    border-radius:3px;padding:16px;overflow-x:auto;font-size:15px}
+  .preview img{max-width:100%}
   footer{margin-top:28px;font-size:12px;color:var(--muted);line-height:1.75}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -141,7 +147,7 @@ document.getElementById("list").innerHTML = ARTS.map((a,i)=>`
         <span class="btn">본문 보기</span>
       </span>
     </button>
-    <div class="cbody"><pre></pre></div>
+    <div class="cbody"><div class="preview"></div></div>
   </article>`).join("");
 
 // execCommand('copy') 폴백 — 클립보드 API가 막힌 인앱 브라우저·구형 웹뷰용.
@@ -163,12 +169,14 @@ function legacyCopy(text){
 
 // 자동 복사가 전부 막혔을 때의 마지막 수단 — 본문을 펼치고 직접 길게 눌러
 // 선택하도록 안내합니다. "복사 실패"만 뜨고 아무것도 못 하는 상황을 막습니다.
+// 여기서는 원본 텍스트를 그대로 보여줘야 길게 눌러 선택할 수 있으므로
+// innerHTML이 아니라 textContent로 넣는다 (HTML 렌더링이 아니라 글자 그대로).
 function manualFallback(card, text, btn, label){
-  const pre = card.querySelector("pre");
-  pre.textContent = text;
+  const box = card.querySelector(".preview");
+  box.textContent = text;
   card.classList.add("open");
   btn.textContent = "복사 실패 — 아래 글 길게 눌러 복사하세요";
-  pre.scrollIntoView({behavior:"smooth", block:"center"});
+  box.scrollIntoView({behavior:"smooth", block:"center"});
   setTimeout(()=>btn.textContent = label, 3200);
 }
 
@@ -202,8 +210,13 @@ document.addEventListener("click", e => {
     navigator.clipboard?.writeText(text).then(done).catch(tryLegacy) ?? tryLegacy();
     return;
   }
-  const pre = card.querySelector("pre");
-  if(!pre.textContent) pre.textContent = a.title + "\n\n" + a.body;
+  // "본문 보기" — 실제로 붙여넣을 HTML을 그대로 렌더링해서 보여준다.
+  // 목차·표·소제목이 복사했을 때와 동일하게 보여야 헷갈리지 않는다.
+  const box = card.querySelector(".preview");
+  if(!box.dataset.filled){
+    box.innerHTML = `<h1 style="font-size:20px;margin:0 0 16px;line-height:1.4">${esc(a.title)}</h1>` + a.html;
+    box.dataset.filled = "1";
+  }
   card.classList.toggle("open");
 });
 </script>
