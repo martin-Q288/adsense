@@ -1,1 +1,51 @@
-# adsense
+# adsense — 4블로그 애드센스 수익 프로젝트
+
+기간: 2026-08-01 ~ 2026-08-31 (31일)
+자산: 애드센스 승인 완료 계정 1개 (티스토리)
+목표(사용자 설정): 월 1,000만원
+
+## 핵심 요약
+
+지정 채널(알파남) **전체 512편**을 YouTube Data API로 전수 분석해 도출한 결론:
+
+- 한국 시장의 최대 트래픽 레버는 구글 디스커버가 아니라 **네이버 홈판** (채널 실측: 하루 10만 유입, 월 1,800만원 사례). 512편 중 디스커버 영상은 0편
+- 가장 재현성 높은 전술은 **이슈 파생 키워드** — 뉴스의 메인 키워드가 아니라 검색자가 실제 겪는 문제를 노림
+- 월 1,000만원은 **홈판 반복 적중 시나리오에서만** 나옴. 발행량만으로는 도달하지 않음
+- **최대 분기점: 8/14 홈판 노출 여부 게이트**
+
+## 먼저 읽을 것
+
+- **[docs/06-핵심플레이북.md](docs/06-핵심플레이북.md)** ← 실행의 중심. 이슈 파생 8축 + 네이버 홈판
+- [docs/02-31일-실행계획.md](docs/02-31일-실행계획.md) — 8월 일자별 실행안, KPI, 8/14 게이트
+- [docs/01-알파남-채널분석.md](docs/01-알파남-채널분석.md) — 512편 전수 분석
+- [docs/00-현실점검.md](docs/00-현실점검.md) — 목표 수치 역산과 격차
+- [docs/03-키워드-수익구조.md](docs/03-키워드-수익구조.md) — 키워드, 광고 배치, 수익 다각화
+- [docs/04-계정보호-금지사항.md](docs/04-계정보호-금지사항.md) — 운영자 본인도 "2억 투자 후 전계정 정지"를 당했음
+- [docs/07-홈판주제-8월캘린더.md](docs/07-홈판주제-8월캘린더.md) — 홈판 주제 선정 + 8월 확정 이벤트 캘린더
+- [docs/05-단기달성-대안경로.md](docs/05-단기달성-대안경로.md) — 사이트 매입 / 언론사 경로
+
+## 도구
+
+```bash
+python3 tools/content_engine.py queue               # 8/1~8/31 발행 큐 558편 생성
+python3 tools/content_engine.py today               # 오늘 쓸 18편
+python3 tools/content_engine.py brief "키워드"        # 글 구조 템플릿
+python3 tools/issue_radar.py "쿠팡 장애" --type 사고    # 돌발 이슈 파생 전개
+python3 tools/revenue_model.py                      # 목표 역산 / 시나리오 비교
+python3 tools/keyword_score.py keywords/seed.csv    # 키워드 우선순위 스코어링
+python3 tools/tracker.py init && python3 tools/tracker.py report
+
+# 채널 데이터 재수집 (API 키는 환경변수로만)
+YT_API_KEY=... python3 tools/yt_fetch.py --channel UC-SDn1Rid0XP06ovSQwLnZg \
+  -o content/alphamale_videos.json
+```
+
+## 현재 상태
+
+| 항목 | 값 |
+|---|---|
+| 운영 블로그 | 0 / 5 (N + A~D) |
+| 키워드 후보 | 3,206개 |
+| 8월 발행 큐 | 558편 (하루 18편) |
+| 누적 발행 글 | 0 |
+| 예상 월 run-rate | ₩0 |

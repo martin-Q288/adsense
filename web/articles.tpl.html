@@ -1,0 +1,222 @@
+<title>발행 대기 원고</title>
+<style>
+  :root{
+    --paper:#FCFCFB; --raised:#FFFFFF; --ink:#1A1A18; --ink-2:#43413C;
+    --muted:#6E6C66; --rule:#DAD8D3; --rule-soft:#EBE9E4;
+    --stamp:#C1272D; --stamp-soft:#FBEDED; --slate:#2F4858; --done:#4A7C59;
+    --kr:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--paper:#141416;--raised:#1C1C1F;--ink:#E9E7E2;--ink-2:#C3C0B9;
+      --muted:#8C8981;--rule:#2E2E32;--rule-soft:#242427;
+      --stamp:#E4676C;--stamp-soft:#2A1A1C;--slate:#8FB0C4;--done:#7BAE8A;}
+  }
+  :root[data-theme="dark"]{--paper:#141416;--raised:#1C1C1F;--ink:#E9E7E2;--ink-2:#C3C0B9;
+    --muted:#8C8981;--rule:#2E2E32;--rule-soft:#242427;
+    --stamp:#E4676C;--stamp-soft:#2A1A1C;--slate:#8FB0C4;--done:#7BAE8A;}
+  :root[data-theme="light"]{--paper:#FCFCFB;--raised:#FFFFFF;--ink:#1A1A18;--ink-2:#43413C;
+    --muted:#6E6C66;--rule:#DAD8D3;--rule-soft:#EBE9E4;
+    --stamp:#C1272D;--stamp-soft:#FBEDED;--slate:#2F4858;--done:#4A7C59;}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--kr);
+    font-size:16px;line-height:1.65;-webkit-text-size-adjust:100%;overflow-x:hidden}
+  .wrap{max-width:660px;margin:0 auto;padding:0 16px 80px}
+
+  header{padding:22px 0 16px;border-bottom:2px solid var(--ink)}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+  h1{margin:0;font-size:23px;font-weight:700;letter-spacing:-.01em}
+  .sub{margin:7px 0 0;font-size:13.5px;color:var(--muted)}
+
+  .note{border-left:3px solid var(--stamp);background:var(--stamp-soft);
+    padding:11px 13px;margin:16px 0 0;border-radius:0 2px 2px 0;font-size:13.5px;color:var(--ink-2)}
+  .note b{color:var(--stamp)}
+
+  .how{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+  .way{border:1px solid var(--rule);border-radius:3px;background:var(--raised);padding:13px 14px}
+  .way p{margin:0 0 7px;font-size:13.5px;color:var(--ink-2);line-height:1.65}
+  .way p:last-child{margin:0}
+  .way-t{font-weight:700;font-size:14.5px;color:var(--ink)!important;
+    display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+  .pill{font-family:var(--mono);font-size:10px;letter-spacing:.06em;background:var(--ink);
+    color:var(--paper);padding:3px 7px;border-radius:2px;font-weight:600}
+  .cav{color:var(--muted)!important;font-size:12.5px!important}
+  .way code{font-family:var(--mono);font-size:11.5px;background:var(--rule-soft);padding:1px 4px;border-radius:2px}
+  .card{border:1px solid var(--rule);border-radius:3px;background:var(--raised);
+    margin-top:14px;overflow:hidden}
+  .chead{width:100%;background:none;border:0;text-align:left;font:inherit;color:inherit;
+    padding:14px;cursor:pointer;display:block}
+  .chead:focus-visible{outline:2px solid var(--slate);outline-offset:-2px}
+  .tags{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:7px}
+  .tg{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.08em;
+    padding:2px 6px;border-radius:2px;background:var(--slate);color:var(--paper)}
+  .tg.rpm{background:none;color:var(--muted);border:1px solid var(--rule)}
+  .ct{display:block;font-size:16.5px;font-weight:700;line-height:1.45;word-break:keep-all;letter-spacing:-.01em}
+  .ckw{display:block;font-size:12.5px;color:var(--muted);margin-top:5px}
+  .cfoot{display:flex;gap:8px;align-items:center;margin-top:11px}
+  .btn{font:inherit;font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+    background:var(--raised);color:var(--ink-2);border:1px solid var(--rule);
+    border-radius:2px;padding:8px 13px;cursor:pointer;min-height:38px}
+  .btn.pri{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .btn:active{opacity:.7}
+  .cbody{display:none;border-top:1px solid var(--rule-soft);padding:14px}
+  .card.open .cbody{display:block}
+  pre{margin:0;font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--ink-2);
+    white-space:pre-wrap;word-break:break-word;overflow-wrap:anywhere}
+  /* 실제 붙여넣을 HTML을 그대로 렌더링한다 — 블로그는 항상 밝은 배경이라
+     아티팩트가 다크모드여도 흰 배경으로 고정한다. 안 그러면 본문의
+     어두운 글자색(#222)이 다크 배경과 겹쳐 안 보인다. */
+  .preview{background:#fff;color:#222;border:1px solid var(--rule);
+    border-radius:3px;padding:16px;overflow-x:auto;font-size:15px}
+  .preview img{max-width:100%}
+  footer{margin-top:28px;font-size:12px;color:var(--muted);line-height:1.75}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">우선순위순 · 원고 <span id="n"></span>편</p>
+    <h1>발행 대기 원고 (완성 HTML)</h1>
+    <p class="sub">복사해서 붙여넣고 바로 발행하면 됩니다. 목차 자동, 광고 코드 없음.</p>
+  </header>
+
+  <div class="note">
+    <b>목차·소제목·표가 다 들어간 완성 HTML입니다.</b> 광고 코드는 없습니다.
+    티스토리 <b>관리 → 수익 → 애드센스 관리</b>에서 자동광고만 켜 두면 됩니다.
+  </div>
+
+  <div class="how">
+    <div class="way">
+      <p class="way-t">폰에서 <span class="pill">서식 복사</span></p>
+      <p>티스토리 앱 → 글쓰기 → <strong>기본 모드에 그대로 붙여넣기</strong>.
+      목차·소제목·표가 서식 그대로 들어갑니다. 손볼 게 없습니다.</p>
+      <p class="cav">네이버(N)도 이 버튼을 쓰세요. 스마트에디터는 HTML 원본을
+      받지 않습니다.</p>
+    </div>
+    <div class="way">
+      <p class="way-t">PC에서 <span class="pill">HTML 복사</span></p>
+      <p>가장 정확합니다. tistory.com 로그인 → 글쓰기 →
+      우측 하단 <strong>기본모드 → HTML</strong> → 붙여넣기.</p>
+      <p class="cav">폰에서 PC 화면을 띄우려면 — 아이폰 Safari 주소창 왼쪽
+      <strong>ᴀA</strong> → 데스크탑 웹사이트 요청 / 안드로이드 Chrome
+      우측 상단 <strong>⋮</strong> → 데스크톱 사이트</p>
+    </div>
+    <div class="way">
+      <p class="way-t">발행 뒤 두 가지만</p>
+      <p><strong>대표 이미지</strong>를 지정하고, 맨 아래
+      <strong>함께 보면 좋은 글</strong> 세 줄을 실제 글 주소로 연결하세요.
+      이 링크가 체류시간을 만듭니다.</p>
+      <p class="cav">발행 후 서치콘솔에서 URL 검사 → 색인 요청까지 하면 끝입니다.</p>
+    </div>
+  </div>
+
+  <div id="list"></div>
+
+  <footer>
+    수치는 2026년 8월 기준으로 조사했습니다. 발행 전 각 글 하단의 공식 출처
+    (고용보험 ei.go.kr · 홈택스 · 주택도시기금 nhuf.molit.go.kr · 한전:ON)에서
+    한 번 더 확인하면 안전합니다. YMYL 주제라 숫자가 틀리면 순위가 아니라
+    사이트가 위험합니다.
+  </footer>
+</div>
+
+<script>
+const ARTS = /*__ARTS__*/;
+document.getElementById("n").textContent = ARTS.length;
+const BLOGNAME = {T1:"금융·정책·생활정보",T2:"커머스·쿠팡",N:"네이버 홈판"};
+const DEST = {T1:"티스토리 앱", T2:"티스토리 앱", N:"네이버 블로그 앱"};
+const esc = s => s.replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+
+document.getElementById("list").innerHTML = ARTS.map((a,i)=>`
+  <article class="card" data-i="${i}">
+    <button class="chead" type="button">
+      <span class="tags">
+        <span class="tg">${a.blog} · ${BLOGNAME[a.blog]||""}</span>
+        <span class="tg rpm">${a.len}</span>
+        ${a.due ? `<span class="tg rpm">${esc(a.due)}</span>` : ""}
+      </span>
+      <span class="ct">${esc(a.title)}</span>
+      <span class="ckw">${esc(a.kw)}</span>
+      <span class="ckw">→ ${DEST[a.blog]||"티스토리 앱"}</span>
+      <span class="cfoot">
+        <span class="btn copytitle">제목 복사</span>
+        <span class="btn pri copyrich">서식 복사</span>
+        <span class="btn copyhtml">HTML 복사</span>
+        <span class="btn">본문 보기</span>
+      </span>
+    </button>
+    <div class="cbody"><div class="preview"></div></div>
+  </article>`).join("");
+
+// execCommand('copy') 폴백 — 클립보드 API가 막힌 인앱 브라우저·구형 웹뷰용.
+// 화면 밖에 textarea를 만들어 값을 넣고 선택한 뒤 구식 복사 명령을 씁니다.
+function legacyCopy(text){
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.top = "-9999px";
+  ta.style.left = "-9999px";
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  let ok = false;
+  try{ ok = document.execCommand("copy"); }catch(err){ ok = false; }
+  document.body.removeChild(ta);
+  return ok;
+}
+
+// 자동 복사가 전부 막혔을 때의 마지막 수단 — 본문을 펼치고 직접 길게 눌러
+// 선택하도록 안내합니다. "복사 실패"만 뜨고 아무것도 못 하는 상황을 막습니다.
+// 여기서는 원본 텍스트를 그대로 보여줘야 길게 눌러 선택할 수 있으므로
+// innerHTML이 아니라 textContent로 넣는다 (HTML 렌더링이 아니라 글자 그대로).
+function manualFallback(card, text, btn, label){
+  const box = card.querySelector(".preview");
+  box.textContent = text;
+  card.classList.add("open");
+  btn.textContent = "복사 실패 — 아래 글 길게 눌러 복사하세요";
+  box.scrollIntoView({behavior:"smooth", block:"center"});
+  setTimeout(()=>btn.textContent = label, 3200);
+}
+
+document.addEventListener("click", e => {
+  const card = e.target.closest(".card");
+  if(!card) return;
+  const a = ARTS[+card.dataset.i];
+  const btn = e.target.closest(".copytitle, .copyrich, .copyhtml");
+  if(btn){
+    e.stopPropagation();
+    const label = btn.textContent;
+    const rich = btn.classList.contains("copyrich");
+    const text = btn.classList.contains("copytitle") ? a.title : a.html;
+    const done = () => { btn.textContent = "복사됨";
+      setTimeout(()=>btn.textContent = label, 1500); };
+    const tryLegacy = () => {
+      if(legacyCopy(text)) done();
+      else manualFallback(card, text, btn, label);
+    };
+    if(rich){
+      // 위지윅 에디터가 서식을 살려 받도록 text/html 로 넣는다.
+      // text/plain 도 같이 넣어 HTML 모드에 붙여도 원본이 들어가게 한다.
+      try{
+        navigator.clipboard.write([new ClipboardItem({
+          "text/html": new Blob([a.html], {type:"text/html"}),
+          "text/plain": new Blob([a.html], {type:"text/plain"})
+        })]).then(done).catch(tryLegacy);
+      }catch(err){ tryLegacy(); }
+      return;
+    }
+    navigator.clipboard?.writeText(text).then(done).catch(tryLegacy) ?? tryLegacy();
+    return;
+  }
+  // "본문 보기" — 실제로 붙여넣을 HTML을 그대로 렌더링해서 보여준다.
+  // 목차·표·소제목이 복사했을 때와 동일하게 보여야 헷갈리지 않는다.
+  const box = card.querySelector(".preview");
+  if(!box.dataset.filled){
+    box.innerHTML = `<h1 style="font-size:20px;margin:0 0 16px;line-height:1.4">${esc(a.title)}</h1>` + a.html;
+    box.dataset.filled = "1";
+  }
+  card.classList.toggle("open");
+});
+</script>

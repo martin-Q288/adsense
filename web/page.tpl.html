@@ -1,0 +1,414 @@
+<title>8월 발행 큐</title>
+<style>
+  :root{
+    --paper:#FCFCFB; --raised:#FFFFFF; --ink:#1A1A18; --ink-2:#4A4842;
+    --muted:#6E6C66; --rule:#DAD8D3; --rule-soft:#EBE9E4;
+    --stamp:#C1272D; --stamp-soft:#FBEDED;
+    --slate:#2F4858; --done:#4A7C59;
+    --kr:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","맑은 고딕",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#141416; --raised:#1C1C1F; --ink:#E9E7E2; --ink-2:#BFBCB5;
+      --muted:#8C8981; --rule:#2E2E32; --rule-soft:#242427;
+      --stamp:#E4676C; --stamp-soft:#2A1A1C;
+      --slate:#8FB0C4; --done:#7BAE8A;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#141416; --raised:#1C1C1F; --ink:#E9E7E2; --ink-2:#BFBCB5;
+    --muted:#8C8981; --rule:#2E2E32; --rule-soft:#242427;
+    --stamp:#E4676C; --stamp-soft:#2A1A1C;
+    --slate:#8FB0C4; --done:#7BAE8A;
+  }
+  :root[data-theme="light"]{
+    --paper:#FCFCFB; --raised:#FFFFFF; --ink:#1A1A18; --ink-2:#4A4842;
+    --muted:#6E6C66; --rule:#DAD8D3; --rule-soft:#EBE9E4;
+    --stamp:#C1272D; --stamp-soft:#FBEDED;
+    --slate:#2F4858; --done:#4A7C59;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--kr); font-size:16px; line-height:1.6;
+    -webkit-text-size-adjust:100%; overflow-x:hidden;
+  }
+  .wrap{max-width:640px; margin:0 auto; padding:0 16px 96px}
+
+  /* ---- masthead ---- */
+  header{padding:22px 0 14px; border-bottom:2px solid var(--ink)}
+  .eyebrow{
+    font-family:var(--mono); font-size:11px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--muted); margin:0 0 6px;
+  }
+  h1{margin:0; font-size:23px; font-weight:700; letter-spacing:-.01em}
+  .sub{margin:6px 0 0; font-size:13px; color:var(--muted)}
+  .totals{
+    display:flex; gap:18px; margin-top:14px; align-items:baseline;
+    font-family:var(--mono); font-variant-numeric:tabular-nums;
+  }
+  .totals b{font-size:22px; font-weight:600; letter-spacing:-.02em}
+  .totals span{font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+  .bar{height:3px; background:var(--rule-soft); margin-top:12px; overflow:hidden}
+  .bar i{display:block; height:100%; background:var(--done); width:0; transition:width .3s}
+
+  /* ---- date strip ---- */
+  .strip-wrap{
+    position:sticky; top:0; z-index:20; background:var(--paper);
+    border-bottom:1px solid var(--rule); margin:0 -16px; padding:0 16px;
+  }
+  .strip{
+    display:flex; gap:5px; overflow-x:auto; padding:10px 0;
+    scrollbar-width:none; -webkit-overflow-scrolling:touch;
+  }
+  .strip::-webkit-scrollbar{display:none}
+  .chip{
+    flex:0 0 auto; width:46px; padding:7px 0 6px; border:1px solid var(--rule);
+    background:var(--raised); color:var(--ink-2); cursor:pointer;
+    font-family:var(--mono); text-align:center; position:relative;
+    font-variant-numeric:tabular-nums; border-radius:2px;
+  }
+  .chip .d{display:block; font-size:15px; font-weight:600; letter-spacing:-.02em}
+  .chip .w{display:block; font-size:9px; letter-spacing:.08em; color:var(--muted); margin-top:1px}
+  .chip.sun .w,.chip.sun .d{color:var(--stamp)}
+  .chip[aria-pressed="true"]{background:var(--ink); border-color:var(--ink)}
+  .chip[aria-pressed="true"] .d,.chip[aria-pressed="true"] .w{color:var(--paper)}
+  .chip .dot{
+    position:absolute; top:3px; right:4px; width:5px; height:5px;
+    border-radius:50%; background:var(--stamp);
+  }
+  .chip .ring{
+    position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--done);
+  }
+  .chip:focus-visible{outline:2px solid var(--slate); outline-offset:2px}
+
+  /* ---- day head ---- */
+  .dayhead{
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding:20px 0 4px;
+  }
+  .dayhead h2{margin:0; font-size:19px; font-weight:700; letter-spacing:-.01em}
+  .dayhead .cnt{
+    font-family:var(--mono); font-size:12px; color:var(--muted);
+    font-variant-numeric:tabular-nums; letter-spacing:.04em;
+  }
+
+  /* ---- event banner ---- */
+  .evs{
+    border-left:3px solid var(--stamp); background:var(--stamp-soft);
+    padding:8px 12px; margin:12px 0 0; border-radius:0 2px 2px 0;
+    display:flex; flex-direction:column; gap:4px;
+  }
+  .evs .ev{display:flex; gap:8px; align-items:baseline; font-size:12.5px; color:var(--ink-2)}
+  .evs .when{
+    font-family:var(--mono); font-size:10.5px; color:var(--stamp); font-weight:600;
+    flex:0 0 auto; font-variant-numeric:tabular-nums; letter-spacing:.02em;
+  }
+  .evs .nm{font-weight:600; color:var(--ink)}
+  .evs .nt{color:var(--muted)}
+
+  /* ---- blog group ---- */
+  .grp{margin-top:22px}
+  .grp-h{
+    display:flex; align-items:center; gap:8px; padding-bottom:6px;
+    border-bottom:1px solid var(--rule);
+  }
+  .tag{
+    font-family:var(--mono); font-size:10px; font-weight:600; letter-spacing:.1em;
+    width:20px; height:20px; display:grid; place-items:center;
+    background:var(--slate); color:var(--paper); border-radius:2px; flex:0 0 auto;
+  }
+  .grp-h .nm{font-size:13px; font-weight:600}
+  .grp-h .sl{font-family:var(--mono); font-size:11px; color:var(--muted); margin-left:auto}
+
+  /* ---- rows ---- */
+  ul{list-style:none; margin:0; padding:0}
+  li{border-bottom:1px solid var(--rule-soft)}
+  .row{
+    display:flex; align-items:flex-start; gap:11px; width:100%;
+    background:none; border:0; padding:13px 2px; text-align:left;
+    font:inherit; color:inherit; cursor:pointer; min-height:48px;
+  }
+  .row:focus-visible{outline:2px solid var(--slate); outline-offset:-2px}
+  .box{
+    flex:0 0 auto; width:19px; height:19px; margin-top:2px; border:1.5px solid var(--rule);
+    border-radius:3px; display:grid; place-items:center; background:var(--raised);
+  }
+  .box svg{width:11px; height:11px; opacity:0; stroke:var(--paper); stroke-width:3;
+    fill:none; stroke-linecap:round; stroke-linejoin:round}
+  li.done .box{background:var(--done); border-color:var(--done)}
+  li.done .box svg{opacity:1}
+  li.done .kw{color:var(--muted); text-decoration:line-through; text-decoration-thickness:1px}
+  .txt{flex:1 1 auto; min-width:0}
+  .kw{display:block; font-size:15px; line-height:1.45; word-break:keep-all}
+  .meta{display:flex; flex-wrap:wrap; gap:6px; margin-top:4px; align-items:center}
+  .ax{
+    font-family:var(--mono); font-size:10px; letter-spacing:.04em; color:var(--muted);
+    border:1px solid var(--rule); padding:1px 5px; border-radius:2px;
+  }
+  .evtag{
+    font-size:10px; color:var(--stamp); font-weight:600;
+    border:1px solid var(--stamp); padding:1px 5px; border-radius:2px;
+  }
+  li.hasEv{border-left:2px solid var(--stamp); padding-left:9px; margin-left:-11px}
+
+  /* ---- brief ---- */
+  .brief{display:none; padding:2px 2px 18px 30px}
+  li.open .brief{display:block}
+  .brief h4{
+    margin:14px 0 6px; font-family:var(--mono); font-size:10px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--muted); font-weight:600;
+  }
+  .brief h4:first-child{margin-top:0}
+  .brief ol,.brief ul.b{margin:0; padding-left:17px; font-size:13.5px; color:var(--ink-2)}
+  .brief li{border:0; padding:2px 0}
+  .brief pre{
+    margin:0; background:var(--raised); border:1px solid var(--rule); border-radius:3px;
+    padding:11px; font-family:var(--mono); font-size:11.5px; line-height:1.65;
+    color:var(--ink-2); overflow-x:auto; white-space:pre;
+  }
+  .warn{
+    border-left:3px solid var(--stamp); padding:8px 11px; background:var(--stamp-soft);
+    font-size:13px; color:var(--ink-2); border-radius:0 2px 2px 0;
+  }
+  .warn b{color:var(--stamp)}
+  .copy{
+    margin-top:9px; font:inherit; font-family:var(--mono); font-size:11px;
+    letter-spacing:.06em; background:var(--raised); color:var(--ink-2);
+    border:1px solid var(--rule); border-radius:2px; padding:7px 12px; cursor:pointer;
+  }
+  .copy:active{background:var(--rule-soft)}
+
+  /* ---- rules panel ---- */
+  .panel{
+    margin-top:34px; border:1px solid var(--rule); border-radius:3px;
+    background:var(--raised); padding:16px;
+  }
+  .panel h3{margin:0 0 10px; font-size:14px; font-weight:700}
+  .panel ol{margin:0; padding-left:18px; font-size:13.5px; color:var(--ink-2)}
+  .panel ol li{border:0; padding:3px 0}
+  footer{margin-top:26px; font-size:11.5px; color:var(--muted); line-height:1.7}
+  footer code{font-family:var(--mono); font-size:11px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">2026.08.01 — 08.31 · 5 blogs</p>
+    <h1>8월 발행 큐</h1>
+    <p class="sub">키워드 후보 3,206개에서 뽑은 558편. 고를 필요 없이 위에서부터.</p>
+    <div class="totals">
+      <span>완료</span><b id="tDone">0</b>
+      <span>전체</span><b id="tAll">558</b>
+      <span>진행</span><b id="tPct">0%</b>
+    </div>
+    <div class="bar"><i id="tBar"></i></div>
+  </header>
+
+  <div class="strip-wrap"><div class="strip" id="strip"></div></div>
+
+  <div class="dayhead">
+    <h2 id="dTitle">—</h2>
+    <span class="cnt" id="dCnt"></span>
+  </div>
+  <div id="dEvents"></div>
+  <div id="dBody"></div>
+
+  <div class="panel">
+    <h3>발행 전 30초 — 이건 건너뛰지 마세요</h3>
+    <ol>
+      <li>그 키워드를 네이버·구글에 <strong>실제로 검색</strong></li>
+      <li>상위 10개에 블로그 글이 <strong>3개 미만</strong>이면 진행, 아니면 스킵하고 다음 것</li>
+      <li>돌발 이슈면 <strong>발생 후 2시간 이내</strong>인지</li>
+    </ol>
+    <p style="margin:11px 0 0;font-size:13px;color:var(--muted)">
+      이 확인을 건너뛰면 아무도 안 찾는 조합으로 558편을 쓰게 됩니다.
+      큐는 후보 생성기지 검증기가 아닙니다.
+    </p>
+  </div>
+
+  <div class="panel">
+    <h3>계정을 태우면 전부 0원</h3>
+    <ol>
+      <li>자기 광고 클릭 · 지인 품앗이 · 트래픽 구매 — 전부 적발됩니다</li>
+      <li>“광고를 클릭해주세요” 유도 문구 — 즉시 정지</li>
+      <li>AI 무편집 대량 발행 — 사이트 단위 색인 삭제</li>
+      <li>쿠팡 링크 글에는 수수료 고지 문구 필수 (표시광고법)</li>
+    </ol>
+    <p style="margin:11px 0 0;font-size:13px;color:var(--muted)">
+      정지되면 미지급 수익까지 몰수됩니다. 승인된 계정 1개가 이 프로젝트의 전부입니다.
+    </p>
+  </div>
+
+  <footer>
+    체크 상태는 이 브라우저에 저장됩니다 · 큐 재생성은 PC에서
+    <code>python3 tools/content_engine.py queue</code>
+  </footer>
+</div>
+
+<script>
+const D = /*__DATA__*/;
+const BLOGS = {
+  N:["네이버 (홈판 엔진)",3], A:["고단가 · 금융/정책",3],
+  B:["이슈 파생",7], C:["커머스 · 쿠팡",3], D:["워드프레스 · 에버그린",2]
+};
+const WD = ["일","월","화","수","목","금","토"];
+const dates = Object.keys(D.days);
+let cur = dates.includes("2026-08-01") ? "2026-08-01" : dates[0];
+
+const store = {
+  get(){ try{ return JSON.parse(localStorage.getItem("q8")||"{}"); }catch(e){ return {}; } },
+  set(v){ try{ localStorage.setItem("q8", JSON.stringify(v)); }catch(e){} }
+};
+let state = store.get();
+const key = (d,k) => d+"|"+k;
+
+function dayDone(d){
+  return D.days[d].filter(it => state[key(d,it[0])]).length;
+}
+
+function renderStrip(){
+  const s = document.getElementById("strip");
+  s.innerHTML = "";
+  dates.forEach(d => {
+    const dt = new Date(d+"T00:00:00");
+    const items = D.days[d];
+    const hasEv = items.some(i => i[3]);
+    const done = dayDone(d), all = items.length;
+    const b = document.createElement("button");
+    b.className = "chip" + (dt.getDay()===0 ? " sun":"");
+    b.setAttribute("aria-pressed", d===cur);
+    b.innerHTML = `<span class="d">${String(dt.getDate()).padStart(2,"0")}</span>
+      <span class="w">${WD[dt.getDay()]}</span>
+      ${hasEv?'<span class="dot"></span>':''}
+      ${done===all?'<span class="ring"></span>':''}`;
+    b.onclick = () => { cur = d; render(); };
+    s.appendChild(b);
+  });
+  // 선택된 날짜가 항상 보이도록
+  const act = s.querySelector('.chip[aria-pressed="true"]');
+  if(act) act.scrollIntoView({block:"nearest", inline:"center"});
+}
+
+function briefHTML(kw){
+  const tpl =
+`# ${kw} (2026년 최신)
+
+**결론부터: [핵심 답 한 문장]**
+[요약 3줄 — 숫자·날짜·조건 명시]
+
+## ${kw}란
+## 단계별 방법
+   1. / 2. / 3.
+## 한눈에 보는 표
+   | 구분 | 내용 | 비고 |
+## 주의할 점
+## 자주 묻는 질문
+   Q1 / Q2 / Q3
+## 함께 보면 좋은 글`;
+  return `<div class="brief">
+    <div class="warn"><b>먼저:</b> “${kw}” 를 네이버·구글에 검색.
+      상위 10개에 블로그 글이 3개 미만이면 진행, 아니면 스킵.</div>
+    <h4>글 구조</h4>
+    <pre>${tpl.replace(/&/g,"&amp;").replace(/</g,"&lt;")}</pre>
+    <button class="copy" type="button">구조 복사</button>
+    <h4>분량 · 배치</h4>
+    <ul class="b">
+      <li>이슈성 800~1,200자 / 정보성 1,500~2,500자</li>
+      <li>광고: 첫 문단 직후 · 목차 하단 · H2 2개마다 · 하단 멀티플렉스</li>
+      <li>표 1개 이상 — AI 검색 인용률 최상</li>
+    </ul>
+    <h4>발행 체크</h4>
+    <ul class="b">
+      <li>제목에 키워드 그대로 + “2026”</li>
+      <li>대표 이미지 1200px 이상 가로형 (홈판 필수)</li>
+      <li>모바일 화면에서 먼저 검수</li>
+      <li>발행 후 서치콘솔 색인 요청</li>
+    </ul>
+  </div>`;
+}
+
+function render(){
+  renderStrip();
+  const items = D.days[cur];
+  const dt = new Date(cur+"T00:00:00");
+  document.getElementById("dTitle").textContent =
+    `${dt.getMonth()+1}월 ${dt.getDate()}일 ${WD[dt.getDay()]}요일`;
+  document.getElementById("dCnt").textContent = `${dayDone(cur)} / ${items.length}편`;
+
+  const evs = [...new Set(items.filter(i=>i[3]).map(i=>i[3]))]
+    .sort((a,b)=>(D.cal[a]?.d||"").localeCompare(D.cal[b]?.d||""));
+  const dEv = document.getElementById("dEvents");
+  dEv.innerHTML = evs.length ? `<div class="evs">` + evs.map(e=>{
+    const c = D.cal[e] || {};
+    const when = c.d ? c.d.slice(5).replace("-","/") : "";
+    const days = c.d ? Math.round((new Date(c.d)-new Date(cur))/864e5) : null;
+    const dLbl = days===0 ? "당일" : days>0 ? `D-${days}` : "";
+    return `<div class="ev"><span class="when">${when} ${dLbl}</span>
+      <span><span class="nm">${e}</span>${c.note?` <span class="nt">· ${c.note}</span>`:""}</span></div>`;
+  }).join("") + `</div>` : "";
+
+  const by = {};
+  items.forEach(i => (by[i[1]] = by[i[1]] || []).push(i));
+
+  document.getElementById("dBody").innerHTML = Object.keys(BLOGS)
+    .filter(b => by[b]).map(b => {
+      const [nm, slots] = BLOGS[b];
+      const rows = by[b].map(it => {
+        const [kw,, ax, ev] = it;
+        const isDone = !!state[key(cur,kw)];
+        return `<li class="${isDone?"done ":""}${ev?"hasEv":""}" data-kw="${kw.replace(/"/g,"&quot;")}">
+          <button class="row" type="button">
+            <span class="box"><svg viewBox="0 0 12 12"><path d="M2 6.2 4.6 8.8 10 3.4"/></svg></span>
+            <span class="txt">
+              <span class="kw">${kw}</span>
+              <span class="meta">
+                <span class="ax">${ax}</span>
+                ${ev?`<span class="evtag">${ev}</span>`:""}
+              </span>
+            </span>
+          </button>
+          ${briefHTML(kw)}
+        </li>`;
+      }).join("");
+      return `<section class="grp">
+        <div class="grp-h"><span class="tag">${b}</span>
+          <span class="nm">${nm}</span><span class="sl">${by[b].length}/${slots}</span></div>
+        <ul>${rows}</ul></section>`;
+    }).join("");
+
+  const done = Object.values(state).filter(Boolean).length;
+  document.getElementById("tDone").textContent = done;
+  document.getElementById("tPct").textContent = Math.round(done/558*100)+"%";
+  document.getElementById("tBar").style.width = (done/558*100)+"%";
+}
+
+document.addEventListener("click", e => {
+  const copy = e.target.closest(".copy");
+  if(copy){
+    const pre = copy.previousElementSibling;
+    navigator.clipboard?.writeText(pre.textContent).then(()=>{
+      copy.textContent = "복사됨"; setTimeout(()=>copy.textContent="구조 복사", 1400);
+    });
+    return;
+  }
+  const row = e.target.closest(".row");
+  if(!row) return;
+  const li = row.parentElement;
+  const kw = li.dataset.kw;
+  // 체크박스를 직접 누르면 완료 토글, 그 외 영역은 브리프 펼치기
+  if(e.target.closest(".box")){
+    const k = key(cur, kw);
+    state[k] = !state[k];
+    if(!state[k]) delete state[k];
+    store.set(state);
+    render();
+  } else {
+    li.classList.toggle("open");
+  }
+});
+
+render();
+</script>
